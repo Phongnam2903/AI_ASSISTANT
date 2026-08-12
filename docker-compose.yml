@@ -1,0 +1,47 @@
+# Personal AI Assistant — local development stack.
+#
+# Phase 0 status: only `postgres` and `redis` are real, runnable services.
+# `api` and `web` are commented out on purpose — apps/api and apps/web have
+# no Dockerfile or dependencies yet (that's Phase 1 work). Uncommenting them
+# now would produce a compose file that *looks* complete but fails to build,
+# which the project explicitly wants to avoid. See docs/architecture.md §11.
+
+services:
+  postgres:
+    image: pgvector/pgvector:pg16 # ships the pgvector extension for Phase 4 semantic memory
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: personal_ai_assistant
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+
+  # api:
+  #   build: ./apps/api            # requires apps/api/Dockerfile (added Phase 1)
+  #   env_file: .env
+  #   ports:
+  #     - "8000:8000"
+  #   depends_on:
+  #     - postgres
+  #     - redis
+
+  # web:
+  #   build: ./apps/web            # requires apps/web/Dockerfile (added Phase 1)
+  #   env_file: .env
+  #   ports:
+  #     - "3000:3000"
+  #   depends_on:
+  #     - api
+
+volumes:
+  postgres_data:
+  redis_data:
