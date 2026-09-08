@@ -4,7 +4,9 @@ Ngày: 2026-09-07. Phạm vi: repository tại `D:\PROJECT\AI_Assistant`, trong 
 
 ## Kết luận hiện tại
 
-Hồ sơ và skeleton đạt kiểm tra tĩnh trong phạm vi Phase 0. Phase 0 vẫn In Progress, chờ chủ dự án xem xét báo cáo và phê duyệt. **Chưa xác nhận ứng dụng build/chạy được và chưa có phê duyệt Phase 0 hoặc Phase 1.**
+**Phase 0 — ✅ Completed.** Technical foundation đã được Project owner phê duyệt ngày **2026-09-07**. Phê duyệt này xác nhận hồ sơ/nền tảng Phase 0, không xác nhận ứng dụng đã build/chạy hoặc phê duyệt implementation Phase 1.
+
+Current Phase: **Phase 1 — Desktop Assistant Shell (Planning / Awaiting Approval)**. Kế hoạch Phase 1 đang chờ review; chưa chạy prerequisite gate, tạo minimal spike hoặc code shell.
 
 ## Audit đầu vào
 
@@ -49,7 +51,9 @@ Audit hoàn thành nghĩa là quan sát và giới hạn đã được ghi, khô
 | Mẫu cấu hình và ignore | [.env.example](../.env.example), [.gitignore](../.gitignore) | PASS — artifact và nội dung đã kiểm tra |
 | Phase 1 plan | [implementation plan](phase-1-implementation-plan.md) | PASS — artifact và nội dung đã kiểm tra |
 
-## Validation cuối
+## Validation Phase 0 — trước phê duyệt
+
+Các kết quả và trạng thái checklist dưới đây là bản ghi trước khi chủ dự án phê duyệt. Trạng thái hiện tại được cập nhật ở phần kết luận và ghi nhận cuối báo cáo.
 
 Kết quả đã chạy bằng Python standard library và Git:
 
@@ -71,6 +75,8 @@ Mermaid mới có nguồn diagram, chưa xác minh render. Chưa chạy build/ty
 
 Trước triển khai Phase 1: xác minh npm, C++ Build Tools/Windows SDK và Node baseline, sau đó build Tauri theo plan đã duyệt. Docker/uv không chặn việc xem xét shell plan. Không coi giới hạn sandbox là bằng chứng tool không hoạt động trên tài khoản chủ máy.
 
-- [ ] Phase 0 approved by project owner.
+- [x] Phase 0 approved by project owner.
 - [ ] Phase 1 implementation plan approved by project owner.
-- Người/ngày duyệt: chưa ghi nhận.
+- Phase 0 approver: **Project owner**.
+- Phase 0 approval date: **2026-09-07**.
+- Phase 1 approval date: **Chưa ghi nhận**.

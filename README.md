@@ -6,11 +6,13 @@ Thứ tự ưu tiên tương tác: **Voice → Text / Transcript → Vision (tư
 
 ## Trạng thái thực tế
 
-- **Giai đoạn:** Phase 0 — Foundation & Voice-First Architecture.
-- **Trạng thái:** In Progress — hồ sơ và skeleton đã qua kiểm tra tĩnh, chờ chủ dự án phê duyệt.
+- **Current Phase:** Phase 1 — Desktop Assistant Shell (Planning / Awaiting Approval).
+- **Phase 0:** ✅ Completed — Foundation & Voice-First Architecture.
+- **Ngày duyệt Phase 0:** 2026-09-07.
+- **Phase 1:** Planning / Awaiting Approval — chưa bắt đầu implementation.
 - **Cập nhật:** 2026-09-07.
 - Repository chứa tài liệu thiết kế, cấu trúc thư mục và mẫu cấu hình. **Chưa có ứng dụng chạy được hoặc mã triển khai Phase 1.**
-- Các lựa chọn kỹ thuật chi tiết trong ADR và kế hoạch Phase 1 vẫn là **Proposed**.
+- Technical foundation Phase 0 đã được chủ dự án phê duyệt; kế hoạch Phase 1 vẫn là **Proposed**, chờ phê duyệt riêng.
 - Kết quả kiểm tra và giới hạn môi trường: [báo cáo Phase 0](docs/phase-0-verification.md).
 
 ## Trải nghiệm hướng tới
@@ -38,7 +40,7 @@ Wake word, automation, vision và nhiều agent được bổ sung ở các giai
 
 Xem [kiến trúc và sơ đồ](docs/architecture.md), [luồng hội thoại](docs/agent-flow.md) và [bảo mật](docs/security.md).
 
-## Phase 0 — Theo dõi bằng bằng chứng
+## Phase 0 — ✅ Completed
 
 Checkbox chỉ được đánh dấu sau khi artifact tồn tại và đã kiểm tra. Hoàn thành tài liệu không chứng minh chức năng đã chạy.
 
@@ -55,14 +57,17 @@ Checkbox chỉ được đánh dấu sau khi artifact tồn tại và đã kiể
 - [X] Quyết định kỹ thuật được lập thành ADR — [danh mục ADR](docs/adr/README.md).
 - [X] Kế hoạch triển khai Phase 1 đã được soạn — [implementation plan](docs/phase-1-implementation-plan.md).
 - [X] Kiểm tra tính nhất quán của hồ sơ Phase 0 — [verification](docs/phase-0-verification.md).
-- [ ] Phase 0 approved by project owner.
+- [x] Phase 0 approved by project owner.
+- Phase 0 approval date: **2026-09-07**.
+- Phase 0 approver: **Project owner**.
+- [ ] Phase 1 implementation plan approved by project owner.
 
 ## Roadmap
 
 | Phase | Mục tiêu                            | Trạng thái                               |
 | ----- | ------------------------------------- | ------------------------------------------ |
-| 0     | Foundation & Voice-First Architecture | In Progress; chờ chủ dự án phê duyệt |
-| 1     | Desktop Assistant Shell               | Not Started                                |
+| 0     | Foundation & Voice-First Architecture | ✅ Completed |
+| 1     | Desktop Assistant Shell               | Planning / Awaiting Approval |
 | 2     | Speech Pipeline                       | Not Started                                |
 | 3     | Voice AI Conversation                 | Not Started                                |
 | 4     | Agent + Tool Calling                  | Not Started                                |
@@ -92,9 +97,10 @@ Chưa có lệnh chạy ứng dụng, dependency manifest, lockfile hoặc cấu
 | 2026-08-11 | README ban đầu đề xuất modular monolith, LangGraph và bộ nhớ ba tầng; ghi nhận repository riêng cho thư mục AI_Assistant.                 |
 | 2026-09-07 | Audit xác nhận commit ban đầu chỉ có README; các tuyên bố hoàn thành tài liệu và skeleton trước đây chưa có artifact đối chiếu. |
 | 2026-09-07 | Theo yêu cầu chủ dự án, chuyển sang Voice-First Desktop Assistant, đưa desktop và speech lên Phase 1–3, xây dựng lại hồ sơ Phase 0.    |
+| 2026-09-07 | Chủ dự án phê duyệt Phase 0 — Foundation & Voice-First Architecture. Phase 1 plan chưa được duyệt; chuyển sang planning và chờ review. |
 
 ## Quy tắc hoàn thành
 
 Một phase chỉ hoàn thành khi artifact đúng phạm vi đã có, validation phù hợp đã đạt, kết quả đã báo cáo và chủ dự án đã phê duyệt. Không tự đánh dấu phê duyệt dựa trên việc tài liệu đã được viết.
 
-**Bước tiếp theo:** trình hồ sơ Phase 0 cùng kế hoạch Phase 1 để chủ dự án duyệt trước khi bắt đầu code. Những điểm chưa xác minh về khả năng build là điều kiện kiểm tra trước triển khai.
+**Bước tiếp theo:** trình toàn bộ [Phase 1 implementation plan](docs/phase-1-implementation-plan.md) để chủ dự án review. STOP và chờ phê duyệt riêng; chưa chạy prerequisite gate, minimal spike hoặc implement Phase 1.

@@ -1,6 +1,6 @@
 # Roadmap Voice-First
 
-Cập nhật: 2026-09-07. Phase 0: In Progress; Phase 1–12: Not Started. Mỗi phase cần bằng chứng kiểm tra và chủ dự án phê duyệt trước khi đánh hoàn thành.
+Cập nhật: 2026-09-07. Phase 0: ✅ Completed — được chủ dự án phê duyệt ngày 2026-09-07; Phase 1: Planning / Awaiting Approval, chưa triển khai; Phase 2–12: Not Started. Mỗi phase cần bằng chứng kiểm tra và chủ dự án phê duyệt trước khi đánh hoàn thành.
 
 ## Version 1 — Từ presence đến trợ lý làm việc
 
@@ -35,5 +35,8 @@ Phase 1 có greeting chữ và trạng thái voice mô phỏng có nhãn. Phase 
 
 Trước khi triển khai mỗi phase, xác định dependency versions/provider cần dùng, kế hoạch kiểm tra và thay đổi phạm vi. Không đặt ngày hoàn thành chưa có cơ sở. Kế hoạch gần nhất: [Phase 1](phase-1-implementation-plan.md).
 
-- [ ] Phase 0 approved by project owner.
+- [x] Phase 0 approved by project owner.
+- Phase 0 approval date: **2026-09-07**.
 - [ ] Phase 1 implementation plan approved by project owner.
+
+Phase 1 chỉ chạy prerequisite gate và Tauri minimal spike sau khi kế hoạch được duyệt riêng; chỉ code shell khi toàn bộ gate đạt. Hiện STOP để chủ dự án review kế hoạch.
