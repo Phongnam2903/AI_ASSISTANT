@@ -6,13 +6,13 @@ Thứ tự ưu tiên tương tác: **Voice → Text / Transcript → Vision (tư
 
 ## Trạng thái thực tế
 
-- **Current Phase:** Phase 1 — Desktop Assistant Shell (Planning / Awaiting Approval).
+- **Current Phase:** Phase 1 — Desktop Assistant Shell (Prerequisite Verification).
 - **Phase 0:** ✅ Completed — Foundation & Voice-First Architecture.
 - **Ngày duyệt Phase 0:** 2026-09-07.
-- **Phase 1:** Planning / Awaiting Approval — chưa bắt đầu implementation.
-- **Cập nhật:** 2026-09-07.
+- **Phase 1:** Prerequisite Verification — chưa bắt đầu implementation.
+- **Cập nhật:** 2026-09-08.
 - Repository chứa tài liệu thiết kế, cấu trúc thư mục và mẫu cấu hình. **Chưa có ứng dụng chạy được hoặc mã triển khai Phase 1.**
-- Technical foundation Phase 0 đã được chủ dự án phê duyệt; kế hoạch Phase 1 vẫn là **Proposed**, chờ phê duyệt riêng.
+- Technical foundation Phase 0 và kế hoạch Phase 1 đã được chủ dự án phê duyệt. Phê duyệt ngày 2026-09-08 chỉ cho phép prerequisite gate G1–G4; Desktop Shell implementation chờ phê duyệt riêng.
 - Kết quả kiểm tra và giới hạn môi trường: [báo cáo Phase 0](docs/phase-0-verification.md).
 
 ## Trải nghiệm hướng tới
@@ -60,14 +60,33 @@ Checkbox chỉ được đánh dấu sau khi artifact tồn tại và đã kiể
 - [x] Phase 0 approved by project owner.
 - Phase 0 approval date: **2026-09-07**.
 - Phase 0 approver: **Project owner**.
-- [ ] Phase 1 implementation plan approved by project owner.
+- [x] Phase 1 implementation plan approved by project owner.
+- Phase 1 approval date: **2026-09-08**.
+- [ ] Prerequisite gate G1–G4 passed.
+- [ ] Desktop Shell implementation approved by project owner.
+- [ ] Phase 1 implementation started.
+
+## Phase 1 — Prerequisite verification result
+
+Ngày kiểm tra: **2026-09-08**. Kết quả tổng thể: **NOT PASSED — STOP**.
+
+| Gate | Status | Kết quả |
+| --- | --- | --- |
+| G1 — npm | PASS | npm 10.8.2 và registry metadata hoạt động trong host context; lỗi sandbox EPERM đã được phân biệt. |
+| G2 — Native prerequisites | FAIL | C++ Build Tools chưa có installation phù hợp; Windows SDK thiếu Include/Lib. |
+| G3 — Compatibility | FAIL | Node 20.20.2 đã EOL, chưa đáp ứng baseline Node LTS còn hỗ trợ; metadata phiên bản đã được đối chiếu. |
+| G4 — Minimal native spike | BLOCKED | Chưa scaffold/build/run vì G2/G3 chưa đạt. |
+
+Bằng chứng, exit codes, version matrix và hướng xử lý: [Phase 1 prerequisite verification report](docs/phase-1-prerequisite-verification.md).
+
+Phase 1 vẫn ở **Prerequisite Verification**. Chưa đánh dấu prerequisite PASS hoặc implementation started; Desktop Shell implementation cần phê duyệt riêng kể cả sau khi gate được khắc phục và đạt.
 
 ## Roadmap
 
 | Phase | Mục tiêu                            | Trạng thái                               |
 | ----- | ------------------------------------- | ------------------------------------------ |
 | 0     | Foundation & Voice-First Architecture | ✅ Completed |
-| 1     | Desktop Assistant Shell               | Planning / Awaiting Approval |
+| 1     | Desktop Assistant Shell               | Prerequisite Verification |
 | 2     | Speech Pipeline                       | Not Started                                |
 | 3     | Voice AI Conversation                 | Not Started                                |
 | 4     | Agent + Tool Calling                  | Not Started                                |
@@ -85,7 +104,7 @@ Chi tiết phạm vi và tiêu chí kết thúc từng phase: [roadmap](docs/roa
 ## Bắt đầu đọc
 
 - [Yêu cầu sản phẩm](docs/requirements.md) và [kiến trúc](docs/architecture.md).
-- [Kế hoạch Phase 1 để duyệt](docs/phase-1-implementation-plan.md).
+- [Kế hoạch Phase 1 đã duyệt](docs/phase-1-implementation-plan.md).
 - [Hướng dẫn phát triển](docs/development-guide.md) và [bằng chứng kiểm tra](docs/phase-0-verification.md).
 
 Chưa có lệnh chạy ứng dụng, dependency manifest, lockfile hoặc cấu hình Compose thực thi. Chúng được bổ sung trong phase triển khai tương ứng sau khi được duyệt.
@@ -98,9 +117,10 @@ Chưa có lệnh chạy ứng dụng, dependency manifest, lockfile hoặc cấu
 | 2026-09-07 | Audit xác nhận commit ban đầu chỉ có README; các tuyên bố hoàn thành tài liệu và skeleton trước đây chưa có artifact đối chiếu. |
 | 2026-09-07 | Theo yêu cầu chủ dự án, chuyển sang Voice-First Desktop Assistant, đưa desktop và speech lên Phase 1–3, xây dựng lại hồ sơ Phase 0.    |
 | 2026-09-07 | Chủ dự án phê duyệt Phase 0 — Foundation & Voice-First Architecture. Phase 1 plan chưa được duyệt; chuyển sang planning và chờ review. |
+| 2026-09-08 | Chủ dự án duyệt Phase 1 implementation plan với architectural constraints bổ sung; chỉ cho phép prerequisite gate/minimal spike, chưa cho phép Desktop Shell implementation. |
 
 ## Quy tắc hoàn thành
 
 Một phase chỉ hoàn thành khi artifact đúng phạm vi đã có, validation phù hợp đã đạt, kết quả đã báo cáo và chủ dự án đã phê duyệt. Không tự đánh dấu phê duyệt dựa trên việc tài liệu đã được viết.
 
-**Bước tiếp theo:** trình toàn bộ [Phase 1 implementation plan](docs/phase-1-implementation-plan.md) để chủ dự án review. STOP và chờ phê duyệt riêng; chưa chạy prerequisite gate, minimal spike hoặc implement Phase 1.
+**Bước tiếp theo:** STOP và báo cáo G2/G3 FAIL, G4 BLOCKED. Cần khắc phục native toolchain và Node LTS trước khi chạy lại các gate liên quan; Desktop Shell implementation tiếp tục chờ phê duyệt riêng.

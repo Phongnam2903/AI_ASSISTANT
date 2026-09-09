@@ -6,7 +6,7 @@ Ngày: 2026-09-07. Phạm vi: repository tại `D:\PROJECT\AI_Assistant`, trong 
 
 **Phase 0 — ✅ Completed.** Technical foundation đã được Project owner phê duyệt ngày **2026-09-07**. Phê duyệt này xác nhận hồ sơ/nền tảng Phase 0, không xác nhận ứng dụng đã build/chạy hoặc phê duyệt implementation Phase 1.
 
-Current Phase: **Phase 1 — Desktop Assistant Shell (Planning / Awaiting Approval)**. Kế hoạch Phase 1 đang chờ review; chưa chạy prerequisite gate, tạo minimal spike hoặc code shell.
+Current Phase: **Phase 1 — Desktop Assistant Shell (Prerequisite Verification)**. Kế hoạch Phase 1 đã được duyệt ngày 2026-09-08; chỉ cho phép G1–G4. Đợt kiểm tra có G1 PASS, G2/G3 FAIL, G4 BLOCKED; xem [báo cáo Phase 1](phase-1-prerequisite-verification.md). Desktop Shell implementation chờ phê duyệt riêng.
 
 ## Audit đầu vào
 
@@ -76,7 +76,7 @@ Mermaid mới có nguồn diagram, chưa xác minh render. Chưa chạy build/ty
 Trước triển khai Phase 1: xác minh npm, C++ Build Tools/Windows SDK và Node baseline, sau đó build Tauri theo plan đã duyệt. Docker/uv không chặn việc xem xét shell plan. Không coi giới hạn sandbox là bằng chứng tool không hoạt động trên tài khoản chủ máy.
 
 - [x] Phase 0 approved by project owner.
-- [ ] Phase 1 implementation plan approved by project owner.
+- [x] Phase 1 implementation plan approved by project owner.
 - Phase 0 approver: **Project owner**.
 - Phase 0 approval date: **2026-09-07**.
-- Phase 1 approval date: **Chưa ghi nhận**.
+- Phase 1 approval date: **2026-09-08**.

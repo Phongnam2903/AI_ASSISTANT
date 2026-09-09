@@ -1,0 +1,103 @@
+{
+  "verification_date": "2026-09-08",
+  "records": [
+    {
+      "gate": "G1",
+      "id": "g1-npm-sandbox",
+      "cmd": "npm.cmd --version",
+      "result": {
+        "chunk_id": "ed2076",
+        "wall_time_seconds": 0,
+        "exit_code": 1,
+        "original_token_count": 342,
+        "output": "node:fs:2741\r\n      const stats = binding.lstat(baseLong, true, undefined, true /* throwIfNoEntry */);\r\n                            ^\r\n\r\nError: EPERM: operation not permitted, lstat 'C:\\Users\\xuxum'\r\n    at Object.realpathSync (node:fs:2741:29)\r\n    at toRealPath (node:internal/modules/helpers:58:13)\r\n    at Module._findPath (node:internal/modules/cjs/loader:740:22)\r\n    at resolveMainPath (node:internal/modules/run_main:34:23)\r\n    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:156:24)\r\n    at node:internal/main/run_main_module:28:49 {\r\n  errno: -4048,\r\n  code: 'EPERM',\r\n  syscall: 'lstat',\r\n  path: 'C:\\\\Users\\\\xuxum'\r\n}\r\n\r\nNode.js v20.20.2\r\nnode:fs:2741\r\n      const stats = binding.lstat(baseLong, true, undefined, true /* throwIfNoEntry */);\r\n                            ^\r\n\r\nError: EPERM: operation not permitted, lstat 'C:\\Users\\xuxum'\r\n    at Object.realpathSync (node:fs:2741:29)\r\n    at toRealPath (node:internal/modules/helpers:58:13)\r\n    at Module._findPath (node:internal/modules/cjs/loader:740:22)\r\n    at resolveMainPath (node:internal/modules/run_main:34:23)\r\n    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:156:24)\r\n    at node:internal/main/run_main_module:28:49 {\r\n  errno: -4048,\r\n  code: 'EPERM',\r\n  syscall: 'lstat',\r\n  path: 'C:\\\\Users\\\\xuxum'\r\n}\r\n\r\nNode.js v20.20.2\r\n"
+      }
+    },
+    {
+      "gate": "G3",
+      "id": "g3-node-sandbox",
+      "cmd": "node --version",
+      "result": {
+        "chunk_id": "ac88d7",
+        "wall_time_seconds": 1.5986672,
+        "exit_code": 0,
+        "original_token_count": 3,
+        "output": "v20.20.2\r\n"
+      }
+    },
+    {
+      "gate": "G2",
+      "id": "g2-native-probes-sandbox",
+      "cmd": "$ErrorActionPreference = 'Stop'\n$probe = Join-Path ${env:ProgramFiles(x86)} 'Microsoft Visual Studio\\Installer\\vswhere.exe'\nif (Test-Path -LiteralPath $probe) { & $probe -all -products '*' -format json -utf8; Write-Output ('VSWHERE_EXIT=' + $LASTEXITCODE); & $probe -all -products '*' -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationPath; Write-Output ('CPP_PROBE_EXIT=' + $LASTEXITCODE) } else { Write-Output 'VSWHERE_NOT_FOUND' }\n$kits = 'HKLM:\\SOFTWARE\\Microsoft\\Windows Kits\\Installed Roots'\nif (Test-Path -LiteralPath $kits) { Get-ItemProperty -LiteralPath $kits | Select-Object KitsRoot10 }\n$sdkRoot = Join-Path ${env:ProgramFiles(x86)} 'Windows Kits\\10'\nif (Test-Path -LiteralPath $sdkRoot) { Get-ChildItem -LiteralPath (Join-Path $sdkRoot 'Include') -ErrorAction SilentlyContinue | Select-Object Name; Get-ChildItem -LiteralPath (Join-Path $sdkRoot 'Lib') -ErrorAction SilentlyContinue | Select-Object Name } else { Write-Output 'WINDOWS_SDK_ROOT_NOT_FOUND' }\n$edgeRoots = @('HKLM:\\SOFTWARE\\WOW6432Node\\Microsoft\\EdgeUpdate\\Clients','HKLM:\\SOFTWARE\\Microsoft\\EdgeUpdate\\Clients','HKCU:\\SOFTWARE\\Microsoft\\EdgeUpdate\\Clients')\nforeach ($edgeRoot in $edgeRoots) { if (Test-Path -LiteralPath $edgeRoot) { Get-ChildItem -LiteralPath $edgeRoot | ForEach-Object { Get-ItemProperty -LiteralPath $_.PSPath } | Where-Object { $_.name -like '*WebView2*' } | Select-Object name,pv } }\nrustc -vV\nWrite-Output ('RUSTC_EXIT=' + $LASTEXITCODE)\ncargo --version\nWrite-Output ('CARGO_EXIT=' + $LASTEXITCODE)",
+      "result": {
+        "chunk_id": "f5f2b5",
+        "wall_time_seconds": 3.6374698,
+        "exit_code": 0,
+        "original_token_count": 801,
+        "output": "[\r\n  {\r\n    \"instanceId\": \"89e7f446\",\r\n    \"installDate\": \"2026-05-05T07:34:03Z\",\r\n    \"installationName\": \"VisualStudio/16.11.55+37206.5\",\r\n    \"installationPath\": \"C:\\\\Program Files (x86)\\\\Microsoft Visual Studio\\\\2019\\\\BuildTools\",\r\n    \"installationVersion\": \"16.11.37206.5\",\r\n    \"productId\": \"Microsoft.VisualStudio.Product.BuildTools\",\r\n    \"productPath\": \"C:\\\\Program Files (x86)\\\\Microsoft Visual Studio\\\\2019\\\\BuildTools\\\\Common7\\\\Tools\\\\LaunchDevCmd.bat\",\r\n    \"state\": 5,\r\n    \"isComplete\": false,\r\n    \"isLaunchable\": false,\r\n    \"isPrerelease\": false,\r\n    \"isRebootRequired\": false,\r\n    \"displayName\": \"Visual Studio Build Tools 2019\",\r\n    \"description\": \"The Visual Studio Build Tools allows you to build native and managed MSBuild-based applications without requiring the Visual Studio IDE. There are options to install the Visual C++ compilers and libraries, MFC, ATL, and C++/CLI support.\",\r\n    \"channelId\": \"VisualStudio.16.Release\",\r\n    \"channelUri\": \"https://aka.ms/vs/16/release/channel\",\r\n    \"enginePath\": \"C:\\\\Program Files (x86)\\\\Microsoft Visual Studio\\\\Installer\\\\resources\\\\app\\\\ServiceHub\\\\Services\\\\Microsoft.VisualStudio.Setup.Service\",\r\n    \"installedChannelId\": \"VisualStudio.16.Release\",\r\n    \"installedChannelUri\": \"https://aka.ms/vs/16/release/channel\",\r\n    \"releaseNotes\": \"https://docs.microsoft.com/en-us/visualstudio/releases/2019/release-notes-v16.11#16.11.55\",\r\n    \"resolvedInstallationPath\": \"C:\\\\Program Files (x86)\\\\Microsoft Visual Studio\\\\2019\\\\BuildTools\",\r\n    \"thirdPartyNotices\": \"https://go.microsoft.com/fwlink/?LinkId=660909\",\r\n    \"updateDate\": \"2026-05-05T07:34:03.7407936Z\",\r\n    \"catalog\": {\r\n      \"buildBranch\": \"d16.11\",\r\n      \"buildVersion\": \"16.11.37206.5\",\r\n      \"id\": \"VisualStudio/16.11.55+37206.5\",\r\n      \"localBuild\": \"build-lab\",\r\n      \"manifestName\": \"VisualStudio\",\r\n      \"manifestType\": \"installer\",\r\n      \"productDisplayVersion\": \"16.11.55\",\r\n      \"productLine\": \"Dev16\",\r\n      \"productLineVersion\": \"2019\",\r\n      \"productMilestone\": \"RTW\",\r\n      \"productMilestoneIsPreRelease\": \"False\",\r\n      \"productName\": \"Visual Studio\",\r\n      \"productPatchVersion\": \"55\",\r\n      \"productPreReleaseMilestoneSuffix\": \"1.0\",\r\n      \"productSemanticVersion\": \"16.11.55+37206.5\",\r\n      \"requiredEngineVersion\": \"2.11.72.18200\"\r\n    },\r\n    \"properties\": {\r\n      \"appLocalWPF\": \"false\",\r\n      \"campaignId\": \"\",\r\n      \"canceled\": \"1\",\r\n      \"channelManifestId\": \"VisualStudio.16.Release/16.11.55+37206.5\",\r\n      \"includeRecommended\": \"0\",\r\n      \"nickname\": \"\",\r\n      \"operationMode\": \"0\",\r\n      \"setupEngineFilePath\": \"C:\\\\Program Files (x86)\\\\Microsoft Visual Studio\\\\Installer\\\\setup.exe\"\r\n    }\r\n  }\r\n]\r\nVSWHERE_EXIT=0\r\nCPP_PROBE_EXIT=0\r\n\r\nrustc 1.97.1 (8bab26f4f 2026-07-14)\nbinary: rustc\ncommit-hash: 8bab26f4f68e0e26f0bb7960be334d5b520ea452\ncommit-date: 2026-07-14\nhost: x86_64-pc-windows-msvc\nrelease: 1.97.1\nLLVM version: 22.1.6\nname                                                  pv           \r\n----                                                  --           \r\nNgôn ngữ chung thời gian chạy WebView2 Microsoft Edge 152.0.4191.66\r\nRUSTC_EXIT=0\r\ncargo 1.97.1 (c980f4866 2026-06-30)\nCARGO_EXIT=0\r\n\r\n\r\n"
+      }
+    },
+    {
+      "gate": "G3",
+      "id": "g3-node-installations-sandbox",
+      "cmd": "Get-Command node,npm.cmd,rustc,cargo | Select-Object Name,Source\nGet-Item -LiteralPath 'C:\\nvm4w\\nodejs' -Force | Select-Object FullName,LinkType,Target\nGet-ChildItem -LiteralPath 'C:\\nvm4w' -Force | Select-Object Name,LinkType,Target",
+      "result": {
+        "chunk_id": "1f819d",
+        "wall_time_seconds": 1.9300515,
+        "exit_code": 0,
+        "original_token_count": 96,
+        "output": "\r\nName      Source                             \r\n----      ------                             \r\nnode.exe  C:\\nvm4w\\nodejs\\node.exe           \r\nnpm.cmd   C:\\nvm4w\\nodejs\\npm.cmd            \r\nrustc.exe C:\\Users\\xuxum\\.cargo\\bin\\rustc.exe\r\ncargo.exe C:\\Users\\xuxum\\.cargo\\bin\\cargo.exe\r\n                                             \r\nnodejs                                       \r\n\r\n\r\n"
+      }
+    },
+    {
+      "gate": "G1/G2/G3",
+      "id": "host-toolchain-confirmation",
+      "cmd": "$ErrorActionPreference = 'Stop'\nnpm.cmd --version\nWrite-Output ('NPM_VERSION_EXIT=' + $LASTEXITCODE)\nGet-Item -LiteralPath 'C:\\nvm4w\\nodejs' -Force | Select-Object FullName,LinkType,Target | ConvertTo-Json -Depth 3\n$nodeLink = Get-Item -LiteralPath 'C:\\nvm4w\\nodejs' -Force\nif ($nodeLink.Target) { Get-ChildItem -LiteralPath (Split-Path -Parent $nodeLink.Target[0]) -Directory | Select-Object Name | ConvertTo-Json }\n$probe = Join-Path ${env:ProgramFiles(x86)} 'Microsoft Visual Studio\\Installer\\vswhere.exe'\n& $probe -all -products '*' -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -format json -utf8\nWrite-Output ('CPP_PROBE_EXIT=' + $LASTEXITCODE)\n$sdkRoot = Join-Path ${env:ProgramFiles(x86)} 'Windows Kits\\10'\n[pscustomobject]@{SdkRoot=$sdkRoot;RootExists=(Test-Path -LiteralPath $sdkRoot);IncludeExists=(Test-Path -LiteralPath (Join-Path $sdkRoot 'Include'));LibExists=(Test-Path -LiteralPath (Join-Path $sdkRoot 'Lib'))} | ConvertTo-Json\nif (Test-Path -LiteralPath (Join-Path $sdkRoot 'Include')) { Get-ChildItem -LiteralPath (Join-Path $sdkRoot 'Include') -Directory | Select-Object Name | ConvertTo-Json }\nif (Test-Path -LiteralPath (Join-Path $sdkRoot 'Lib')) { Get-ChildItem -LiteralPath (Join-Path $sdkRoot 'Lib') -Directory | Select-Object Name | ConvertTo-Json }",
+      "permissions": "require_escalated",
+      "result": {
+        "chunk_id": "da8de0",
+        "wall_time_seconds": 1.9669233,
+        "exit_code": 0,
+        "original_token_count": 119,
+        "output": "10.8.2\nNPM_VERSION_EXIT=0\r\n{\r\n    \"FullName\":  \"C:\\\\nvm4w\\\\nodejs\",\r\n    \"LinkType\":  \"SymbolicLink\",\r\n    \"Target\":  [\r\n                   \"C:\\\\Users\\\\xuxum\\\\AppData\\\\Local\\\\nvm\\\\v20.20.2\"\r\n               ]\r\n}\r\n[\r\n    {\r\n        \"Name\":  \"v18.20.2\"\r\n    },\r\n    {\r\n        \"Name\":  \"v20.20.2\"\r\n    }\r\n]\r\n[]\r\nCPP_PROBE_EXIT=0\r\n{\r\n    \"SdkRoot\":  \"C:\\\\Program Files (x86)\\\\Windows Kits\\\\10\",\r\n    \"RootExists\":  true,\r\n    \"IncludeExists\":  false,\r\n    \"LibExists\":  false\r\n}\r\n"
+      }
+    },
+    {
+      "gate": "G1/G3",
+      "id": "pinned-package-metadata",
+      "cmd": "$ErrorActionPreference = 'Stop'\n$env:NPM_CONFIG_CACHE = Join-Path (Get-Location).Path '.cache\\npm'\n$packages = @('react@19.2.0', 'react-dom@19.2.0', 'typescript@5.9.3', 'vite@7.3.1', '@tauri-apps/cli@2.10.0')\n$records = @()\nforeach ($package in $packages) {\n  $metadata = & npm.cmd view $package version engines peerDependencies --json --registry=https://registry.npmjs.org\n  $packageExit = $LASTEXITCODE\n  $records += [pscustomobject]@{Package=$package;Command=('npm.cmd view ' + $package + ' version engines peerDependencies --json --registry=https://registry.npmjs.org');ExitCode=$packageExit;Output=($metadata -join \"`n\")}\n}\n$records | ConvertTo-Json -Depth 4\n$tauri = Invoke-RestMethod -Uri 'https://crates.io/api/v1/crates/tauri/2.10.0' -Headers @{'User-Agent'='PersonalAI-PrerequisiteVerification/1.0'} -TimeoutSec 30\n[pscustomobject]@{Package='tauri';Version=$tauri.version.num;RustVersion=$tauri.version.rust_version;Yanked=$tauri.version.yanked} | ConvertTo-Json\n$nodeReleases = Invoke-RestMethod -Uri 'https://nodejs.org/dist/index.json' -TimeoutSec 30\n$nodeCandidate = $nodeReleases | Where-Object { $_.version -like 'v24.*' -and $_.lts -and $_.date -le '2026-09-08' } | Select-Object -First 1\n$nodeCandidate | Select-Object version,date,lts,npm | ConvertTo-Json\nif ($records | Where-Object { $_.ExitCode -ne 0 }) { exit 1 }",
+      "permissions": "require_escalated",
+      "result": {
+        "chunk_id": "214af3",
+        "wall_time_seconds": 10.0103189,
+        "original_token_count": 52,
+        "output": "npm notice\nnpm notice New major version of npm available! 10.8.2 -> 12.0.2\nnpm notice Changelog: https://github.com/npm/cli/releases/tag/v12.0.2\nnpm notice To update run: npm install -g npm@12.0.2\nnpm notice\n[\r\n    {\r\n        \"Package\":  \"react@19.2.0\",\r\n        \"Command\":  \"npm.cmd view react@19.2.0 version engines peerDependencies --json --registry=https://registry.npmjs.org\",\r\n        \"ExitCode\":  0,\r\n        \"Output\":  \"{\\n  \\\"version\\\": \\\"19.2.0\\\",\\n  \\\"engines\\\": {\\n    \\\"node\\\": \\\"\\u003e=0.10.0\\\"\\n  }\\n}\"\r\n    },\r\n    {\r\n        \"Package\":  \"react-dom@19.2.0\",\r\n        \"Command\":  \"npm.cmd view react-dom@19.2.0 version engines peerDependencies --json --registry=https://registry.npmjs.org\",\r\n        \"ExitCode\":  0,\r\n        \"Output\":  \"{\\n  \\\"version\\\": \\\"19.2.0\\\",\\n  \\\"peerDependencies\\\": {\\n    \\\"react\\\": \\\"^19.2.0\\\"\\n  }\\n}\"\r\n    },\r\n    {\r\n        \"Package\":  \"typescript@5.9.3\",\r\n        \"Command\":  \"npm.cmd view typescript@5.9.3 version engines peerDependencies --json --registry=https://registry.npmjs.org\",\r\n        \"ExitCode\":  0,\r\n        \"Output\":  \"{\\n  \\\"version\\\": \\\"5.9.3\\\",\\n  \\\"engines\\\": {\\n    \\\"node\\\": \\\"\\u003e=14.17\\\"\\n  }\\n}\"\r\n    },\r\n    {\r\n        \"Package\":  \"vite@7.3.1\",\r\n        \"Command\":  \"npm.cmd view vite@7.3.1 version engines peerDependencies --json --registry=https://registry.npmjs.org\",\r\n        \"ExitCode\":  0,\r\n        \"Output\":  \"{\\n  \\\"version\\\": \\\"7.3.1\\\",\\n  \\\"engines\\\": {\\n    \\\"node\\\": \\\"^20.19.0 || \\u003e=22.12.0\\\"\\n  },\\n  \\\"peerDependencies\\\": {\\n    \\\"tsx\\\": \\\"^4.8.1\\\",\\n    \\\"jiti\\\": \\\"\\u003e=1.21.0\\\",\\n    \\\"less\\\": \\\"^4.0.0\\\",\\n    \\\"sass\\\": \\\"^1.70.0\\\",\\n    \\\"yaml\\\": \\\"^2.4.2\\\",\\n    \\\"stylus\\\": \\\"\\u003e=0.54.8\\\",\\n    \\\"terser\\\": \\\"^5.16.0\\\",\\n    \\\"sugarss\\\": \\\"^5.0.0\\\",\\n    \\\"@types/node\\\": \\\"^20.19.0 || \\u003e=22.12.0\\\",\\n    \\\"lightningcss\\\": \\\"^1.21.0\\\",\\n    \\\"sass-embedded\\\": \\\"^1.70.0\\\"\\n  }\\n}\"\r\n    },\r\n    {\r\n        \"Package\":  \"@tauri-apps/cli@2.10.0\",\r\n        \"Command\":  \"npm.cmd view @tauri-apps/cli@2.10.0 version engines peerDependencies --json --registry=https://registry.npmjs.org\",\r\n        \"ExitCode\":  0,\r\n        \"Output\":  \"{\\n  \\\"version\\\": \\\"2.10.0\\\",\\n  \\\"engines\\\": {\\n    \\\"node\\\": \\\"\\u003e= 10\\\"\\n  }\\n}\"\r\n    }\r\n]\r\n{\r\n    \"Package\":  \"tauri\",\r\n    \"Version\":  \"2.10.0\",\r\n    \"RustVersion\":  \"1.77.2\",\r\n    \"Yanked\":  false\r\n}\r\n{\r\n    \"version\":  \"v24.20.0\",\r\n    \"date\":  \"2026-08-26\",\r\n    \"lts\":  \"Krypton\",\r\n    \"npm\":  \"11.19.0\"\r\n}\r\n",
+        "exit_code": 0
+      }
+    },
+    {
+      "gate": "G2",
+      "id": "g2-native-assertion",
+      "cmd": "$ErrorActionPreference = 'Stop'\n$probe = Join-Path ${env:ProgramFiles(x86)} 'Microsoft Visual Studio\\Installer\\vswhere.exe'\n$cppInstallations = @(& $probe -all -products '*' -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationPath)\n$sdkRoot = Join-Path ${env:ProgramFiles(x86)} 'Windows Kits\\10'\n$sdkInclude = Test-Path -LiteralPath (Join-Path $sdkRoot 'Include')\n$sdkLib = Test-Path -LiteralPath (Join-Path $sdkRoot 'Lib')\n[pscustomobject]@{CppInstallations=$cppInstallations;WindowsSdkIncludeExists=$sdkInclude;WindowsSdkLibExists=$sdkLib;GateG2Pass=($cppInstallations.Count -gt 0 -and $sdkInclude -and $sdkLib)} | ConvertTo-Json -Depth 3\nif ($cppInstallations.Count -eq 0 -or -not $sdkInclude -or -not $sdkLib) { exit 1 }",
+      "result": {
+        "chunk_id": "b90ac4",
+        "wall_time_seconds": 0.4566435,
+        "exit_code": 1,
+        "original_token_count": 42,
+        "output": "{\r\n    \"CppInstallations\":  [\r\n\r\n                         ],\r\n    \"WindowsSdkIncludeExists\":  false,\r\n    \"WindowsSdkLibExists\":  false,\r\n    \"GateG2Pass\":  false\r\n}\r\n"
+      }
+    },
+    {
+      "gate": "G4",
+      "id": "g4-blocked-scope-check",
+      "cmd": "[pscustomobject]@{SpikeExists=(Test-Path -LiteralPath 'spikes/tauri-minimal');DesktopImplementationFiles=@(Get-ChildItem -LiteralPath 'apps/desktop' -Recurse -File | Where-Object { $_.Name -ne 'README.md' } | Select-Object -ExpandProperty FullName)} | ConvertTo-Json -Depth 3",
+      "result": {
+        "chunk_id": "e1ba8b",
+        "wall_time_seconds": 1.9234141999999999,
+        "exit_code": 0,
+        "original_token_count": 28,
+        "output": "{\r\n    \"SpikeExists\":  false,\r\n    \"DesktopImplementationFiles\":  [\r\n\r\n                                   ]\r\n}\r\n"
+      }
+    }
+  ]
+}

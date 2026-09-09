@@ -1,10 +1,13 @@
 # Phase 1 — Desktop Assistant Shell Implementation Plan
 
-Status: Proposed — Planning / Awaiting Approval.
+Status: Approved plan — Prerequisite Verification.
 
-Ngày cập nhật: 2026-09-07.
+Approval date: 2026-09-08. Approver: Project owner.
+Authorization: G1–G4 only; Desktop Shell implementation requires separate approval.
 
-Phase 0 — Foundation & Voice-First Architecture đã được chủ dự án phê duyệt ngày 2026-09-07. Kế hoạch Phase 1 chưa được phê duyệt; chưa chạy prerequisite gate, tạo minimal spike hoặc bắt đầu implementation.
+Ngày cập nhật: 2026-09-08.
+
+Phase 0 — Foundation & Voice-First Architecture đã được chủ dự án phê duyệt ngày 2026-09-07. Kế hoạch Phase 1 đã được phê duyệt ngày 2026-09-08. Chỉ prerequisite gate và minimal spike được phép thực hiện; Desktop Shell implementation chưa được cho phép.
 
 ## 1. Mục tiêu và kết quả bàn giao
 
@@ -12,7 +15,7 @@ Một Desktop Assistant Shell trên Windows x64, dùng Tauri 2 + React + TypeScr
 
 LISTENING / THINKING / SPEAKING chỉ là UI/state-machine states phục vụ shell. Chúng không biểu thị microphone, xử lý AI hoặc phát giọng nói thực tế.
 
-Frontend dự kiến dùng Vite và npm với lockfile. Phiên bản Node.js, Tauri, React, TypeScript, Vite và plugin sẽ được lựa chọn, kiểm tra tương thích tại prerequisite gate sau khi kế hoạch được duyệt.
+Frontend dự kiến dùng Vite và npm với lockfile. Phiên bản Node.js, Tauri, React, TypeScript, Vite và plugin được đối chiếu trong prerequisite gate; chưa khóa baseline đã build thành công vì gate hiện chưa đạt.
 
 ## 2. Ranh giới phê duyệt
 
@@ -20,16 +23,17 @@ Thứ tự bắt buộc:
 
 1. Chủ dự án phê duyệt riêng Phase 1 implementation plan.
 2. Thực hiện prerequisite gate G1–G4, bao gồm Tauri minimal spike.
-3. Chỉ khi toàn bộ gate đạt và có bằng chứng mới bắt đầu code shell/UI thật.
-4. Kiểm thử và trình kết quả Phase 1 để nghiệm thu.
+3. Sau G1–G4, báo cáo kết quả và STOP. Kể cả toàn bộ PASS vẫn phải chờ chủ dự án phê duyệt Desktop Shell implementation riêng.
+4. Chỉ bắt đầu code shell/UI thật khi gate PASS và có phê duyệt implementation mới.
+5. Sau implementation được cho phép, kiểm thử và trình kết quả Phase 1 để nghiệm thu.
 
 Minimal spike là thử nghiệm toolchain thuộc gate, không phải triển khai UI sản phẩm. Ngoại lệ tạo mã thử nghiệm này chỉ có hiệu lực sau khi kế hoạch Phase 1 được duyệt.
 
-Hiện tại phải dừng ở bước trình kế hoạch. Không chạy gate, cài dependencies, tạo spike hoặc implement shell dựa trên phê duyệt Phase 0.
+Phê duyệt ngày 2026-09-08 cho phép chạy G1–G4 và tạo minimal spike trong spikes/tauri-minimal/. Không được triển khai assistant shell trong đợt này.
 
 ## 3. Prerequisite gate trước khi code shell
 
-Trạng thái hiện tại: **NOT RUN — awaiting Phase 1 plan approval**.
+Trạng thái hiện tại: **EVALUATED — G1 PASS / G2 FAIL / G3 FAIL / G4 BLOCKED**. Xem [verification report](phase-1-prerequisite-verification.md).
 
 | Gate | Công việc cần thực hiện sau khi được duyệt | Bằng chứng PASS bắt buộc |
 | --- | --- | --- |
@@ -42,7 +46,7 @@ G4 chỉ cần cửa sổ mặc định với một nhãn kiểm tra. Chưa làm
 
 Gate PASS yêu cầu cả G1–G4 đạt. Nếu bất kỳ mục nào lỗi, giữ gate ở trạng thái FAIL/BLOCKED, ghi nguyên nhân và cách xử lý; không chuyển sang code shell và không báo đạt dựa trên mô phỏng.
 
-Bằng chứng sẽ được ghi tại `docs/phase-1-prerequisite-verification.md` khi gate thực sự được chạy. File báo cáo và thư mục spike chưa được tạo ở bước planning này. Giữ spike riêng để review; việc tái sử dụng cấu hình đã kiểm chứng cho app chính phải được ghi rõ.
+Bằng chứng đợt verification ngày 2026-09-08 được ghi tại `docs/phase-1-prerequisite-verification.md`; G4 vẫn BLOCKED, chưa tạo spike. Giữ spike riêng để review; việc tái sử dụng cấu hình đã kiểm chứng cho app chính phải được ghi rõ.
 
 Tham chiếu: [Tauri prerequisites](https://v2.tauri.app/start/prerequisites/) và [Node.js releases](https://nodejs.org/en/about/previous-releases). Yêu cầu dependency cụ thể phải được kiểm tra lại khi lựa chọn phiên bản.
 
@@ -52,18 +56,28 @@ Tham chiếu: [Tauri prerequisites](https://v2.tauri.app/start/prerequisites/) v
 | --- | --- |
 | Tauri desktop application | Windows x64; một instance; mở app lần hai focus cửa sổ hiện có. |
 | React + TypeScript UI | Components, state model và native adapter phục vụ desktop shell. |
-| Compact assistant overlay | Cửa sổ nhỏ, đề xuất khoảng 400 × 560 logical pixels, resize được, có vùng kéo và điều khiển rõ ràng. Always-on-top là tùy chọn cấu hình. |
+| Compact assistant overlay | Cửa sổ nhỏ, đề xuất khoảng 400 × 560 logical pixels, fixed-size hoặc constrained resize; có vùng kéo và điều khiển rõ ràng. Compact mode không trở thành application window thông thường. Always-on-top là tùy chọn cấu hình. |
 | Open / show / hide | Mở hoặc show đưa assistant lên trước; close chuyển sang hide; thao tác hide reset trạng thái demo. |
 | System tray | Show/Hide/Exit; hướng dẫn lần đầu rằng app vẫn ở tray sau khi đóng cửa sổ. Exit thoát và dọn tài nguyên do app sở hữu. |
 | Global shortcut nếu phù hợp | Đề xuất Ctrl+Shift+Space, có thể đổi/tắt. Xác minh khả năng đăng ký; nếu conflict hoặc không khả dụng, báo rõ và giữ đường mở bằng tray. |
 | Greeting khi mở assistant | Hiển thị chữ tiếng Việt theo giờ local; có thể tắt/đổi tên. Không phát âm thanh. |
 | Visual assistant states | IDLE, LISTENING, THINKING, SPEAKING, ERROR; nhãn chữ và chuyển trạng thái rõ ràng. |
 | Optional transcript area | Vùng thu gọn với empty state hoặc fixture minh họa có nhãn; không nhận dạng lời nói, chat API hoặc lưu lịch sử hội thoại. |
-| Optional full workspace shell | Chỉ bố cục/navigation/panel mở rộng của cùng ứng dụng; không thêm tính năng AI, editor hoặc integrations. Không bắt buộc để nghiệm thu baseline. |
+| Optional full workspace shell | Cửa sổ Full Workspace mới resizable đầy đủ; chỉ bố cục/navigation/panel mở rộng của cùng ứng dụng; không thêm tính năng AI, editor hoặc integrations. Không bắt buộc để nghiệm thu baseline. |
 | Basic desktop configuration | Tên hiển thị, greeting, shortcut, kích thước/vị trí cửa sổ, always-on-top và giảm chuyển động; chỉ lưu preference cục bộ không nhạy cảm. |
 | Tests phù hợp với shell | Logic/state/configuration tests, kiểm tra native lifecycle trên Windows, typecheck và build. |
 
 Lưu preference desktop không phải triển khai Personal Memory. Mở ứng dụng ở đây là mở chính assistant, không phải xây application launcher hoặc công cụ điều khiển ứng dụng khác.
+
+## Architectural constraints bắt buộc
+
+1. **Compact Assistant Overlay:** compact fixed-size hoặc constrained resize; Full Workspace là cửa sổ resizable đầy đủ. Giữ compact như một assistant overlay.
+2. **Development State Preview:** simulator IDLE/LISTENING/THINKING/SPEAKING/ERROR chỉ phục vụ development/test. Production mặc định không hiển thị simulator; ngoại lệ chỉ khi bật explicit developer/debug mode.
+3. **Desktop Settings Abstraction:** UI chỉ dùng interface kiểu SettingsRepository; không truy cập trực tiếp persistence implementation. Phase 1 chỉ lưu local non-sensitive preferences. Đây không phải Personal Memory.
+4. **Desktop Native Adapter:** React components không gọi Tauri native APIs, invoke hoặc plugin APIs rải rác. Một desktop/native adapter layer bao bọc show/hide window, exit, always-on-top, shortcut registration, native lifecycle và các native capability khác của Phase 1.
+5. **Greeting:** deterministic local greeting dựa trên giờ/config; không dùng LLM, Calendar, Email, Memory hoặc backend. Contextual/AI-generated greeting thuộc phase sau.
+
+Các abstraction và UX constraints trên là ràng buộc của Desktop Shell khi được phép implement. Minimal spike không triển khai SettingsRepository, native adapter của sản phẩm, greeting, assistant states, overlay, tray hoặc shortcut.
 
 ## 5. Những phần không được implement trong Phase 1
 
@@ -103,13 +117,13 @@ Khởi chạy hoặc show sau khi hidden chào một lần nếu bật greeting.
 | Hide | Đưa cửa sổ về hidden, reset demo và dọn timer/listener liên quan; tray còn hoạt động. |
 | Exit | Hủy shortcut, tray/listener/timer do app tạo và thoát sạch. |
 
-State-machine và kiểu dữ liệu của các trạng thái vẫn thuộc shell. Development harness dùng để review/test; bản release không tự giả vờ đang nghe, suy nghĩ bằng AI hoặc nói. Không tự khởi động cùng Windows ở Phase 1.
+State-machine và kiểu dữ liệu của các trạng thái vẫn thuộc shell. Development harness chỉ dùng cho development/test. Simulator không xuất hiện trong production UX mặc định; chỉ được hiển thị khi người dùng bật explicit developer/debug mode, luôn gắn nhãn Mô phỏng. Không tự khởi động cùng Windows ở Phase 1.
 
-## 7. Thứ tự triển khai sau khi gate đạt
+## 7. Thứ tự triển khai sau khi gate đạt VÀ được duyệt implementation riêng
 
 | Bước | Công việc | Artifact |
 | --- | --- | --- |
-| 1 | Scaffold app chính theo bộ dependency đã qua spike. | Manifest/lockfile, cấu hình Tauri/Vite/TypeScript, frontend và Rust native tại `apps/desktop/`. |
+| 1 | Sau implementation approval riêng, scaffold app chính theo bộ dependency đã qua spike. | Manifest/lockfile, cấu hình Tauri/Vite/TypeScript, frontend và Rust native tại `apps/desktop/`. |
 | 2 | Compact overlay, greeting, state model và development preview. | UI/state/native adapter tách trách nhiệm; fixture có nhãn. |
 | 3 | Open/show/hide, single instance, tray, shortcut nếu phù hợp. | Lifecycle và cleanup; fallback khi shortcut conflict. |
 | 4 | Basic configuration và phần shell tùy chọn nếu cần. | Preferences có defaults/version; transcript/workspace chỉ là UI. |
@@ -129,7 +143,7 @@ Tham chiếu native features: [system tray](https://v2.tauri.app/learn/system-tr
 | P1-02 | Greeting | Đúng các mốc giờ; bật/tắt có hiệu lực; focus lại không chào trùng. |
 | P1-03 | Overlay lifecycle | Open/show/hide và close-to-tray hoạt động; Exit không để lại process/listener của app. |
 | P1-04 | Shortcut nếu bật | Đăng ký/đổi/tắt và cleanup đúng; conflict có thông báo, tray vẫn dùng được. Nếu không hỗ trợ, ghi lý do và fallback. |
-| P1-05 | Visual states | Đủ 5 trạng thái, transition/reset hợp lệ; preview có nhãn; không gọi audio/AI hoặc giả trạng thái voice trong release. |
+| P1-05 | Visual states | Đủ 5 trạng thái, transition/reset hợp lệ; preview có nhãn; không gọi audio/AI; production UX mặc định không có simulator trừ explicit developer/debug mode. |
 | P1-06 | Desktop configuration | Preferences giữ sau restart; cấu hình thiếu/hỏng có default và không làm app không mở được. |
 | P1-07 | Accessibility và DPI | Bàn phím/focus/nhãn chữ/giảm chuyển động; kiểm tra 100% và 150% DPI. |
 | P1-08 | Transcript/workspace nếu làm | Layout và fixture rõ ràng; không kết nối hoặc lưu hội thoại thật. |
@@ -152,11 +166,15 @@ Tự động kiểm tra logic greeting, state transitions, settings fallback và
 - [x] Phase 0 approved by project owner.
 - Phase 0 approval date: **2026-09-07**.
 - Phase 0 approver: **Project owner**.
-- [ ] Phase 1 implementation plan approved by project owner.
-- Phase 1 approval date: **Chưa ghi nhận**.
+- [x] Phase 1 implementation plan approved by project owner.
+- Phase 1 approval date: **2026-09-08**.
+- Phase 1 approver: **Project owner**.
+- [ ] Desktop Shell implementation approved by project owner.
 - [ ] Prerequisite gate G1–G4 passed.
 - [ ] Phase 1 implementation started.
 
-**Current Phase: Phase 1 — Desktop Assistant Shell (Planning / Awaiting Approval).**
+**Current Phase: Phase 1 — Desktop Assistant Shell (Prerequisite Verification).**
 
-**STOP:** trình toàn bộ kế hoạch này để chủ dự án review và chờ phê duyệt Phase 1. Không tự đánh dấu approved, không chạy gate/minimal spike và không bắt đầu implementation trong lúc chờ.
+**STOP sau G1–G4:** nếu gate FAIL/BLOCKED, báo nguyên nhân; nếu tất cả PASS, cập nhật README và vẫn chờ implementation approval. Không tự đánh dấu Phase 1 implementation started.
+
+PHASE 1 PREREQUISITE GATE COMPLETE — WAITING FOR IMPLEMENTATION APPROVAL
