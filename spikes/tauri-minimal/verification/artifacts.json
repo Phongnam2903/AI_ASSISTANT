@@ -1,0 +1,42 @@
+{
+  "package.json": {
+    "sha256": "c206adba81a3de2856837a86cdbb762bede3eef0602d6df1b593a9be4a19bdfa",
+    "bytes": 785
+  },
+  "package-lock.json": {
+    "sha256": "db17c2d0f2bea8ab019a655c8379865ab24525ce73a602fbf114fa7354cefe45",
+    "bytes": 70274
+  },
+  "src-tauri/Cargo.toml": {
+    "sha256": "5f4f44a372d8ba5123c8a8a1c95719bf581185ff49295d69316ae580843cac95",
+    "bytes": 307
+  },
+  "src-tauri/Cargo.lock": {
+    "sha256": "ad6e7f82de224d1ded7690856ed3ccda8f07ebbb12f646159f2da2f296e6054d",
+    "bytes": 124125
+  },
+  "src-tauri/tauri.conf.json": {
+    "sha256": "6ef69e95a1e4c6d9715e56e96cecf09fabf257e7c7028f1db59a3e598ef5ec0a",
+    "bytes": 677
+  },
+  "src/main.tsx": {
+    "sha256": "7ae7cd5fee5c002dc59725b48aaea8618da0929ff5880ac6686abdb5a0c1902b",
+    "bytes": 145
+  },
+  "src-tauri/src/main.rs": {
+    "sha256": "e8a2e09c11d6d096e9f8354922667b0a6160dff610933d35955d956deaf12112",
+    "bytes": 216
+  },
+  "src-tauri/target/release/tauri-minimal-spike.exe": {
+    "sha256": "8692cb9c0f5ff619d7d4c62edf24e872cf400c757288c4e26bc32c304c62979d",
+    "bytes": 8178176
+  },
+  "verification/native-window.png": {
+    "sha256": "e1439ae002bb3b12927aa5aaf9cd1c41b7a260fe568514946195f9b19af1fba4",
+    "bytes": 10079
+  },
+  "verification/native-runtime.json": {
+    "sha256": "9626051d0981ca18707652caa6bb9101bb754f7bb0414eec2600aea962e4fe8e",
+    "bytes": 1319
+  }
+}

@@ -1,11 +1,11 @@
 # Phase 1 — Desktop Assistant Shell Implementation Plan
 
-Status: Approved plan — Prerequisite Verification.
+Status: Approved plan — Ready for Implementation Approval.
 
 Approval date: 2026-09-08. Approver: Project owner.
 Authorization: G1–G4 only; Desktop Shell implementation requires separate approval.
 
-Ngày cập nhật: 2026-09-08.
+Ngày cập nhật: 2026-09-09.
 
 Phase 0 — Foundation & Voice-First Architecture đã được chủ dự án phê duyệt ngày 2026-09-07. Kế hoạch Phase 1 đã được phê duyệt ngày 2026-09-08. Chỉ prerequisite gate và minimal spike được phép thực hiện; Desktop Shell implementation chưa được cho phép.
 
@@ -15,25 +15,25 @@ Một Desktop Assistant Shell trên Windows x64, dùng Tauri 2 + React + TypeScr
 
 LISTENING / THINKING / SPEAKING chỉ là UI/state-machine states phục vụ shell. Chúng không biểu thị microphone, xử lý AI hoặc phát giọng nói thực tế.
 
-Frontend dự kiến dùng Vite và npm với lockfile. Phiên bản Node.js, Tauri, React, TypeScript, Vite và plugin được đối chiếu trong prerequisite gate; chưa khóa baseline đã build thành công vì gate hiện chưa đạt.
+Frontend dự kiến dùng Vite và npm với lockfile. Phiên bản Node.js, Tauri, React, TypeScript, Vite và plugin được đối chiếu trong prerequisite gate; baseline của minimal spike đã được pin/lock và build/chạy native thành công; xem verification report trước khi chọn dependency cho shell.
 
 ## 2. Ranh giới phê duyệt
 
 Thứ tự bắt buộc:
 
 1. Chủ dự án phê duyệt riêng Phase 1 implementation plan.
-2. Thực hiện prerequisite gate G1–G4, bao gồm Tauri minimal spike.
+2. Xác minh G1–G3; chỉ khi cả ba PASS mới được tạo/chạy Tauri minimal spike thuộc G4.
 3. Sau G1–G4, báo cáo kết quả và STOP. Kể cả toàn bộ PASS vẫn phải chờ chủ dự án phê duyệt Desktop Shell implementation riêng.
 4. Chỉ bắt đầu code shell/UI thật khi gate PASS và có phê duyệt implementation mới.
 5. Sau implementation được cho phép, kiểm thử và trình kết quả Phase 1 để nghiệm thu.
 
-Minimal spike là thử nghiệm toolchain thuộc gate, không phải triển khai UI sản phẩm. Ngoại lệ tạo mã thử nghiệm này chỉ có hiệu lực sau khi kế hoạch Phase 1 được duyệt.
+Minimal spike là thử nghiệm toolchain thuộc gate, không phải triển khai UI sản phẩm. Ngoại lệ tạo mã thử nghiệm này chỉ có hiệu lực sau khi kế hoạch Phase 1 được duyệt và G1–G3 đều PASS.
 
-Phê duyệt ngày 2026-09-08 cho phép chạy G1–G4 và tạo minimal spike trong spikes/tauri-minimal/. Không được triển khai assistant shell trong đợt này.
+Phê duyệt ngày 2026-09-08 cho phép prerequisite gate. Yêu cầu remediation ngày 2026-09-09 chỉ cho phép tạo/chạy minimal spike tại `spikes/tauri-minimal/` khi G1–G3 đều PASS; không copy/move spike vào `apps/desktop/`. Không được triển khai assistant shell trong đợt này.
 
 ## 3. Prerequisite gate trước khi code shell
 
-Trạng thái hiện tại: **EVALUATED — G1 PASS / G2 FAIL / G3 FAIL / G4 BLOCKED**. Xem [verification report](phase-1-prerequisite-verification.md).
+Trạng thái hiện tại (2026-09-09): **G1–G4 PASS — Ready for Implementation Approval**. Minimal spike đã install/build/chạy cửa sổ native và đóng sạch. Xem [báo cáo G2/G4](phase-1-prerequisite-verification.md#native-toolchain-re-verification-and-g4-spike--2026-09-09). Desktop Shell implementation chưa được duyệt.
 
 | Gate | Công việc cần thực hiện sau khi được duyệt | Bằng chứng PASS bắt buộc |
 | --- | --- | --- |
@@ -46,7 +46,7 @@ G4 chỉ cần cửa sổ mặc định với một nhãn kiểm tra. Chưa làm
 
 Gate PASS yêu cầu cả G1–G4 đạt. Nếu bất kỳ mục nào lỗi, giữ gate ở trạng thái FAIL/BLOCKED, ghi nguyên nhân và cách xử lý; không chuyển sang code shell và không báo đạt dựa trên mô phỏng.
 
-Bằng chứng đợt verification ngày 2026-09-08 được ghi tại `docs/phase-1-prerequisite-verification.md`; G4 vẫn BLOCKED, chưa tạo spike. Giữ spike riêng để review; việc tái sử dụng cấu hình đã kiểm chứng cho app chính phải được ghi rõ.
+Bằng chứng FAIL ngày 2026-09-08 và BLOCKED trong đợt remediation đầu ngày 2026-09-09 được giữ trong report. Sau chủ máy hoàn tất native installation, G2 và G4 đã PASS; spike nằm riêng tại `spikes/tauri-minimal/`, không copy/move sang app chính. Phê duyệt triển khai shell vẫn là bước riêng.
 
 Tham chiếu: [Tauri prerequisites](https://v2.tauri.app/start/prerequisites/) và [Node.js releases](https://nodejs.org/en/about/previous-releases). Yêu cầu dependency cụ thể phải được kiểm tra lại khi lựa chọn phiên bản.
 
@@ -170,11 +170,11 @@ Tự động kiểm tra logic greeting, state transitions, settings fallback và
 - Phase 1 approval date: **2026-09-08**.
 - Phase 1 approver: **Project owner**.
 - [ ] Desktop Shell implementation approved by project owner.
-- [ ] Prerequisite gate G1–G4 passed.
+- [x] Prerequisite gate G1–G4 passed.
 - [ ] Phase 1 implementation started.
 
-**Current Phase: Phase 1 — Desktop Assistant Shell (Prerequisite Verification).**
+**Current Phase: Phase 1 — Desktop Assistant Shell (Ready for Implementation Approval).**
 
 **STOP sau G1–G4:** nếu gate FAIL/BLOCKED, báo nguyên nhân; nếu tất cả PASS, cập nhật README và vẫn chờ implementation approval. Không tự đánh dấu Phase 1 implementation started.
 
-PHASE 1 PREREQUISITE GATE COMPLETE — WAITING FOR IMPLEMENTATION APPROVAL
+PHASE 1 PREREQUISITE GATE PASSED — WAITING FOR IMPLEMENTATION APPROVAL

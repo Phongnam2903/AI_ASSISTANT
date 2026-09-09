@@ -1,6 +1,6 @@
 # Roadmap Voice-First
 
-Cập nhật: 2026-09-08. Phase 0: ✅ Completed — được chủ dự án phê duyệt ngày 2026-09-07; Phase 1: Prerequisite Verification, chưa triển khai; Phase 2–12: Not Started. Mỗi phase cần bằng chứng kiểm tra và chủ dự án phê duyệt trước khi đánh hoàn thành.
+Cập nhật: 2026-09-09. Phase 0: ✅ Completed — được chủ dự án phê duyệt ngày 2026-09-07; Phase 1: 🟡 Ready for Implementation Approval, chưa triển khai; Phase 2–12: Not Started. Mỗi phase cần bằng chứng kiểm tra và chủ dự án phê duyệt trước khi đánh hoàn thành.
 
 ## Version 1 — Từ presence đến trợ lý làm việc
 
@@ -44,3 +44,7 @@ Phase 1 plan đã được duyệt ngày 2026-09-08 cho G1–G4 và minimal spik
 - Phase 1 approval date: **2026-09-08**.
 
 Gate evaluation ngày 2026-09-08: G1 PASS, G2 FAIL, G3 FAIL, G4 BLOCKED. Xem [báo cáo prerequisite](phase-1-prerequisite-verification.md). STOP; chưa triển khai Desktop Shell.
+
+Remediation ngày 2026-09-09: **G1 PASS, G2 BLOCKED, G3 PASS, G4 BLOCKED / NOT RUN**. Node 24.20.0/npm 11.19.0 và compatibility metadata đã xác minh; C++ compiler/linker và Windows SDK còn thiếu. Xem [bằng chứng mới](phase-1-prerequisite-verification.md#prerequisite-remediation--2026-09-09). Chỉ tạo/chạy spike khi G1–G3 đều PASS; không copy/move spike vào app chính. Desktop Shell implementation chưa bắt đầu.
+
+Sau remediation native tiếp theo ngày 2026-09-09: **G1–G4 PASS**. Minimal spike đã build release, mở cửa sổ native với nhãn và đóng sạch (exit 0). Xem [kết quả G2/G4](phase-1-prerequisite-verification.md#native-toolchain-re-verification-and-g4-spike--2026-09-09). Chờ implementation approval riêng; chưa bắt đầu `apps/desktop/`.

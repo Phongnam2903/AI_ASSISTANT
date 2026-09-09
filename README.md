@@ -6,12 +6,12 @@ Thứ tự ưu tiên tương tác: **Voice → Text / Transcript → Vision (tư
 
 ## Trạng thái thực tế
 
-- **Current Phase:** Phase 1 — Desktop Assistant Shell (Prerequisite Verification).
+- **Current Phase:** Phase 1 — Desktop Assistant Shell (Ready for Implementation Approval).
 - **Phase 0:** ✅ Completed — Foundation & Voice-First Architecture.
 - **Ngày duyệt Phase 0:** 2026-09-07.
-- **Phase 1:** Prerequisite Verification — chưa bắt đầu implementation.
-- **Cập nhật:** 2026-09-08.
-- Repository chứa tài liệu thiết kế, cấu trúc thư mục và mẫu cấu hình. **Chưa có ứng dụng chạy được hoặc mã triển khai Phase 1.**
+- **Phase 1 Status:** 🟡 Ready for Implementation Approval.
+- **Cập nhật:** 2026-09-09.
+- Repository chứa tài liệu thiết kế, skeleton và **Tauri minimal spike đã build/chạy native trên Windows** tại `spikes/tauri-minimal/`. **Desktop Shell implementation chưa bắt đầu; `apps/desktop/` vẫn chỉ là skeleton.**
 - Technical foundation Phase 0 và kế hoạch Phase 1 đã được chủ dự án phê duyệt. Phê duyệt ngày 2026-09-08 chỉ cho phép prerequisite gate G1–G4; Desktop Shell implementation chờ phê duyệt riêng.
 - Kết quả kiểm tra và giới hạn môi trường: [báo cáo Phase 0](docs/phase-0-verification.md).
 
@@ -62,31 +62,33 @@ Checkbox chỉ được đánh dấu sau khi artifact tồn tại và đã kiể
 - Phase 0 approver: **Project owner**.
 - [x] Phase 1 implementation plan approved by project owner.
 - Phase 1 approval date: **2026-09-08**.
-- [ ] Prerequisite gate G1–G4 passed.
+- [x] Prerequisite gate G1–G4 passed.
 - [ ] Desktop Shell implementation approved by project owner.
 - [ ] Phase 1 implementation started.
 
 ## Phase 1 — Prerequisite verification result
 
-Ngày kiểm tra: **2026-09-08**. Kết quả tổng thể: **NOT PASSED — STOP**.
+Ngày xác minh hoàn tất: **2026-09-09**. Kết quả tổng thể: **G1–G4 PASS**.
 
 | Gate | Status | Kết quả |
 | --- | --- | --- |
-| G1 — npm | PASS | npm 10.8.2 và registry metadata hoạt động trong host context; lỗi sandbox EPERM đã được phân biệt. |
-| G2 — Native prerequisites | FAIL | C++ Build Tools chưa có installation phù hợp; Windows SDK thiếu Include/Lib. |
-| G3 — Compatibility | FAIL | Node 20.20.2 đã EOL, chưa đáp ứng baseline Node LTS còn hỗ trợ; metadata phiên bản đã được đối chiếu. |
-| G4 — Minimal native spike | BLOCKED | Chưa scaffold/build/run vì G2/G3 chưa đạt. |
+| G1 — npm | PASS | Node 24.20.0/npm 11.19.0; cài dependency từ npm lockfile thành công. |
+| G2 — Native prerequisites | PASS | Build Tools/workload C++ hoàn tất; MSVC 14.29.30133; SDK 10.0.19041.0 và 10.0.22621.0 đủ headers/libs. Build dùng SDK 10.0.22621.0. |
+| G3 — Compatibility | PASS | React/ReactDOM 19.2.8, TypeScript 5.9.3, Vite 7.3.1; Tauri CLI/crate 2.10.0, API 2.10.1, native runtimes khóa 2.10.0. Bộ dependency đã install/build/run thành công. |
+| G4 — Minimal native spike | PASS | Frontend build → Rust/Tauri release build → tạo và chạy .exe → cửa sổ native hiển thị nhãn → đóng bình thường, exit 0, không còn child processes đã quan sát. |
 
-Bằng chứng, exit codes, version matrix và hướng xử lý: [Phase 1 prerequisite verification report](docs/phase-1-prerequisite-verification.md).
+Spike riêng: [hướng dẫn chạy và phiên bản khóa](spikes/tauri-minimal/README.md). Bằng chứng: [báo cáo G2/G4](docs/phase-1-prerequisite-verification.md#native-toolchain-re-verification-and-g4-spike--2026-09-09), [ảnh cửa sổ native](spikes/tauri-minimal/verification/native-window.png), [runtime record](spikes/tauri-minimal/verification/native-runtime.json).
 
-Phase 1 vẫn ở **Prerequisite Verification**. Chưa đánh dấu prerequisite PASS hoặc implementation started; Desktop Shell implementation cần phê duyệt riêng kể cả sau khi gate được khắc phục và đạt.
+Lịch sử FAIL/BLOCKED và các lần thử lỗi đều được giữ trong báo cáo/evidence. G4 đã khắc phục API 2.10.0 bị npm đánh dấu broken release và lỗi compile với runtime Tauri 2.11.x bằng phiên bản cụ thể trong lockfiles.
+
+Phase 1 ở **🟡 Ready for Implementation Approval**. Prerequisite gate đã đạt; **Desktop Shell implementation vẫn cần phê duyệt riêng**. Spike chỉ có một native window và nhãn “Tauri prerequisite spike”; không copy/move vào `apps/desktop/`.
 
 ## Roadmap
 
 | Phase | Mục tiêu                            | Trạng thái                               |
 | ----- | ------------------------------------- | ------------------------------------------ |
 | 0     | Foundation & Voice-First Architecture | ✅ Completed |
-| 1     | Desktop Assistant Shell               | Prerequisite Verification |
+| 1     | Desktop Assistant Shell               | 🟡 Ready for Implementation Approval |
 | 2     | Speech Pipeline                       | Not Started                                |
 | 3     | Voice AI Conversation                 | Not Started                                |
 | 4     | Agent + Tool Calling                  | Not Started                                |
@@ -107,7 +109,7 @@ Chi tiết phạm vi và tiêu chí kết thúc từng phase: [roadmap](docs/roa
 - [Kế hoạch Phase 1 đã duyệt](docs/phase-1-implementation-plan.md).
 - [Hướng dẫn phát triển](docs/development-guide.md) và [bằng chứng kiểm tra](docs/phase-0-verification.md).
 
-Chưa có lệnh chạy ứng dụng, dependency manifest, lockfile hoặc cấu hình Compose thực thi. Chúng được bổ sung trong phase triển khai tương ứng sau khi được duyệt.
+Lệnh build/chạy cùng manifests và lockfiles chỉ có trong [minimal spike](spikes/tauri-minimal/README.md). Chưa có Desktop Shell, backend hoặc cấu hình Compose thực thi; các phần này được triển khai ở phase tương ứng sau khi được duyệt.
 
 ## Decision log
 
@@ -118,9 +120,11 @@ Chưa có lệnh chạy ứng dụng, dependency manifest, lockfile hoặc cấu
 | 2026-09-07 | Theo yêu cầu chủ dự án, chuyển sang Voice-First Desktop Assistant, đưa desktop và speech lên Phase 1–3, xây dựng lại hồ sơ Phase 0.    |
 | 2026-09-07 | Chủ dự án phê duyệt Phase 0 — Foundation & Voice-First Architecture. Phase 1 plan chưa được duyệt; chuyển sang planning và chờ review. |
 | 2026-09-08 | Chủ dự án duyệt Phase 1 implementation plan với architectural constraints bổ sung; chỉ cho phép prerequisite gate/minimal spike, chưa cho phép Desktop Shell implementation. |
+| 2026-09-09 | Re-verify sau khi chủ máy nâng Node: G1 PASS, G2 BLOCKED, G3 PASS, G4 BLOCKED / NOT RUN. Giữ lịch sử FAIL; cần chủ máy hoàn tất C++ Build Tools/Windows SDK; chưa tạo spike hoặc triển khai shell. |
+| 2026-09-09 | Sau remediation native của chủ máy: G2 PASS; G4 minimal spike đã install/build/chạy cửa sổ native và đóng sạch. G1–G4 PASS; chuyển Ready for Implementation Approval, chưa bắt đầu Desktop Shell. |
 
 ## Quy tắc hoàn thành
 
 Một phase chỉ hoàn thành khi artifact đúng phạm vi đã có, validation phù hợp đã đạt, kết quả đã báo cáo và chủ dự án đã phê duyệt. Không tự đánh dấu phê duyệt dựa trên việc tài liệu đã được viết.
 
-**Bước tiếp theo:** STOP và báo cáo G2/G3 FAIL, G4 BLOCKED. Cần khắc phục native toolchain và Node LTS trước khi chạy lại các gate liên quan; Desktop Shell implementation tiếp tục chờ phê duyệt riêng.
+**Bước tiếp theo:** STOP — chờ chủ dự án phê duyệt Desktop Shell implementation riêng. Giữ `[ ] Phase 1 implementation started`; prerequisite PASS không phải implementation approval.

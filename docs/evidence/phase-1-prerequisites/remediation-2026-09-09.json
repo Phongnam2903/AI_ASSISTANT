@@ -1,0 +1,153 @@
+{
+  "verification_date": "2026-09-09",
+  "timezone": "Asia/Bangkok",
+  "scope": "G2 remediation/verification, G1/G3 re-verification; G4 conditional on G1-G3 PASS",
+  "statuses": {
+    "G1": "PASS",
+    "G2": "BLOCKED",
+    "G3": "PASS (declared version/engine/peer compatibility)",
+    "G4": "BLOCKED / NOT RUN"
+  },
+  "notes": [
+    "Original 2026-09-08 commands.json is retained unchanged.",
+    "native-installation-probe has an explicitly disclosed collection bug and omitted unrelated error paths; it is not used for gating. native-host-confirmation is the corrected host evidence.",
+    "No system installation/repair, production dependencies, spike scaffold/build/run, Desktop Shell implementation or Git commit/push was performed.",
+    "Process wrapper exit 0 means collection completed; inventory absence and missing SDK components still block G2.",
+    "HTTP cmdlets and filesystem/registry cmdlets do not have separate executable exit codes. Their returned values/errors and enclosing process results are recorded.",
+    "G3 PASS covers checked runtime and declared metadata compatibility; dependency resolution, transitive locks and native build/runtime remain unverified."
+  ],
+  "official_sources_reviewed": [
+    {
+      "url": "https://v2.tauri.app/start/prerequisites/",
+      "purpose": "Windows C++ Build Tools, SDK, MSVC Rust, WebView2 requirements"
+    },
+    {
+      "url": "https://learn.microsoft.com/en-us/visualstudio/install/modify-visual-studio?view=visualstudio",
+      "purpose": "Owner Installer Modify workflow and permissions"
+    },
+    {
+      "url": "https://nodejs.org/en/about/previous-releases",
+      "purpose": "Node 24 supported LTS lifecycle"
+    }
+  ],
+  "records": [
+    {
+      "gate": "G2",
+      "id": "native-installation-probe",
+      "command": "$ErrorActionPreference = 'Stop'\n$vswherePath = Join-Path ${env:ProgramFiles(x86)} 'Microsoft Visual Studio\\Installer\\vswhere.exe'\n$records = [ordered]@{VswhereExists=(Test-Path -LiteralPath $vswherePath)}\nif ($records.VswhereExists) {\n  $output = & $vswherePath -products '*' -format json -utf8\n  $records.InventoryExit = $LASTEXITCODE\n  $records.Inventory = (($output -join \"`n\") | ConvertFrom-Json)\n  $output = & $vswherePath -products '*' -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationPath\n  $records.CppProbeExit = $LASTEXITCODE\n  $records.CppInstallations = @($output)\n  $output = & $vswherePath -products '*' -requires Microsoft.Component.MSBuild -property installationPath\n  $records.MsbuildProbeExit = $LASTEXITCODE\n  $records.MsbuildInstallations = @($output)\n  $output = & $vswherePath -all -products '*' -format json -utf8\n  $records.AllInventoryExit = $LASTEXITCODE\n  $records.AllInstallations = @(($output -join \"`n\") | ConvertFrom-Json | Select-Object installationPath,installationVersion,isComplete,isLaunchable,isRebootRequired)\n}\n$sdkRoot = Join-Path ${env:ProgramFiles(x86)} 'Windows Kits\\10'\n$includeRoot = Join-Path $sdkRoot 'Include'\n$libRoot = Join-Path $sdkRoot 'Lib'\n$records.SdkRoot = $sdkRoot\n$records.IncludeExists = Test-Path -LiteralPath $includeRoot\n$records.LibExists = Test-Path -LiteralPath $libRoot\n$records.IncludeVersions = @()\n$records.LibVersions = @()\n$records.SdkChecks = @()\nif ($records.IncludeExists) {\n  $records.IncludeVersions = @(Get-ChildItem -LiteralPath $includeRoot -Directory | Select-Object -ExpandProperty Name)\n  foreach ($sdkVersion in $records.IncludeVersions) {\n    $checks = [ordered]@{Version=$sdkVersion}\n    foreach ($relative in @('Include\\VERSION\\um','Include\\VERSION\\shared','Include\\VERSION\\ucrt','Lib\\VERSION\\um','Lib\\VERSION\\ucrt','Include\\VERSION\\um\\Windows.h','Include\\VERSION\\shared\\sdkddkver.h','Include\\VERSION\\ucrt\\stdio.h','Lib\\VERSION\\um\\x64\\kernel32.lib','Lib\\VERSION\\ucrt\\x64\\ucrt.lib')) { $part = $relative.Replace('VERSION',$sdkVersion); $checks[$part] = Test-Path -LiteralPath (Join-Path $sdkRoot $part) }\n    $records.SdkChecks += [pscustomobject]$checks\n  }\n}\nif ($records.LibExists) { $records.LibVersions = @(Get-ChildItem -LiteralPath $libRoot -Directory | Select-Object -ExpandProperty Name) }\n$scanRoots = @((Join-Path $env:ProgramFiles 'Microsoft Visual Studio'),(Join-Path ${env:ProgramFiles(x86)} 'Microsoft Visual Studio')) | Where-Object { Test-Path -LiteralPath $_ }\n$records.ScannedRoots = @($scanRoots)\n$records.NativeFiles = @()\nif ($scanRoots.Count -gt 0) { $output = & rg --files --hidden --no-ignore --iglob cl.exe --iglob link.exe --iglob MSBuild.exe --iglob VsDevCmd.bat @scanRoots; $records.NativeScanExit = $LASTEXITCODE; $records.NativeFiles = @($output) }\n$records | ConvertTo-Json -Depth 8\nexit 0",
+      "context": "sandbox",
+      "result": {
+        "chunk_id": "0fe50b",
+        "wall_time_seconds": 1.4025766,
+        "exit_code": 0,
+        "original_token_count": 1228,
+        "output": "[Initial rg error output omitted: erroneous singleton-array splatting; no results used.]\n{\r\n    \"VswhereExists\":  true,\r\n    \"InventoryExit\":  0,\r\n    \"Inventory\":  {\r\n                      \"value\":  [\r\n\r\n                                ],\r\n                      \"Count\":  0\r\n                  },\r\n    \"CppProbeExit\":  0,\r\n    \"CppInstallations\":  [\r\n\r\n                         ],\r\n    \"MsbuildProbeExit\":  0,\r\n    \"MsbuildInstallations\":  [\r\n\r\n                             ],\r\n    \"AllInventoryExit\":  0,\r\n    \"AllInstallations\":  [\r\n                             {\r\n                                 \"installationPath\":  null,\r\n                                 \"installationVersion\":  null,\r\n                                 \"isComplete\":  null,\r\n                                 \"isLaunchable\":  null,\r\n                                 \"isRebootRequired\":  null\r\n                             }\r\n                         ],\r\n    \"SdkRoot\":  \"C:\\\\Program Files (x86)\\\\Windows Kits\\\\10\",\r\n    \"IncludeExists\":  false,\r\n    \"LibExists\":  false,\r\n    \"IncludeVersions\":  [\r\n\r\n                        ],\r\n    \"LibVersions\":  [\r\n\r\n                    ],\r\n    \"SdkChecks\":  [\r\n\r\n                  ],\r\n    \"ScannedRoots\":  [\r\n                         \"C:\\\\Program Files (x86)\\\\Microsoft Visual Studio\"\r\n                     ],\r\n    \"NativeFiles\":  [\r\n\r\n                    ],\r\n    \"NativeScanExit\":  2\r\n}\r\n"
+      },
+      "collection_issue": "Initial bounded-scan attempt had a PowerShell singleton-array argument error (rg exit 2). Scan output is not used as native-toolchain evidence; superseded by native-host-confirmation."
+    },
+    {
+      "gate": "G2",
+      "id": "rust-msvc-probe",
+      "command": "rustup show\nWrite-Output ('RUSTUP_SHOW_EXIT=' + $LASTEXITCODE)\nrustup target list --installed\nWrite-Output ('RUST_TARGETS_EXIT=' + $LASTEXITCODE)\nrustc -vV\nWrite-Output ('RUSTC_EXIT=' + $LASTEXITCODE)\ncargo --version\nWrite-Output ('CARGO_EXIT=' + $LASTEXITCODE)",
+      "context": "sandbox",
+      "result": {
+        "chunk_id": "a14d55",
+        "wall_time_seconds": 3.34408,
+        "exit_code": 0,
+        "original_token_count": 162,
+        "output": "Default host: x86_64-pc-windows-msvc\nrustup home:  C:\\Users\\xuxum\\.rustup\n\ninstalled toolchains\n--------------------\nstable-x86_64-pc-windows-msvc (active, default)\n\nactive toolchain\n----------------\nname: stable-x86_64-pc-windows-msvc\nactive because: it's the default toolchain\ninstalled targets:\n  x86_64-pc-windows-msvc\nRUSTUP_SHOW_EXIT=0\r\nx86_64-pc-windows-msvc\nRUST_TARGETS_EXIT=0\r\nrustc 1.97.1 (8bab26f4f 2026-07-14)\nbinary: rustc\ncommit-hash: 8bab26f4f68e0e26f0bb7960be334d5b520ea452\ncommit-date: 2026-07-14\nhost: x86_64-pc-windows-msvc\nrelease: 1.97.1\nLLVM version: 22.1.6\nRUSTC_EXIT=0\r\ncargo 1.97.1 (c980f4866 2026-06-30)\nCARGO_EXIT=0\r\n"
+      }
+    },
+    {
+      "gate": "G2",
+      "id": "webview2-runtime-probe",
+      "command": "$ErrorActionPreference = 'Stop'\n$edgeRoots = @('HKLM:\\SOFTWARE\\WOW6432Node\\Microsoft\\EdgeUpdate\\Clients','HKLM:\\SOFTWARE\\Microsoft\\EdgeUpdate\\Clients','HKCU:\\SOFTWARE\\Microsoft\\EdgeUpdate\\Clients')\n$versions = @()\nforeach ($edgeRoot in $edgeRoots) { if (Test-Path -LiteralPath $edgeRoot) { $versions += @(Get-ChildItem -LiteralPath $edgeRoot | ForEach-Object { Get-ItemProperty -LiteralPath $_.PSPath } | Where-Object { $_.name -like '*WebView2*' } | Select-Object name,pv) } }\n$runtimeRoot = Join-Path ${env:ProgramFiles(x86)} 'Microsoft\\EdgeWebView\\Application'\n$runtimeFiles = @()\nif (Test-Path -LiteralPath $runtimeRoot) { $runtimeFiles = @(Get-ChildItem -LiteralPath $runtimeRoot -Directory | ForEach-Object { $binary = Join-Path $_.FullName 'msedgewebview2.exe'; if (Test-Path -LiteralPath $binary) { Get-Item -LiteralPath $binary | Select-Object FullName,@{Name='FileVersion';Expression={$_.VersionInfo.FileVersion}} } }) }\n[pscustomobject]@{RegistryVersions=$versions;RuntimeFiles=$runtimeFiles} | ConvertTo-Json -Depth 5",
+      "context": "sandbox",
+      "result": {
+        "chunk_id": "91b9c4",
+        "wall_time_seconds": 3.3706498,
+        "exit_code": 0,
+        "original_token_count": 150,
+        "output": "{\r\n    \"RegistryVersions\":  [\r\n                             {\r\n                                 \"name\":  \"Ngôn ngữ chung thời gian chạy WebView2 Microsoft Edge\",\r\n                                 \"pv\":  \"152.0.4191.66\"\r\n                             }\r\n                         ],\r\n    \"RuntimeFiles\":  [\r\n                         {\r\n                             \"FullName\":  \"C:\\\\Program Files (x86)\\\\Microsoft\\\\EdgeWebView\\\\Application\\\\152.0.4191.66\\\\msedgewebview2.exe\",\r\n                             \"FileVersion\":  \"152.0.4191.66\"\r\n                         }\r\n                     ]\r\n}\r\n"
+      }
+    },
+    {
+      "gate": "G2",
+      "id": "native-host-confirmation",
+      "command": "$ErrorActionPreference = 'Stop'\n$vswherePath = Join-Path ${env:ProgramFiles(x86)} 'Microsoft Visual Studio\\Installer\\vswhere.exe'\n$records = [ordered]@{VswhereExists=(Test-Path -LiteralPath $vswherePath)}\nif ($records.VswhereExists) {\n  $output = & $vswherePath -products '*' -format json -utf8\n  $records.InventoryExit = $LASTEXITCODE\n  $records.InventoryJson = ($output -join \"`n\")\n  $output = & $vswherePath -products '*' -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationPath\n  $records.CppProbeExit = $LASTEXITCODE\n  $records.CppInstallations = @($output)\n  $output = & $vswherePath -products '*' -requires Microsoft.Component.MSBuild -property installationPath\n  $records.MsbuildProbeExit = $LASTEXITCODE\n  $records.MsbuildInstallations = @($output)\n  $output = & $vswherePath -all -products '*' -format json -utf8\n  $records.AllInventoryExit = $LASTEXITCODE\n  $records.AllInventoryJson = ($output -join \"`n\")\n}\n$sdkRoot = Join-Path ${env:ProgramFiles(x86)} 'Windows Kits\\10'\n$includeRoot = Join-Path $sdkRoot 'Include'\n$libRoot = Join-Path $sdkRoot 'Lib'\n$records.SdkRoot = $sdkRoot\n$records.IncludeExists = Test-Path -LiteralPath $includeRoot\n$records.LibExists = Test-Path -LiteralPath $libRoot\n$records.IncludeVersions = @()\n$records.LibVersions = @()\n$records.SdkChecks = @()\nif ($records.IncludeExists) {\n  $records.IncludeVersions = @(Get-ChildItem -LiteralPath $includeRoot -Directory | Select-Object -ExpandProperty Name)\n  foreach ($sdkVersion in $records.IncludeVersions) {\n    $checks = [ordered]@{Version=$sdkVersion}\n    foreach ($relative in @('Include\\VERSION\\um','Include\\VERSION\\shared','Include\\VERSION\\ucrt','Lib\\VERSION\\um','Lib\\VERSION\\ucrt','Include\\VERSION\\um\\Windows.h','Include\\VERSION\\shared\\sdkddkver.h','Include\\VERSION\\ucrt\\stdio.h','Lib\\VERSION\\um\\x64\\kernel32.lib','Lib\\VERSION\\ucrt\\x64\\ucrt.lib')) { $part = $relative.Replace('VERSION',$sdkVersion); $checks[$part] = Test-Path -LiteralPath (Join-Path $sdkRoot $part) }\n    $records.SdkChecks += [pscustomobject]$checks\n  }\n}\nif ($records.LibExists) { $records.LibVersions = @(Get-ChildItem -LiteralPath $libRoot -Directory | Select-Object -ExpandProperty Name) }\n$scanRoots = @(@((Join-Path $env:ProgramFiles 'Microsoft Visual Studio'),(Join-Path ${env:ProgramFiles(x86)} 'Microsoft Visual Studio')) | Where-Object { Test-Path -LiteralPath $_ })\n$records.NativeScans = @()\nforeach ($scanRoot in $scanRoots) {\n  $files = & rg --files --hidden --no-ignore --iglob cl.exe --iglob link.exe --iglob MSBuild.exe --iglob VsDevCmd.bat -- \"$scanRoot\"\n  $records.NativeScans += [pscustomobject]@{Root=$scanRoot;ExitCode=$LASTEXITCODE;Files=@($files)}\n}\n$records | ConvertTo-Json -Depth 8\nexit 0",
+      "context": "host via approved escalation",
+      "result": {
+        "chunk_id": "aff181",
+        "wall_time_seconds": 0.5975985,
+        "exit_code": 0,
+        "original_token_count": 1072,
+        "output": "{\r\n    \"VswhereExists\":  true,\r\n    \"InventoryExit\":  0,\r\n    \"InventoryJson\":  \"[]\",\r\n    \"CppProbeExit\":  0,\r\n    \"CppInstallations\":  [\r\n\r\n                         ],\r\n    \"MsbuildProbeExit\":  0,\r\n    \"MsbuildInstallations\":  [\r\n\r\n                             ],\r\n    \"AllInventoryExit\":  0,\r\n    \"AllInventoryJson\":  \"[\\n  {\\n    \\\"instanceId\\\": \\\"89e7f446\\\",\\n    \\\"installDate\\\": \\\"2026-05-05T07:34:03Z\\\",\\n    \\\"installationName\\\": \\\"VisualStudio/16.11.55+37206.5\\\",\\n    \\\"installationPath\\\": \\\"C:\\\\\\\\Program Files (x86)\\\\\\\\Microsoft Visual Studio\\\\\\\\2019\\\\\\\\BuildTools\\\",\\n    \\\"installationVersion\\\": \\\"16.11.37206.5\\\",\\n    \\\"productId\\\": \\\"Microsoft.VisualStudio.Product.BuildTools\\\",\\n    \\\"productPath\\\": \\\"C:\\\\\\\\Program Files (x86)\\\\\\\\Microsoft Visual Studio\\\\\\\\2019\\\\\\\\BuildTools\\\\\\\\Common7\\\\\\\\Tools\\\\\\\\LaunchDevCmd.bat\\\",\\n    \\\"state\\\": 5,\\n    \\\"isComplete\\\": false,\\n    \\\"isLaunchable\\\": false,\\n    \\\"isPrerelease\\\": false,\\n    \\\"isRebootRequired\\\": false,\\n    \\\"displayName\\\": \\\"Visual Studio Build Tools 2019\\\",\\n    \\\"description\\\": \\\"The Visual Studio Build Tools allows you to build native and managed MSBuild-based applications without requiring the Visual Studio IDE. There are options to install the Visual C++ compilers and libraries, MFC, ATL, and C++/CLI support.\\\",\\n    \\\"channelId\\\": \\\"VisualStudio.16.Release\\\",\\n    \\\"channelUri\\\": \\\"https://aka.ms/vs/16/release/channel\\\",\\n    \\\"enginePath\\\": \\\"C:\\\\\\\\Program Files (x86)\\\\\\\\Microsoft Visual Studio\\\\\\\\Installer\\\\\\\\resources\\\\\\\\app\\\\\\\\ServiceHub\\\\\\\\Services\\\\\\\\Microsoft.VisualStudio.Setup.Service\\\",\\n    \\\"installedChannelId\\\": \\\"VisualStudio.16.Release\\\",\\n    \\\"installedChannelUri\\\": \\\"https://aka.ms/vs/16/release/channel\\\",\\n    \\\"releaseNotes\\\": \\\"https://docs.microsoft.com/en-us/visualstudio/releases/2019/release-notes-v16.11#16.11.55\\\",\\n    \\\"resolvedInstallationPath\\\": \\\"C:\\\\\\\\Program Files (x86)\\\\\\\\Microsoft Visual Studio\\\\\\\\2019\\\\\\\\BuildTools\\\",\\n    \\\"thirdPartyNotices\\\": \\\"https://go.microsoft.com/fwlink/?LinkId=660909\\\",\\n    \\\"updateDate\\\": \\\"2026-05-05T07:34:03.7407936Z\\\",\\n    \\\"catalog\\\": {\\n      \\\"buildBranch\\\": \\\"d16.11\\\",\\n      \\\"buildVersion\\\": \\\"16.11.37206.5\\\",\\n      \\\"id\\\": \\\"VisualStudio/16.11.55+37206.5\\\",\\n      \\\"localBuild\\\": \\\"build-lab\\\",\\n      \\\"manifestName\\\": \\\"VisualStudio\\\",\\n      \\\"manifestType\\\": \\\"installer\\\",\\n      \\\"productDisplayVersion\\\": \\\"16.11.55\\\",\\n      \\\"productLine\\\": \\\"Dev16\\\",\\n      \\\"productLineVersion\\\": \\\"2019\\\",\\n      \\\"productMilestone\\\": \\\"RTW\\\",\\n      \\\"productMilestoneIsPreRelease\\\": \\\"False\\\",\\n      \\\"productName\\\": \\\"Visual Studio\\\",\\n      \\\"productPatchVersion\\\": \\\"55\\\",\\n      \\\"productPreReleaseMilestoneSuffix\\\": \\\"1.0\\\",\\n      \\\"productSemanticVersion\\\": \\\"16.11.55+37206.5\\\",\\n      \\\"requiredEngineVersion\\\": \\\"2.11.72.18200\\\"\\n    },\\n    \\\"properties\\\": {\\n      \\\"appLocalWPF\\\": \\\"false\\\",\\n      \\\"campaignId\\\": \\\"\\\",\\n      \\\"canceled\\\": \\\"1\\\",\\n      \\\"channelManifestId\\\": \\\"VisualStudio.16.Release/16.11.55+37206.5\\\",\\n      \\\"includeRecommended\\\": \\\"0\\\",\\n      \\\"nickname\\\": \\\"\\\",\\n      \\\"operationMode\\\": \\\"0\\\",\\n      \\\"setupEngineFilePath\\\": \\\"C:\\\\\\\\Program Files (x86)\\\\\\\\Microsoft Visual Studio\\\\\\\\Installer\\\\\\\\setup.exe\\\"\\n    }\\n  }\\n]\",\r\n    \"SdkRoot\":  \"C:\\\\Program Files (x86)\\\\Windows Kits\\\\10\",\r\n    \"IncludeExists\":  false,\r\n    \"LibExists\":  false,\r\n    \"IncludeVersions\":  [\r\n\r\n                        ],\r\n    \"LibVersions\":  [\r\n\r\n                    ],\r\n    \"SdkChecks\":  [\r\n\r\n                  ],\r\n    \"NativeScans\":  [\r\n                        {\r\n                            \"Root\":  \"C:\\\\Program Files (x86)\\\\Microsoft Visual Studio\",\r\n                            \"ExitCode\":  0,\r\n                            \"Files\":  [\r\n                                          \"C:\\\\Program Files (x86)\\\\Microsoft Visual Studio\\\\2019\\\\BuildTools\\\\Common7\\\\Tools\\\\VsDevCmd.bat\",\r\n                                          \"C:\\\\Program Files (x86)\\\\Microsoft Visual Studio\\\\2019\\\\BuildTools\\\\MSBuild\\\\Current\\\\Bin\\\\MSBuild.exe\",\r\n                                          \"C:\\\\Program Files (x86)\\\\Microsoft Visual Studio\\\\2019\\\\BuildTools\\\\MSBuild\\\\Current\\\\Bin\\\\amd64\\\\MSBuild.exe\"\r\n                                      ]\r\n                        }\r\n                    ]\r\n}\r\n"
+      }
+    },
+    {
+      "gate": "G2",
+      "id": "msbuild-runtime",
+      "command": "$ErrorActionPreference = 'Stop'\n$msbuildPath = 'C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\BuildTools\\MSBuild\\Current\\Bin\\MSBuild.exe'\nif (Test-Path -LiteralPath $msbuildPath) { Get-Item -LiteralPath $msbuildPath | Select-Object FullName,@{Name='FileVersion';Expression={$_.VersionInfo.FileVersion}} | ConvertTo-Json; & $msbuildPath -version -nologo; Write-Output ('MSBUILD_VERSION_EXIT=' + $LASTEXITCODE) } else { Write-Output 'MSBUILD_NOT_FOUND'; exit 1 }",
+      "context": "sandbox",
+      "result": {
+        "chunk_id": "199943",
+        "wall_time_seconds": 0.7323902,
+        "exit_code": 0,
+        "original_token_count": 51,
+        "output": "{\r\n    \"FullName\":  \"C:\\\\Program Files (x86)\\\\Microsoft Visual Studio\\\\2019\\\\BuildTools\\\\MSBuild\\\\Current\\\\Bin\\\\MSBuild.exe\",\r\n    \"FileVersion\":  \"16.11.6.22506\"\r\n}\r\n16.11.6.22506MSBUILD_VERSION_EXIT=0\r\n"
+      }
+    },
+    {
+      "gate": "G1/G3",
+      "id": "node24-npm-reconfirmation",
+      "command": "$ErrorActionPreference = 'Stop'\n$env:NPM_CONFIG_CACHE = Join-Path (Get-Location).Path '.cache\\npm'\n$env:NPM_CONFIG_UPDATE_NOTIFIER = 'false'\nnode --version\nWrite-Output ('NODE_VERSION_EXIT=' + $LASTEXITCODE)\nnpm.cmd --version\nWrite-Output ('NPM_VERSION_EXIT=' + $LASTEXITCODE)\nnpm.cmd ping --registry=https://registry.npmjs.org\nWrite-Output ('NPM_PING_EXIT=' + $LASTEXITCODE)\nnpm.cmd view react version --registry=https://registry.npmjs.org\nWrite-Output ('REACT_CURRENT_VERSION_EXIT=' + $LASTEXITCODE)",
+      "context": "host via approved escalation",
+      "result": {
+        "chunk_id": "512d37",
+        "wall_time_seconds": 6.388704,
+        "exit_code": 0,
+        "original_token_count": 45,
+        "output": "v24.20.0\r\nNODE_VERSION_EXIT=0\r\n11.19.0\nNPM_VERSION_EXIT=0\r\nnpm notice PING https://registry.npmjs.org/\nnpm notice PONG 363ms\nNPM_PING_EXIT=0\r\n19.2.8\nREACT_CURRENT_VERSION_EXIT=0\r\n"
+      }
+    },
+    {
+      "gate": "G3",
+      "id": "exact-version-metadata-node24",
+      "command": "$ErrorActionPreference = 'Stop'\n$env:NPM_CONFIG_CACHE = Join-Path (Get-Location) '.cache/npm'\n$env:NPM_CONFIG_UPDATE_NOTIFIER = 'false'\n$specs = @('react@19.2.8', 'react-dom@19.2.8', 'typescript@5.9.3', 'vite@7.3.1', '@vitejs/plugin-react@5.1.2', '@tauri-apps/cli@2.10.0', '@tauri-apps/api@2.10.0', 'npm@11.19.0')\nforeach ($spec in $specs) {\n  Write-Output \"PACKAGE=$spec\"\n  & npm.cmd view $spec version engines peerDependencies --json --registry=https://registry.npmjs.org\n  $code = $LASTEXITCODE\n  Write-Output \"METADATA_EXIT=$code\"\n  if ($code -ne 0) { exit $code }\n}\nWrite-Output 'TAURI_CRATE_METADATA'\n$crate = Invoke-RestMethod -Uri 'https://crates.io/api/v1/crates/tauri/2.10.0'\n$crate.version | Select-Object num, rust_version, yanked | ConvertTo-Json -Compress\nWrite-Output 'NODE_RELEASE_METADATA'\n$releases = Invoke-RestMethod -Uri 'https://nodejs.org/dist/index.json'\n$release = @($releases | Where-Object { $_.version -eq 'v24.20.0' })\nif ($release.Count -ne 1) { throw 'Expected exact Node v24.20.0 metadata.' }\n$release | Select-Object version, date, npm, lts | ConvertTo-Json -Compress\nexit 0",
+      "context": "host via approved escalation",
+      "result": {
+        "chunk_id": "18cbdc",
+        "wall_time_seconds": 10.0068241,
+        "original_token_count": 64,
+        "output": "PACKAGE=react@19.2.8\r\n{\n  \"version\": \"19.2.8\",\n  \"engines\": {\n    \"node\": \">=0.10.0\"\n  }\n}\nMETADATA_EXIT=0\r\nPACKAGE=react-dom@19.2.8\r\n{\n  \"version\": \"19.2.8\",\n  \"peerDependencies\": {\n    \"react\": \"^19.2.8\"\n  }\n}\nMETADATA_EXIT=0\r\nPACKAGE=typescript@5.9.3\r\n{\n  \"version\": \"5.9.3\",\n  \"engines\": {\n    \"node\": \">=14.17\"\n  }\n}\nMETADATA_EXIT=0\r\nPACKAGE=vite@7.3.1\r\n{\n  \"version\": \"7.3.1\",\n  \"engines\": {\n    \"node\": \"^20.19.0 || >=22.12.0\"\n  },\n  \"peerDependencies\": {\n    \"tsx\": \"^4.8.1\",\n    \"jiti\": \">=1.21.0\",\n    \"less\": \"^4.0.0\",\n    \"sass\": \"^1.70.0\",\n    \"yaml\": \"^2.4.2\",\n    \"stylus\": \">=0.54.8\",\n    \"terser\": \"^5.16.0\",\n    \"sugarss\": \"^5.0.0\",\n    \"@types/node\": \"^20.19.0 || >=22.12.0\",\n    \"lightningcss\": \"^1.21.0\",\n    \"sass-embedded\": \"^1.70.0\"\n  }\n}\nMETADATA_EXIT=0\r\nPACKAGE=@vitejs/plugin-react@5.1.2\r\n{\n  \"version\": \"5.1.2\",\n  \"engines\": {\n    \"node\": \"^20.19.0 || >=22.12.0\"\n  },\n  \"peerDependencies\": {\n    \"vite\": \"^4.2.0 || ^5.0.0 || ^6.0.0 || ^7.0.0\"\n  }\n}\nMETADATA_EXIT=0\r\nPACKAGE=@tauri-apps/cli@2.10.0\r\n{\n  \"version\": \"2.10.0\",\n  \"engines\": {\n    \"node\": \">= 10\"\n  }\n}\nMETADATA_EXIT=0\r\nPACKAGE=@tauri-apps/api@2.10.0\r\n\"2.10.0\"\nMETADATA_EXIT=0\r\nPACKAGE=npm@11.19.0\r\n{\n  \"version\": \"11.19.0\",\n  \"engines\": {\n    \"node\": \"^20.17.0 || >=22.9.0\"\n  }\n}\nMETADATA_EXIT=0\r\nTAURI_CRATE_METADATA\r\n{\"num\":\"2.10.0\",\"rust_version\":\"1.77.2\",\"yanked\":false}\r\nNODE_RELEASE_METADATA\r\n{\"version\":\"v24.20.0\",\"date\":\"2026-08-26\",\"npm\":\"11.19.0\",\"lts\":\"Krypton\"}\r\n",
+        "exit_code": 0
+      }
+    },
+    {
+      "gate": "G2/G3",
+      "id": "vite-optional-peers-and-rust-version",
+      "command": "$ErrorActionPreference = 'Stop'\n$env:NPM_CONFIG_CACHE = Join-Path (Get-Location) '.cache/npm'\n$env:NPM_CONFIG_UPDATE_NOTIFIER = 'false'\nWrite-Output 'VITE_OPTIONAL_PEER_METADATA'\n& npm.cmd view vite@7.3.1 peerDependenciesMeta --json --registry=https://registry.npmjs.org\n$metadataExit = $LASTEXITCODE\nWrite-Output \"METADATA_EXIT=$metadataExit\"\nif ($metadataExit -ne 0) { exit $metadataExit }\nWrite-Output 'RUST_VERSION'\n& rustc --version\n$rustExit = $LASTEXITCODE\nWrite-Output \"RUST_VERSION_EXIT=$rustExit\"\nexit $rustExit",
+      "context": "host via approved escalation",
+      "result": {
+        "chunk_id": "6ed7f8",
+        "wall_time_seconds": 2.0334479,
+        "exit_code": 0,
+        "original_token_count": 142,
+        "output": "VITE_OPTIONAL_PEER_METADATA\r\n{\n  \"tsx\": {\n    \"optional\": true\n  },\n  \"jiti\": {\n    \"optional\": true\n  },\n  \"less\": {\n    \"optional\": true\n  },\n  \"sass\": {\n    \"optional\": true\n  },\n  \"yaml\": {\n    \"optional\": true\n  },\n  \"stylus\": {\n    \"optional\": true\n  },\n  \"terser\": {\n    \"optional\": true\n  },\n  \"sugarss\": {\n    \"optional\": true\n  },\n  \"@types/node\": {\n    \"optional\": true\n  },\n  \"lightningcss\": {\n    \"optional\": true\n  },\n  \"sass-embedded\": {\n    \"optional\": true\n  }\n}\nMETADATA_EXIT=0\r\nRUST_VERSION\r\nrustc 1.97.1 (8bab26f4f 2026-07-14)\nRUST_VERSION_EXIT=0\r\n"
+      }
+    },
+    {
+      "gate": "G4",
+      "id": "g4-not-run-scope-check",
+      "command": "$ErrorActionPreference = 'Stop'\n[ordered]@{\n  SpikeExists = Test-Path -LiteralPath 'spikes/tauri-minimal'\n  DesktopFiles = @(& rg --files --hidden --no-ignore apps/desktop)\n  DependencyManifests = @(& rg --files --hidden -g '!/.git/**' -g '!/.cache/**' -g '!node_modules/**' -g '!target/**' -g 'package.json' -g 'package-lock.json' -g 'Cargo.toml' -g 'Cargo.lock' -g 'tauri.conf.json' .)\n} | ConvertTo-Json -Depth 4\nexit 0",
+      "context": "sandbox; scope verification only",
+      "result": {
+        "chunk_id": "12bac2",
+        "wall_time_seconds": 0.1571995,
+        "exit_code": 0,
+        "original_token_count": 50,
+        "output": "{\r\n    \"SpikeExists\":  false,\r\n    \"DesktopFiles\":  [\r\n                         \"apps/desktop\\\\README.md\"\r\n                     ],\r\n    \"DependencyManifests\":  [\r\n\r\n                            ]\r\n}\r\n"
+      }
+    }
+  ]
+}

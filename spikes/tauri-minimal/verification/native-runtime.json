@@ -1,0 +1,34 @@
+{
+    "StartedUtc":  "2026-09-09T08:35:22.4588158Z",
+    "Executable":  "D:\\PROJECT\\AI_Assistant\\spikes\\tauri-minimal\\src-tauri\\target\\release\\tauri-minimal-spike.exe",
+    "ExecutableSha256":  "8692CB9C0F5FF619D7D4C62EDF24E872CF400C757288C4E26BC32C304C62979D",
+    "Status":  "PASS",
+    "ForcedTermination":  false,
+    "ProcessId":  34236,
+    "WindowHandle":  3540756,
+    "WindowTitle":  "Tauri prerequisite spike",
+    "IsWindowVisible":  true,
+    "ForegroundMatches":  true,
+    "WindowBounds":  {
+                         "Left":  64,
+                         "Width":  618,
+                         "Top":  64,
+                         "Height":  297
+                     },
+    "Screenshot":  "verification/native-window.png",
+    "ObservedChildProcessIds":  [
+                                    22684,
+                                    13848,
+                                    33628,
+                                    33896,
+                                    25512,
+                                    40888
+                                ],
+    "CloseRequested":  true,
+    "ExitCode":  0,
+    "RemainingChildProcessIds":  [
+
+                                 ],
+    "WindowVisibleAfterExit":  false,
+    "CompletedUtc":  "2026-09-09T08:35:27.5260187Z"
+}
