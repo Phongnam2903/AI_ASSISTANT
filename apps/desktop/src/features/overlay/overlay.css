@@ -1,0 +1,236 @@
+:root {
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+
+body {
+  font-family:
+    "Segoe UI",
+    system-ui,
+    -apple-system,
+    sans-serif;
+  background: transparent;
+}
+
+.overlay {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100vw;
+  background: #14161c;
+  color: #eef0f5;
+  border: 1px solid #2a2d38;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.overlay__titlebar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 12px;
+  background: #1b1e27;
+  -webkit-app-region: drag;
+}
+
+.overlay__title {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: #b9beca;
+}
+
+.overlay__titlebar-actions button {
+  -webkit-app-region: no-drag;
+}
+
+.overlay__body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 20px;
+  text-align: center;
+}
+
+.overlay__greeting {
+  font-size: 16px;
+  font-weight: 500;
+  min-height: 22px;
+}
+
+.overlay__state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.overlay__state-dot {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  transition: background-color 200ms ease, box-shadow 200ms ease;
+}
+
+.overlay--reduced-motion .overlay__state-dot {
+  transition: none;
+}
+
+.overlay__state-dot--IDLE {
+  background: #3a3f4d;
+}
+
+.overlay__state-dot--LISTENING {
+  background: #2f8fef;
+  box-shadow: 0 0 0 8px rgba(47, 143, 239, 0.15);
+}
+
+.overlay__state-dot--THINKING {
+  background: #f2b84b;
+  box-shadow: 0 0 0 8px rgba(242, 184, 75, 0.15);
+}
+
+.overlay__state-dot--SPEAKING {
+  background: #37c977;
+  box-shadow: 0 0 0 8px rgba(55, 201, 119, 0.15);
+}
+
+.overlay__state-dot--ERROR {
+  background: #e5484d;
+  box-shadow: 0 0 0 8px rgba(229, 72, 77, 0.15);
+}
+
+.overlay__state-label {
+  font-size: 13px;
+  color: #9aa0ad;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.overlay__error-actions button,
+.overlay__titlebar-actions button {
+  background: #232733;
+  color: #eef0f5;
+  border: 1px solid #343949;
+  border-radius: 6px;
+  padding: 6px 10px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.overlay__error-actions button:hover,
+.overlay__titlebar-actions button:hover {
+  background: #2c313f;
+}
+
+.overlay__footer {
+  padding: 10px 14px;
+  border-top: 1px solid #232733;
+  font-size: 11px;
+  color: #6f7585;
+}
+
+.dev-preview {
+  border-top: 1px dashed #4a3a1f;
+  background: #201a10;
+  padding: 10px 14px;
+  font-size: 11px;
+  color: #e2b876;
+}
+
+.dev-preview__label {
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.dev-preview__actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.dev-preview__actions button {
+  background: #33260f;
+  color: #f0d8a8;
+  border: 1px solid #55411c;
+  border-radius: 6px;
+  padding: 4px 8px;
+  font-size: 11px;
+  cursor: pointer;
+}
+
+.settings-panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px 18px;
+  overflow-y: auto;
+  font-size: 13px;
+  text-align: left;
+}
+
+.settings-panel__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-weight: 600;
+}
+
+.settings-panel__header button {
+  background: #232733;
+  color: #eef0f5;
+  border: 1px solid #343949;
+  border-radius: 6px;
+  padding: 4px 10px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.settings-panel__field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.settings-panel__field input[type="text"] {
+  background: #1b1e27;
+  border: 1px solid #343949;
+  border-radius: 6px;
+  color: #eef0f5;
+  padding: 6px 8px;
+  font-size: 13px;
+}
+
+.settings-panel__field input[type="text"]:disabled {
+  opacity: 0.5;
+}
+
+.settings-panel__checkbox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.settings-panel__status {
+  font-size: 11px;
+  color: #9aa0ad;
+  margin: 0;
+}

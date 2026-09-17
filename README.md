@@ -6,13 +6,13 @@ Thứ tự ưu tiên tương tác: **Voice → Text / Transcript → Vision (tư
 
 ## Trạng thái thực tế
 
-- **Current Phase:** Phase 1 — Desktop Assistant Shell (Ready for Implementation Approval).
+- **Current Phase:** Phase 1 — Desktop Assistant Shell (Implementation in progress).
 - **Phase 0:** ✅ Completed — Foundation & Voice-First Architecture.
 - **Ngày duyệt Phase 0:** 2026-09-07.
-- **Phase 1 Status:** 🟡 Ready for Implementation Approval.
-- **Cập nhật:** 2026-09-09.
-- Repository chứa tài liệu thiết kế, skeleton và **Tauri minimal spike đã build/chạy native trên Windows** tại `spikes/tauri-minimal/`. **Desktop Shell implementation chưa bắt đầu; `apps/desktop/` vẫn chỉ là skeleton.**
-- Technical foundation Phase 0 và kế hoạch Phase 1 đã được chủ dự án phê duyệt. Phê duyệt ngày 2026-09-08 chỉ cho phép prerequisite gate G1–G4; Desktop Shell implementation chờ phê duyệt riêng.
+- **Phase 1 Status:** 🔵 Implementation in progress. Chủ dự án duyệt Desktop Shell implementation ngày 2026-09-16.
+- **Cập nhật:** 2026-09-16.
+- Repository chứa tài liệu thiết kế, **Tauri minimal spike đã build/chạy native trên Windows** tại `spikes/tauri-minimal/`, và **Desktop Shell baseline tại `apps/desktop/` đã build/chạy native trên Windows** (compact overlay, tray Show/Hide/Exit, single instance, greeting, 5 visual states, cấu hình cơ bản, global shortcut với xử lý conflict). Xem kết quả kiểm tra thật: [apps/desktop/README.md](apps/desktop/README.md#kết-quả-kiểm-tra-thực-tế-2026-09-16).
+- Technical foundation Phase 0 và kế hoạch Phase 1 đã được chủ dự án phê duyệt. Chủ dự án duyệt Desktop Shell implementation ngày 2026-09-16; một số kiểm tra tương tác (tray icon click, shortcut trigger thành công, DPI 100%/150%) chưa tự động hóa được và cần xác nhận thủ công trên Windows thật.
 - Kết quả kiểm tra và giới hạn môi trường: [báo cáo Phase 0](docs/phase-0-verification.md).
 
 ## Trải nghiệm hướng tới
@@ -63,8 +63,10 @@ Checkbox chỉ được đánh dấu sau khi artifact tồn tại và đã kiể
 - [x] Phase 1 implementation plan approved by project owner.
 - Phase 1 approval date: **2026-09-08**.
 - [x] Prerequisite gate G1–G4 passed.
-- [ ] Desktop Shell implementation approved by project owner.
-- [ ] Phase 1 implementation started.
+- [x] Desktop Shell implementation approved by project owner.
+- Desktop Shell implementation approval date: **2026-09-16**.
+- [x] Phase 1 implementation started.
+- Phase 1 implementation start date: **2026-09-16**.
 
 ## Phase 1 — Prerequisite verification result
 
@@ -81,14 +83,22 @@ Spike riêng: [hướng dẫn chạy và phiên bản khóa](spikes/tauri-minima
 
 Lịch sử FAIL/BLOCKED và các lần thử lỗi đều được giữ trong báo cáo/evidence. G4 đã khắc phục API 2.10.0 bị npm đánh dấu broken release và lỗi compile với runtime Tauri 2.11.x bằng phiên bản cụ thể trong lockfiles.
 
-Phase 1 ở **🟡 Ready for Implementation Approval**. Prerequisite gate đã đạt; **Desktop Shell implementation vẫn cần phê duyệt riêng**. Spike chỉ có một native window và nhãn “Tauri prerequisite spike”; không copy/move vào `apps/desktop/`.
+Prerequisite gate đã đạt trước khi implementation bắt đầu. Spike chỉ có một native window và nhãn “Tauri prerequisite spike”; không copy/move vào `apps/desktop/` — Desktop Shell được viết mới, kế thừa version set đã verify.
+
+## Phase 1 — Desktop Shell implementation result (2026-09-16)
+
+Chủ dự án duyệt Desktop Shell implementation ngày 2026-09-16. Đã build và chạy native thành công trên Windows x64: `apps/desktop/src-tauri/target/release/desktop-assistant-shell.exe`. Bảng kết quả P1-00 đến P1-10 đầy đủ: [docs/phase-1-implementation-plan.md §8](docs/phase-1-implementation-plan.md#8-tiêu-chí-kiểm-thử-và-nghiệm-thu). Tóm tắt:
+
+- PASS: prerequisite gate, static checks/build (typecheck/vitest 17 test/vite build/cargo check/tauri build --locked), single instance, open/show/hide/close-to-tray, greeting theo giờ, 5 visual states + dev-only simulator, settings round-trip qua UI thật, shortcut-conflict-detection với fallback tray, phạm vi/quyền (không mic/key/backend).
+- Chưa tự động hóa được trong phiên này (cần xác nhận thủ công trên Windows thật): tray icon click Show/Hide/Exit, shortcut trigger ở trường hợp đăng ký thành công (do Windows chặn `SetForegroundWindow` từ process không tương tác), DPI 100%/150% tường minh.
+- Phase 1 **chưa được coi là hoàn thành**: đây là kết quả trình để chủ dự án nghiệm thu, không phải tự đánh giá PASS toàn bộ phase.
 
 ## Roadmap
 
 | Phase | Mục tiêu                            | Trạng thái                               |
 | ----- | ------------------------------------- | ------------------------------------------ |
 | 0     | Foundation & Voice-First Architecture | ✅ Completed |
-| 1     | Desktop Assistant Shell               | 🟡 Ready for Implementation Approval |
+| 1     | Desktop Assistant Shell               | 🔵 Implementation in progress — baseline built/run, chờ nghiệm thu |
 | 2     | Speech Pipeline                       | Not Started                                |
 | 3     | Voice AI Conversation                 | Not Started                                |
 | 4     | Agent + Tool Calling                  | Not Started                                |
@@ -109,7 +119,7 @@ Chi tiết phạm vi và tiêu chí kết thúc từng phase: [roadmap](docs/roa
 - [Kế hoạch Phase 1 đã duyệt](docs/phase-1-implementation-plan.md).
 - [Hướng dẫn phát triển](docs/development-guide.md) và [bằng chứng kiểm tra](docs/phase-0-verification.md).
 
-Lệnh build/chạy cùng manifests và lockfiles chỉ có trong [minimal spike](spikes/tauri-minimal/README.md). Chưa có Desktop Shell, backend hoặc cấu hình Compose thực thi; các phần này được triển khai ở phase tương ứng sau khi được duyệt.
+Lệnh build/chạy cùng manifests và lockfiles có trong [minimal spike](spikes/tauri-minimal/README.md) và [Desktop Shell](apps/desktop/README.md). Chưa có backend hoặc cấu hình Compose thực thi; các phần này được triển khai ở phase tương ứng sau khi được duyệt.
 
 ## Decision log
 
@@ -122,9 +132,10 @@ Lệnh build/chạy cùng manifests và lockfiles chỉ có trong [minimal spike
 | 2026-09-08 | Chủ dự án duyệt Phase 1 implementation plan với architectural constraints bổ sung; chỉ cho phép prerequisite gate/minimal spike, chưa cho phép Desktop Shell implementation. |
 | 2026-09-09 | Re-verify sau khi chủ máy nâng Node: G1 PASS, G2 BLOCKED, G3 PASS, G4 BLOCKED / NOT RUN. Giữ lịch sử FAIL; cần chủ máy hoàn tất C++ Build Tools/Windows SDK; chưa tạo spike hoặc triển khai shell. |
 | 2026-09-09 | Sau remediation native của chủ máy: G2 PASS; G4 minimal spike đã install/build/chạy cửa sổ native và đóng sạch. G1–G4 PASS; chuyển Ready for Implementation Approval, chưa bắt đầu Desktop Shell. |
+| 2026-09-16 | Chủ dự án duyệt Desktop Shell implementation. Đã scaffold `apps/desktop/`, build và chạy native thành công trên Windows x64 (compact overlay, tray, single instance, greeting, 5 visual states, settings, shortcut với xử lý conflict). Một số kiểm tra tương tác chưa tự động hóa được, cần xác nhận thủ công; Phase 1 chưa được đánh dấu hoàn thành, chờ chủ dự án nghiệm thu. |
 
 ## Quy tắc hoàn thành
 
 Một phase chỉ hoàn thành khi artifact đúng phạm vi đã có, validation phù hợp đã đạt, kết quả đã báo cáo và chủ dự án đã phê duyệt. Không tự đánh dấu phê duyệt dựa trên việc tài liệu đã được viết.
 
-**Bước tiếp theo:** STOP — chờ chủ dự án phê duyệt Desktop Shell implementation riêng. Giữ `[ ] Phase 1 implementation started`; prerequisite PASS không phải implementation approval.
+**Bước tiếp theo:** STOP — trình kết quả Desktop Shell baseline (2026-09-16) để chủ dự án nghiệm thu. Còn 3 hạng mục cần xác nhận thủ công trên Windows thật trước khi coi Phase 1 hoàn thành: tray icon click Show/Hide/Exit, shortcut trigger ở trường hợp đăng ký thành công, và DPI 100%/150%. Không tự đánh dấu Phase 1 completed.

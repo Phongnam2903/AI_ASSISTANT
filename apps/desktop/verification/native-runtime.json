@@ -1,0 +1,31 @@
+{
+    "StartedUtc":  "2026-09-16T08:40:21.2688723Z",
+    "Executable":  "D:\\PROJECT\\AI_Assistant\\apps\\desktop\\src-tauri\\target\\release\\desktop-assistant-shell.exe",
+    "ExecutableSha256":  "07C757595A26E342D6344EC4EA680094498022D3261DD0CDA47FB84C3F67E02C",
+    "Status":  "PASS",
+    "ForcedTermination":  true,
+    "ProcessId":  26248,
+    "WindowHandle":  1442008,
+    "WindowTitle":  "Personal AI Assistant",
+    "IsWindowVisible":  true,
+    "ForegroundMatches":  true,
+    "WindowBounds":  {
+                         "Left":  680,
+                         "Width":  518,
+                         "Top":  250,
+                         "Height":  710
+                     },
+    "Screenshot":  "verification/native-window-launch.png",
+    "ObservedChildProcessIds":  [
+                                    20012,
+                                    26380,
+                                    34444,
+                                    16292,
+                                    20900,
+                                    22204
+                                ],
+    "CloseRequested":  true,
+    "HiddenAfterClose":  true,
+    "ProcessAliveAfterHide":  true,
+    "CompletedUtc":  "2026-09-16T08:40:27.5116677Z"
+}
