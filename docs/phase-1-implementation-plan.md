@@ -35,12 +35,12 @@ Phê duyệt ngày 2026-09-08 cho phép prerequisite gate. Yêu cầu remediatio
 
 Trạng thái hiện tại (2026-09-09): **G1–G4 PASS — Ready for Implementation Approval**. Minimal spike đã install/build/chạy cửa sổ native và đóng sạch. Xem [báo cáo G2/G4](phase-1-prerequisite-verification.md#native-toolchain-re-verification-and-g4-spike--2026-09-09). Desktop Shell implementation chưa được duyệt.
 
-| Gate | Công việc cần thực hiện sau khi được duyệt | Bằng chứng PASS bắt buộc |
-| --- | --- | --- |
-| G1 — npm | Xác minh npm chạy bình thường trong môi trường build, truy cập được package metadata và đường dẫn cần thiết. Kiểm tra lại lỗi EPERM từng gặp trong audit. | Ghi version npm, lệnh và exit code; thao tác npm không còn lỗi quyền. Việc cài dependency thật được xác nhận tiếp trong G4. |
-| G2 — Native prerequisites | Xác minh Visual Studio C++ Build Tools, workload Desktop development with C++, Windows SDK và Rust MSVC phù hợp; xác nhận WebView2 runtime. | Ghi installation/workload/SDK/toolchain được phát hiện. Không coi version probe hoặc registry entry là đủ chứng minh build. |
-| G3 — Node.js compatibility | Chọn bộ frontend/Tauri dependencies cụ thể; đối chiếu Node.js với yêu cầu engines và tài liệu của các phiên bản được chọn. Kiểm tra tương thích major version của Tauri CLI/native/plugin. | Bảng Node/npm/dependency versions và nguồn yêu cầu; chọn Node LTS còn được hỗ trợ, không có engine mismatch. Không mặc định dùng Node 20.20.2 chỉ vì audit tìm thấy. |
-| G4 — Tauri minimal spike | Tạo project Tauri tối thiểu trong thư mục riêng dự kiến `spikes/tauri-minimal/`, dùng bộ dependency đã chọn; cài dependencies, build native Windows và chạy executable vừa build. | Dependency resolution/install, frontend build và native build đạt; executable mở cửa sổ tối thiểu rồi đóng sạch trên Windows. Ghi lệnh, exit code, artifact path và quan sát thực tế. |
+| Gate                        | Công việc cần thực hiện sau khi được duyệt                                                                                                                                                                  | Bằng chứng PASS bắt buộc                                                                                                                                                                            |
+| --------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| G1 — npm                   | Xác minh npm chạy bình thường trong môi trường build, truy cập được package metadata và đường dẫn cần thiết. Kiểm tra lại lỗi EPERM từng gặp trong audit.                                    | Ghi version npm, lệnh và exit code; thao tác npm không còn lỗi quyền. Việc cài dependency thật được xác nhận tiếp trong G4.                                                             |
+| G2 — Native prerequisites  | Xác minh Visual Studio C++ Build Tools, workload Desktop development with C++, Windows SDK và Rust MSVC phù hợp; xác nhận WebView2 runtime.                                                                    | Ghi installation/workload/SDK/toolchain được phát hiện. Không coi version probe hoặc registry entry là đủ chứng minh build.                                                                  |
+| G3 — Node.js compatibility | Chọn bộ frontend/Tauri dependencies cụ thể; đối chiếu Node.js với yêu cầu engines và tài liệu của các phiên bản được chọn. Kiểm tra tương thích major version của Tauri CLI/native/plugin. | Bảng Node/npm/dependency versions và nguồn yêu cầu; chọn Node LTS còn được hỗ trợ, không có engine mismatch. Không mặc định dùng Node 20.20.2 chỉ vì audit tìm thấy.             |
+| G4 — Tauri minimal spike   | Tạo project Tauri tối thiểu trong thư mục riêng dự kiến`spikes/tauri-minimal/`, dùng bộ dependency đã chọn; cài dependencies, build native Windows và chạy executable vừa build.                  | Dependency resolution/install, frontend build và native build đạt; executable mở cửa sổ tối thiểu rồi đóng sạch trên Windows. Ghi lệnh, exit code, artifact path và quan sát thực tế. |
 
 G4 chỉ cần cửa sổ mặc định với một nhãn kiểm tra. Chưa làm overlay sản phẩm, greeting, tray, shortcut hoặc state UI thật trong spike. Một trang chạy trong browser hoặc dev server không đủ chứng minh native toolchain.
 
@@ -52,20 +52,20 @@ Tham chiếu: [Tauri prerequisites](https://v2.tauri.app/start/prerequisites/) v
 
 ## 4. Phạm vi được phép trong Phase 1
 
-| Hạng mục | Hành vi dự kiến |
-| --- | --- |
-| Tauri desktop application | Windows x64; một instance; mở app lần hai focus cửa sổ hiện có. |
-| React + TypeScript UI | Components, state model và native adapter phục vụ desktop shell. |
-| Compact assistant overlay | Cửa sổ nhỏ, đề xuất khoảng 400 × 560 logical pixels, fixed-size hoặc constrained resize; có vùng kéo và điều khiển rõ ràng. Compact mode không trở thành application window thông thường. Always-on-top là tùy chọn cấu hình. |
-| Open / show / hide | Mở hoặc show đưa assistant lên trước; close chuyển sang hide; thao tác hide reset trạng thái demo. |
-| System tray | Show/Hide/Exit; hướng dẫn lần đầu rằng app vẫn ở tray sau khi đóng cửa sổ. Exit thoát và dọn tài nguyên do app sở hữu. |
-| Global shortcut nếu phù hợp | Đề xuất Ctrl+Shift+Space, có thể đổi/tắt. Xác minh khả năng đăng ký; nếu conflict hoặc không khả dụng, báo rõ và giữ đường mở bằng tray. |
-| Greeting khi mở assistant | Hiển thị chữ tiếng Việt theo giờ local; có thể tắt/đổi tên. Không phát âm thanh. |
-| Visual assistant states | IDLE, LISTENING, THINKING, SPEAKING, ERROR; nhãn chữ và chuyển trạng thái rõ ràng. |
-| Optional transcript area | Vùng thu gọn với empty state hoặc fixture minh họa có nhãn; không nhận dạng lời nói, chat API hoặc lưu lịch sử hội thoại. |
-| Optional full workspace shell | Cửa sổ Full Workspace mới resizable đầy đủ; chỉ bố cục/navigation/panel mở rộng của cùng ứng dụng; không thêm tính năng AI, editor hoặc integrations. Không bắt buộc để nghiệm thu baseline. |
-| Basic desktop configuration | Tên hiển thị, greeting, shortcut, kích thước/vị trí cửa sổ, always-on-top và giảm chuyển động; chỉ lưu preference cục bộ không nhạy cảm. |
-| Tests phù hợp với shell | Logic/state/configuration tests, kiểm tra native lifecycle trên Windows, typecheck và build. |
+| Hạng mục                     | Hành vi dự kiến                                                                                                                                                                                                                                         |
+| ------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Tauri desktop application      | Windows x64; một instance; mở app lần hai focus cửa sổ hiện có.                                                                                                                                                                                     |
+| React + TypeScript UI          | Components, state model và native adapter phục vụ desktop shell.                                                                                                                                                                                        |
+| Compact assistant overlay      | Cửa sổ nhỏ, đề xuất khoảng 400 × 560 logical pixels, fixed-size hoặc constrained resize; có vùng kéo và điều khiển rõ ràng. Compact mode không trở thành application window thông thường. Always-on-top là tùy chọn cấu hình. |
+| Open / show / hide             | Mở hoặc show đưa assistant lên trước; close chuyển sang hide; thao tác hide reset trạng thái demo.                                                                                                                                              |
+| System tray                    | Show/Hide/Exit; hướng dẫn lần đầu rằng app vẫn ở tray sau khi đóng cửa sổ. Exit thoát và dọn tài nguyên do app sở hữu.                                                                                                                 |
+| Global shortcut nếu phù hợp | Đề xuất Ctrl+Shift+Space, có thể đổi/tắt. Xác minh khả năng đăng ký; nếu conflict hoặc không khả dụng, báo rõ và giữ đường mở bằng tray.                                                                                       |
+| Greeting khi mở assistant     | Hiển thị chữ tiếng Việt theo giờ local; có thể tắt/đổi tên. Không phát âm thanh.                                                                                                                                                            |
+| Visual assistant states        | IDLE, LISTENING, THINKING, SPEAKING, ERROR; nhãn chữ và chuyển trạng thái rõ ràng.                                                                                                                                                                 |
+| Optional transcript area       | Vùng thu gọn với empty state hoặc fixture minh họa có nhãn; không nhận dạng lời nói, chat API hoặc lưu lịch sử hội thoại.                                                                                                                |
+| Optional full workspace shell  | Cửa sổ Full Workspace mới resizable đầy đủ; chỉ bố cục/navigation/panel mở rộng của cùng ứng dụng; không thêm tính năng AI, editor hoặc integrations. Không bắt buộc để nghiệm thu baseline.                                    |
+| Basic desktop configuration    | Tên hiển thị, greeting, shortcut, kích thước/vị trí cửa sổ, always-on-top và giảm chuyển động; chỉ lưu preference cục bộ không nhạy cảm.                                                                                             |
+| Tests phù hợp với shell     | Logic/state/configuration tests, kiểm tra native lifecycle trên Windows, typecheck và build.                                                                                                                                                            |
 
 Lưu preference desktop không phải triển khai Personal Memory. Mở ứng dụng ở đây là mở chính assistant, không phải xây application launcher hoặc công cụ điều khiển ứng dụng khác.
 
@@ -108,27 +108,27 @@ Greeting hiển thị theo giờ hệ điều hành: 05:00–11:59 buổi sáng,
 
 Khởi chạy hoặc show sau khi hidden chào một lần nếu bật greeting. Focus lại cửa sổ đang visible không chào lặp. Greeting không gọi model hoặc đọc lịch/email.
 
-| Tình huống | Hành vi |
-| --- | --- |
-| Open/show | Hiện overlay, greeting nếu phù hợp, trạng thái IDLE. |
-| Development preview | Chạy IDLE → LISTENING → THINKING → SPEAKING → IDLE bằng sự kiện UI/fixture có nhãn Mô phỏng. |
-| Preview lỗi | Chuyển ERROR, cho reset về IDLE; không phát sinh tác vụ speech/AI. |
+| Tình huống         | Hành vi                                                                                                               |
+| -------------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| Open/show            | Hiện overlay, greeting nếu phù hợp, trạng thái IDLE.                                                             |
+| Development preview  | Chạy IDLE → LISTENING → THINKING → SPEAKING → IDLE bằng sự kiện UI/fixture có nhãn Mô phỏng.               |
+| Preview lỗi         | Chuyển ERROR, cho reset về IDLE; không phát sinh tác vụ speech/AI.                                               |
 | Lỗi shell thực tế | Thông báo lỗi cửa sổ/shortcut/config phù hợp, có đường phục hồi; không dùng thông điệp giả lỗi AI. |
-| Hide | Đưa cửa sổ về hidden, reset demo và dọn timer/listener liên quan; tray còn hoạt động. |
-| Exit | Hủy shortcut, tray/listener/timer do app tạo và thoát sạch. |
+| Hide                 | Đưa cửa sổ về hidden, reset demo và dọn timer/listener liên quan; tray còn hoạt động.                      |
+| Exit                 | Hủy shortcut, tray/listener/timer do app tạo và thoát sạch.                                                       |
 
 State-machine và kiểu dữ liệu của các trạng thái vẫn thuộc shell. Development harness chỉ dùng cho development/test. Simulator không xuất hiện trong production UX mặc định; chỉ được hiển thị khi người dùng bật explicit developer/debug mode, luôn gắn nhãn Mô phỏng. Không tự khởi động cùng Windows ở Phase 1.
 
 ## 7. Thứ tự triển khai sau khi gate đạt VÀ được duyệt implementation riêng
 
-| Bước | Công việc | Artifact |
-| --- | --- | --- |
-| 1 | Sau implementation approval riêng, scaffold app chính theo bộ dependency đã qua spike. | Manifest/lockfile, cấu hình Tauri/Vite/TypeScript, frontend và Rust native tại `apps/desktop/`. |
-| 2 | Compact overlay, greeting, state model và development preview. | UI/state/native adapter tách trách nhiệm; fixture có nhãn. |
-| 3 | Open/show/hide, single instance, tray, shortcut nếu phù hợp. | Lifecycle và cleanup; fallback khi shortcut conflict. |
-| 4 | Basic configuration và phần shell tùy chọn nếu cần. | Preferences có defaults/version; transcript/workspace chỉ là UI. |
-| 5 | Native capabilities/CSP và accessibility. | Quyền tối thiểu theo chức năng, bàn phím/focus/nhãn chữ/giảm chuyển động. |
-| 6 | Kiểm thử, hướng dẫn chạy và trình nghiệm thu. | Kết quả tests/build/manual checks, hạn chế còn lại và README desktop cập nhật. |
+| Bước | Công việc                                                                                 | Artifact                                                                                             |
+| ------ | ------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
+| 1      | Sau implementation approval riêng, scaffold app chính theo bộ dependency đã qua spike. | Manifest/lockfile, cấu hình Tauri/Vite/TypeScript, frontend và Rust native tại`apps/desktop/`. |
+| 2      | Compact overlay, greeting, state model và development preview.                             | UI/state/native adapter tách trách nhiệm; fixture có nhãn.                                      |
+| 3      | Open/show/hide, single instance, tray, shortcut nếu phù hợp.                             | Lifecycle và cleanup; fallback khi shortcut conflict.                                               |
+| 4      | Basic configuration và phần shell tùy chọn nếu cần.                                   | Preferences có defaults/version; transcript/workspace chỉ là UI.                                  |
+| 5      | Native capabilities/CSP và accessibility.                                                  | Quyền tối thiểu theo chức năng, bàn phím/focus/nhãn chữ/giảm chuyển động.               |
+| 6      | Kiểm thử, hướng dẫn chạy và trình nghiệm thu.                                      | Kết quả tests/build/manual checks, hạn chế còn lại và README desktop cập nhật.              |
 
 Trong `apps/desktop/` dự kiến có `package.json`, npm lockfile, `src/`, `src-tauri/`, Cargo manifest/lockfile, Tauri config và capabilities. Tên file cụ thể theo template đã kiểm chứng; hiện chưa tạo các file implementation này.
 
@@ -136,19 +136,19 @@ Tham chiếu native features: [system tray](https://v2.tauri.app/learn/system-tr
 
 ## 8. Tiêu chí kiểm thử và nghiệm thu
 
-| ID | Kiểm tra | Kết quả yêu cầu | Trạng thái thực tế (2026-09-21) |
-| --- | --- | --- | --- |
-| P1-00 | Prerequisite gate | G1–G4 PASS với bằng chứng trước khi bắt đầu UI sản phẩm. | PASS (xem verification report) |
-| P1-01 | Launch và single instance | Một instance; executable desktop mở được trên Windows; lần mở tiếp theo focus đúng. | PASS — instance thứ hai thoát exit 0 ngay, instance đầu focus lại |
-| P1-02 | Greeting | Đúng các mốc giờ; bật/tắt có hiệu lực; focus lại không chào trùng. | PASS — quan sát qua screenshot thật; logic focus-lại-không-chào-lặp theo thiết kế (onShow chỉ emit khi hidden→visible) |
-| P1-03 | Overlay lifecycle | Open/show/hide và close-to-tray hoạt động; Exit không để lại process/listener của app. | PASS — open/show/hide/close-to-tray xác nhận qua automation; **tray icon Show/Hide/Exit đã xác nhận thủ công bởi chủ dự án ngày 2026-09-21**, đúng hành vi (Exit thoát sạch, không còn process). |
-| P1-04 | Shortcut nếu bật | Đăng ký/đổi/tắt và cleanup đúng; conflict có thông báo, tray vẫn dùng được. Nếu không hỗ trợ, ghi lý do và fallback. | PASS đầy đủ — nhánh conflict (mặc định `Ctrl+Shift+Space` bị máy dev chiếm dụng, UI báo "Không khả dụng", tray vẫn dùng được) **và** nhánh đăng ký-thành-công đã xác nhận thủ công ngày 2026-09-21 (đổi shortcut, trạng thái "Đã đăng ký", bấm phím mở lại cửa sổ đúng). Phát hiện và sửa 1 bug thật trong lúc xác nhận: xem "Bug đã sửa" bên dưới. |
-| P1-05 | Visual states | Đủ 5 trạng thái, transition/reset hợp lệ; preview có nhãn; không gọi audio/AI; production UX mặc định không có simulator trừ explicit developer/debug mode. | PASS — transition logic có 17 unit test; simulator chỉ bật khi `import.meta.env.DEV` (không có trong release build) |
-| P1-06 | Desktop configuration | Preferences giữ sau restart; cấu hình thiếu/hỏng có default và không làm app không mở được. | PASS — round-trip load→UI→save qua UI thật→load lại đã xác nhận qua displayName/windowPosition; fallback default có unit test (settings.test.ts) |
-| P1-07 | Accessibility và DPI | Bàn phím/focus/nhãn chữ/giảm chuyển động; kiểm tra 100% và 150% DPI. | PASS phần DPI — chủ dự án xác nhận thủ công ngày 2026-09-21 ở cả 100% và 150%, UI không vỡ layout. Chưa test screen reader thật (còn lại, không chặn nghiệm thu). |
-| P1-08 | Transcript/workspace nếu làm | Layout và fixture rõ ràng; không kết nối hoặc lưu hội thoại thật. | Không làm trong đợt này (tùy chọn, ngoài baseline) |
-| P1-09 | Phạm vi và quyền | App chạy không cần backend, key hoặc database; không xin mic, cấp shell tùy ý hay đọc ổ đĩa rộng. | PASS — không có provider key, mic permission, hay backend call nào trong code |
-| P1-10 | Static checks và build | Typecheck, frontend build, Rust checks và Tauri native build đạt trên bộ version đã ghi nhận. | PASS — typecheck/vitest/vite build/cargo check/tauri build --locked đều exit 0 (bao gồm rebuild sau khi sửa bug quyền shortcut) |
+| ID    | Kiểm tra                      | Kết quả yêu cầu                                                                                                                                                         | Trạng thái thực tế (2026-09-21)                                                                                                                                                                                                                                                                                                                                                                                           |
+| ----- | ------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| P1-00 | Prerequisite gate              | G1–G4 PASS với bằng chứng trước khi bắt đầu UI sản phẩm.                                                                                                         | PASS (xem verification report)                                                                                                                                                                                                                                                                                                                                                                                                |
+| P1-01 | Launch và single instance     | Một instance; executable desktop mở được trên Windows; lần mở tiếp theo focus đúng.                                                                              | PASS — instance thứ hai thoát exit 0 ngay, instance đầu focus lại                                                                                                                                                                                                                                                                                                                                                       |
+| P1-02 | Greeting                       | Đúng các mốc giờ; bật/tắt có hiệu lực; focus lại không chào trùng.                                                                                            | PASS — quan sát qua screenshot thật; logic focus-lại-không-chào-lặp theo thiết kế (onShow chỉ emit khi hidden→visible)                                                                                                                                                                                                                                                                                             |
+| P1-03 | Overlay lifecycle              | Open/show/hide và close-to-tray hoạt động; Exit không để lại process/listener của app.                                                                             | PASS — open/show/hide/close-to-tray xác nhận qua automation;**tray icon Show/Hide/Exit đã xác nhận thủ công bởi chủ dự án ngày 2026-09-21**, đúng hành vi (Exit thoát sạch, không còn process).                                                                                                                                                                                                    |
+| P1-04 | Shortcut nếu bật             | Đăng ký/đổi/tắt và cleanup đúng; conflict có thông báo, tray vẫn dùng được. Nếu không hỗ trợ, ghi lý do và fallback.                                 | PASS đầy đủ — nhánh conflict (mặc định`Ctrl+Shift+Space` bị máy dev chiếm dụng, UI báo "Không khả dụng", tray vẫn dùng được) **và** nhánh đăng ký-thành-công đã xác nhận thủ công ngày 2026-09-21 (đổi shortcut, trạng thái "Đã đăng ký", bấm phím mở lại cửa sổ đúng). Phát hiện và sửa 1 bug thật trong lúc xác nhận: xem "Bug đã sửa" bên dưới. |
+| P1-05 | Visual states                  | Đủ 5 trạng thái, transition/reset hợp lệ; preview có nhãn; không gọi audio/AI; production UX mặc định không có simulator trừ explicit developer/debug mode. | PASS — transition logic có 17 unit test; simulator chỉ bật khi`import.meta.env.DEV` (không có trong release build)                                                                                                                                                                                                                                                                                                    |
+| P1-06 | Desktop configuration          | Preferences giữ sau restart; cấu hình thiếu/hỏng có default và không làm app không mở được.                                                                   | PASS — round-trip load→UI→save qua UI thật→load lại đã xác nhận qua displayName/windowPosition; fallback default có unit test (settings.test.ts)                                                                                                                                                                                                                                                                   |
+| P1-07 | Accessibility và DPI          | Bàn phím/focus/nhãn chữ/giảm chuyển động; kiểm tra 100% và 150% DPI.                                                                                              | PASS phần DPI — chủ dự án xác nhận thủ công ngày 2026-09-21 ở cả 100% và 150%, UI không vỡ layout. Chưa test screen reader thật (còn lại, không chặn nghiệm thu).                                                                                                                                                                                                                                       |
+| P1-08 | Transcript/workspace nếu làm | Layout và fixture rõ ràng; không kết nối hoặc lưu hội thoại thật.                                                                                                | Không làm trong đợt này (tùy chọn, ngoài baseline)                                                                                                                                                                                                                                                                                                                                                                    |
+| P1-09 | Phạm vi và quyền            | App chạy không cần backend, key hoặc database; không xin mic, cấp shell tùy ý hay đọc ổ đĩa rộng.                                                             | PASS — không có provider key, mic permission, hay backend call nào trong code                                                                                                                                                                                                                                                                                                                                             |
+| P1-10 | Static checks và build        | Typecheck, frontend build, Rust checks và Tauri native build đạt trên bộ version đã ghi nhận.                                                                       | PASS — typecheck/vitest/vite build/cargo check/tauri build --locked đều exit 0 (bao gồm rebuild sau khi sửa bug quyền shortcut)                                                                                                                                                                                                                                                                                         |
 
 Tự động kiểm tra logic greeting, state transitions, settings fallback và shortcut lifecycle khi triển khai (17 test vitest). Toàn bộ hạng mục cần kiểm tra trên Windows thật (tray, shortcut, DPI) đã được chủ dự án xác nhận thủ công ngày 2026-09-21. Chi tiết đầy đủ: [apps/desktop/README.md](../apps/desktop/README.md#kết-quả-kiểm-tra-thực-tế-2026-09-21).
 
@@ -167,24 +167,38 @@ Khi chủ dự án test P1-04 (đổi global shortcut), mọi tổ hợp phím k
 
 ## 10. Ghi nhận phê duyệt và điểm dừng
 
-- [x] Phase 0 approved by project owner.
+- [X] Phase 0 approved by project owner.
+
 - Phase 0 approval date: **2026-09-07**.
 - Phase 0 approver: **Project owner**.
-- [x] Phase 1 implementation plan approved by project owner.
+
+- [X] Phase 1 implementation plan approved by project owner.
+
 - Phase 1 approval date: **2026-09-08**.
 - Phase 1 approver: **Project owner**.
-- [x] Desktop Shell implementation approved by project owner.
-- Desktop Shell implementation approval date: **2026-09-16**.
-- [x] Prerequisite gate G1–G4 passed.
-- [x] Phase 1 implementation started.
-- Phase 1 implementation start date: **2026-09-16**.
-- [x] Tất cả hạng mục kiểm tra P1-00 → P1-10 đã có kết quả (PASS hoặc ghi rõ ngoài phạm vi); các mục cần xác nhận trên Windows thật (tray, shortcut, DPI) do chủ dự án tự xác nhận ngày 2026-09-21.
-- [ ] Phase 1 completed / accepted by project owner.
 
-**Current Phase: Phase 1 — Desktop Assistant Shell (Implementation baseline verified; chờ chủ dự án nghiệm thu chính thức).**
+- [X] Desktop Shell implementation approved by project owner.
+
+- Desktop Shell implementation approval date: **2026-09-16**.
+
+- [X] Prerequisite gate G1–G4 passed.
+- [X] Phase 1 implementation started.
+
+- Phase 1 implementation start date: **2026-09-16**.
+
+- [X] Tất cả hạng mục kiểm tra P1-00 → P1-10 đã có kết quả (PASS hoặc ghi rõ ngoài phạm vi); các mục cần xác nhận trên Windows thật (tray, shortcut, DPI) do chủ dự án tự xác nhận ngày 2026-09-21.
+- [X] Phase 1 completed / accepted by project owner.
+- Phase 1 completion date: **2026-09-21**.
+- Phase 1 approver: **Project owner**.
+
+**Current Phase: Phase 2 — Speech Pipeline (chưa bắt đầu; chưa có kế hoạch implementation).**
+
+Phase 1 — Desktop Assistant Shell: ✅ **Completed**, chủ dự án phê duyệt nghiệm thu ngày 2026-09-21.
 
 **STOP sau G1–G4:** nếu gate FAIL/BLOCKED, báo nguyên nhân; nếu tất cả PASS, cập nhật README và vẫn chờ implementation approval. Không tự đánh dấu Phase 1 implementation started.
 
 PHASE 1 PREREQUISITE GATE PASSED — WAITING FOR IMPLEMENTATION APPROVAL
 
-**Cập nhật 2026-09-21:** toàn bộ bảng kiểm thử §8 đã có kết quả PASS, bao gồm các mục trước đó cần xác nhận thủ công (tray icon, shortcut trigger, DPI 100%/150%) — chủ dự án đã tự kiểm tra trực tiếp trên Windows. Một bug thật (thiếu quyền ACL cho `global-shortcut` khiến mọi shortcut bị báo nhầm "không khả dụng") đã được phát hiện trong lúc xác nhận và sửa. Phase 1 **chưa được tự đánh dấu completed** — chờ chủ dự án phê duyệt nghiệm thu chính thức.
+**Cập nhật 2026-09-21:** toàn bộ bảng kiểm thử §8 đã có kết quả PASS, bao gồm các mục trước đó cần xác nhận thủ công (tray icon, shortcut trigger, DPI 100%/150%) — chủ dự án đã tự kiểm tra trực tiếp trên Windows. Một bug thật (thiếu quyền ACL cho `global-shortcut` khiến mọi shortcut bị báo nhầm "không khả dụng") đã được phát hiện trong lúc xác nhận và sửa. Chủ dự án đã phê duyệt nghiệm thu — **Phase 1 completed**.
+
+PHASE 1 — DESKTOP ASSISTANT SHELL: COMPLETED (2026-09-21). NEXT: PHASE 2 — SPEECH PIPELINE CHƯA CÓ KẾ HOẠCH IMPLEMENTATION.

@@ -6,10 +6,10 @@ Thứ tự ưu tiên tương tác: **Voice → Text / Transcript → Vision (tư
 
 ## Trạng thái thực tế
 
-- **Current Phase:** Phase 1 — Desktop Assistant Shell (Baseline verified; chờ nghiệm thu chính thức).
+- **Current Phase:** Phase 2 — Speech Pipeline (chưa bắt đầu; chờ soạn và duyệt kế hoạch implementation).
 - **Phase 0:** ✅ Completed — Foundation & Voice-First Architecture.
 - **Ngày duyệt Phase 0:** 2026-09-07.
-- **Phase 1 Status:** 🔵 Toàn bộ kiểm tra P1-00 → P1-10 đã PASS (bao gồm xác nhận thủ công của chủ dự án ngày 2026-09-21). Chờ chủ dự án phê duyệt nghiệm thu chính thức để đóng Phase 1.
+- **Phase 1:** ✅ Completed — Desktop Assistant Shell. Chủ dự án phê duyệt nghiệm thu ngày 2026-09-21.
 - **Cập nhật:** 2026-09-21.
 - Repository chứa tài liệu thiết kế, **Tauri minimal spike đã build/chạy native trên Windows** tại `spikes/tauri-minimal/`, và **Desktop Shell baseline tại `apps/desktop/` đã build/chạy native trên Windows** (compact overlay, tray Show/Hide/Exit, single instance, greeting, 5 visual states, cấu hình cơ bản, global shortcut với xử lý conflict). Xem kết quả kiểm tra thật: [apps/desktop/README.md](apps/desktop/README.md#kết-quả-kiểm-tra-thực-tế-2026-09-21).
 - Technical foundation Phase 0 và kế hoạch Phase 1 đã được chủ dự án phê duyệt. Chủ dự án duyệt Desktop Shell implementation ngày 2026-09-16; các kiểm tra tương tác (tray icon click, shortcut trigger thành công, DPI 100%/150%) đã được chủ dự án tự xác nhận thủ công trên Windows thật ngày 2026-09-21 — cả 3 đều PASS. Một bug thật (thiếu quyền ACL cho global-shortcut) được phát hiện và sửa trong quá trình đó.
@@ -67,6 +67,8 @@ Checkbox chỉ được đánh dấu sau khi artifact tồn tại và đã kiể
 - Desktop Shell implementation approval date: **2026-09-16**.
 - [x] Phase 1 implementation started.
 - Phase 1 implementation start date: **2026-09-16**.
+- [x] Phase 1 completed / accepted by project owner.
+- Phase 1 completion date: **2026-09-21**.
 
 ## Phase 1 — Prerequisite verification result
 
@@ -91,14 +93,14 @@ Chủ dự án duyệt Desktop Shell implementation ngày 2026-09-16. Đã build
 
 - PASS: prerequisite gate, static checks/build (typecheck/vitest 17 test/vite build/cargo check/tauri build --locked), single instance, open/show/hide/close-to-tray, greeting theo giờ, 5 visual states + dev-only simulator, settings round-trip qua UI thật, shortcut-conflict-detection với fallback tray, phạm vi/quyền (không mic/key/backend).
 - Ngày 2026-09-21, chủ dự án tự xác nhận thủ công trên Windows thật 3 mục còn lại — **cả 3 đều PASS**: tray icon click Show/Hide/Exit, shortcut trigger ở trường hợp đăng ký thành công, DPI 100%/150%. Trong lúc xác nhận shortcut, phát hiện và sửa 1 bug thật: `capabilities/default.json` cấp `global-shortcut:default` — permission set này **rỗng theo thiết kế bảo mật của Tauri**, khiến mọi `register()` bị ACL từ chối và báo nhầm thành "trùng shortcut". Đã sửa bằng cách khai rõ `allow-register`/`allow-unregister`/`allow-is-registered`, rebuild, và chủ dự án xác nhận lại thành công.
-- Phase 1 baseline giờ đã có kết quả PASS đầy đủ cho toàn bộ P1-00 → P1-10. **Vẫn chờ chủ dự án phê duyệt nghiệm thu chính thức** để đóng Phase 1 — không tự đánh dấu completed.
+- Phase 1 baseline có kết quả PASS đầy đủ cho toàn bộ P1-00 → P1-10. **Chủ dự án đã phê duyệt nghiệm thu Phase 1 ngày 2026-09-21.** Phase 1 — Desktop Assistant Shell: ✅ **Completed**.
 
 ## Roadmap
 
 | Phase | Mục tiêu                            | Trạng thái                               |
 | ----- | ------------------------------------- | ------------------------------------------ |
 | 0     | Foundation & Voice-First Architecture | ✅ Completed |
-| 1     | Desktop Assistant Shell               | 🔵 Baseline verified, toàn bộ P1-00→P1-10 PASS — chờ nghiệm thu chính thức |
+| 1     | Desktop Assistant Shell               | ✅ Completed |
 | 2     | Speech Pipeline                       | Not Started                                |
 | 3     | Voice AI Conversation                 | Not Started                                |
 | 4     | Agent + Tool Calling                  | Not Started                                |
@@ -133,10 +135,11 @@ Lệnh build/chạy cùng manifests và lockfiles có trong [minimal spike](spik
 | 2026-09-09 | Re-verify sau khi chủ máy nâng Node: G1 PASS, G2 BLOCKED, G3 PASS, G4 BLOCKED / NOT RUN. Giữ lịch sử FAIL; cần chủ máy hoàn tất C++ Build Tools/Windows SDK; chưa tạo spike hoặc triển khai shell. |
 | 2026-09-09 | Sau remediation native của chủ máy: G2 PASS; G4 minimal spike đã install/build/chạy cửa sổ native và đóng sạch. G1–G4 PASS; chuyển Ready for Implementation Approval, chưa bắt đầu Desktop Shell. |
 | 2026-09-16 | Chủ dự án duyệt Desktop Shell implementation. Đã scaffold `apps/desktop/`, build và chạy native thành công trên Windows x64 (compact overlay, tray, single instance, greeting, 5 visual states, settings, shortcut với xử lý conflict). Một số kiểm tra tương tác chưa tự động hóa được, cần xác nhận thủ công; Phase 1 chưa được đánh dấu hoàn thành, chờ chủ dự án nghiệm thu. |
-| 2026-09-21 | Chủ dự án tự xác nhận thủ công trên Windows thật 3 mục còn lại (tray icon click, shortcut trigger thành công, DPI 100%/150%) — cả 3 PASS. Phát hiện và sửa 1 bug thật: thiếu quyền ACL cho plugin global-shortcut khiến mọi tổ hợp phím bị báo nhầm "không khả dụng". Toàn bộ P1-00→P1-10 đã PASS; Phase 1 vẫn chưa tự đánh dấu completed, chờ phê duyệt nghiệm thu chính thức. |
+| 2026-09-21 | Chủ dự án tự xác nhận thủ công trên Windows thật 3 mục còn lại (tray icon click, shortcut trigger thành công, DPI 100%/150%) — cả 3 PASS. Phát hiện và sửa 1 bug thật: thiếu quyền ACL cho plugin global-shortcut khiến mọi tổ hợp phím bị báo nhầm "không khả dụng". Toàn bộ P1-00→P1-10 đã PASS. |
+| 2026-09-21 | Chủ dự án phê duyệt nghiệm thu Phase 1 — Desktop Assistant Shell. Phase 1 chuyển sang ✅ Completed. Current Phase chuyển sang Phase 2 — Speech Pipeline (chưa bắt đầu, chưa có kế hoạch implementation). |
 
 ## Quy tắc hoàn thành
 
 Một phase chỉ hoàn thành khi artifact đúng phạm vi đã có, validation phù hợp đã đạt, kết quả đã báo cáo và chủ dự án đã phê duyệt. Không tự đánh dấu phê duyệt dựa trên việc tài liệu đã được viết.
 
-**Bước tiếp theo:** STOP — toàn bộ P1-00 → P1-10 đã có kết quả PASS (kể cả 3 mục xác nhận thủ công: tray icon click, shortcut trigger thành công, DPI 100%/150%, đều do chủ dự án tự kiểm tra ngày 2026-09-21). Không tự đánh dấu Phase 1 completed — chờ chủ dự án phê duyệt nghiệm thu chính thức để đóng phase.
+**Bước tiếp theo:** Phase 1 — Desktop Assistant Shell đã ✅ Completed (chủ dự án phê duyệt nghiệm thu 2026-09-21). STOP trước Phase 2 — Speech Pipeline: chưa có kế hoạch implementation nào được soạn hay duyệt cho Phase 2; cần soạn kế hoạch riêng (phạm vi, prerequisite, architectural constraints) và chờ chủ dự án phê duyệt trước khi bắt đầu, theo đúng quy trình đã áp dụng cho Phase 1.

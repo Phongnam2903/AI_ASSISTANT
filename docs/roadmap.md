@@ -1,6 +1,6 @@
 # Roadmap Voice-First
 
-Cập nhật: 2026-09-09. Phase 0: ✅ Completed — được chủ dự án phê duyệt ngày 2026-09-07; Phase 1: 🟡 Ready for Implementation Approval, chưa triển khai; Phase 2–12: Not Started. Mỗi phase cần bằng chứng kiểm tra và chủ dự án phê duyệt trước khi đánh hoàn thành.
+Cập nhật: 2026-09-21. Phase 0: ✅ Completed — được chủ dự án phê duyệt ngày 2026-09-07; Phase 1: ✅ Completed — Desktop Assistant Shell, chủ dự án phê duyệt nghiệm thu ngày 2026-09-21 (xem [kết quả P1-00→P1-10](phase-1-implementation-plan.md#8-tiêu-chí-kiểm-thử-và-nghiệm-thu)); Phase 2 — Speech Pipeline: chưa bắt đầu, chưa có kế hoạch implementation; Phase 3–12: Not Started. Mỗi phase cần bằng chứng kiểm tra và chủ dự án phê duyệt trước khi đánh hoàn thành.
 
 ## Version 1 — Từ presence đến trợ lý làm việc
 
@@ -48,3 +48,12 @@ Gate evaluation ngày 2026-09-08: G1 PASS, G2 FAIL, G3 FAIL, G4 BLOCKED. Xem [b�
 Remediation ngày 2026-09-09: **G1 PASS, G2 BLOCKED, G3 PASS, G4 BLOCKED / NOT RUN**. Node 24.20.0/npm 11.19.0 và compatibility metadata đã xác minh; C++ compiler/linker và Windows SDK còn thiếu. Xem [bằng chứng mới](phase-1-prerequisite-verification.md#prerequisite-remediation--2026-09-09). Chỉ tạo/chạy spike khi G1–G3 đều PASS; không copy/move spike vào app chính. Desktop Shell implementation chưa bắt đầu.
 
 Sau remediation native tiếp theo ngày 2026-09-09: **G1–G4 PASS**. Minimal spike đã build release, mở cửa sổ native với nhãn và đóng sạch (exit 0). Xem [kết quả G2/G4](phase-1-prerequisite-verification.md#native-toolchain-re-verification-and-g4-spike--2026-09-09). Chờ implementation approval riêng; chưa bắt đầu `apps/desktop/`.
+
+- [x] Desktop Shell implementation approved by project owner.
+- Desktop Shell implementation approval date: **2026-09-16**.
+- [x] Phase 1 completed / accepted by project owner.
+- Phase 1 completion date: **2026-09-21**.
+
+Desktop Shell (`apps/desktop/`) đã build/chạy native thành công trên Windows x64; toàn bộ kiểm tra P1-00 → P1-10 PASS, bao gồm xác nhận thủ công (tray icon, shortcut, DPI) ngày 2026-09-21. Chi tiết: [phase-1-implementation-plan.md §8](phase-1-implementation-plan.md#8-tiêu-chí-kiểm-thử-và-nghiệm-thu), [apps/desktop/README.md](../apps/desktop/README.md). **Phase 1 — Desktop Assistant Shell: Completed.**
+
+**Current Phase: Phase 2 — Speech Pipeline.** Chưa có kế hoạch implementation; cần soạn và chủ dự án duyệt trước khi bắt đầu, theo đúng quy trình đã áp dụng cho Phase 1.
