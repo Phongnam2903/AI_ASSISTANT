@@ -6,7 +6,7 @@ Thứ tự ưu tiên tương tác: **Voice → Text / Transcript → Vision (tư
 
 ## Trạng thái thực tế
 
-- **Current Phase:** Phase 2 — Speech Pipeline (chưa bắt đầu; chờ soạn và duyệt kế hoạch implementation).
+- **Current Phase:** Phase 2 — Speech Pipeline. Kế hoạch implementation đã soạn ([xem](docs/phase-2-implementation-plan.md)), **chờ chủ dự án phê duyệt**; chưa chạy prerequisite gate, chưa có code.
 - **Phase 0:** ✅ Completed — Foundation & Voice-First Architecture.
 - **Ngày duyệt Phase 0:** 2026-09-07.
 - **Phase 1:** ✅ Completed — Desktop Assistant Shell. Chủ dự án phê duyệt nghiệm thu ngày 2026-09-21.
@@ -95,13 +95,17 @@ Chủ dự án duyệt Desktop Shell implementation ngày 2026-09-16. Đã build
 - Ngày 2026-09-21, chủ dự án tự xác nhận thủ công trên Windows thật 3 mục còn lại — **cả 3 đều PASS**: tray icon click Show/Hide/Exit, shortcut trigger ở trường hợp đăng ký thành công, DPI 100%/150%. Trong lúc xác nhận shortcut, phát hiện và sửa 1 bug thật: `capabilities/default.json` cấp `global-shortcut:default` — permission set này **rỗng theo thiết kế bảo mật của Tauri**, khiến mọi `register()` bị ACL từ chối và báo nhầm thành "trùng shortcut". Đã sửa bằng cách khai rõ `allow-register`/`allow-unregister`/`allow-is-registered`, rebuild, và chủ dự án xác nhận lại thành công.
 - Phase 1 baseline có kết quả PASS đầy đủ cho toàn bộ P1-00 → P1-10. **Chủ dự án đã phê duyệt nghiệm thu Phase 1 ngày 2026-09-21.** Phase 1 — Desktop Assistant Shell: ✅ **Completed**.
 
+## Phase 2 — Speech Pipeline (Proposed, chờ phê duyệt)
+
+Kế hoạch implementation đã soạn: [docs/phase-2-implementation-plan.md](docs/phase-2-implementation-plan.md). Phạm vi: audio spike, microphone, VAD, STT, phản hồi cố định (chưa LLM), TTS, backend FastAPI/WebSocket có auth, `packages/contracts` khóa schema. **Chưa có gì được triển khai** — chưa chạy prerequisite gate, chưa tạo spike, chưa có file nào trong `apps/backend/`. Kế hoạch có một câu hỏi cần chủ dự án trả lời trước khi chạy gate: có đồng ý bắt đầu bằng bộ provider local (Silero VAD + faster-whisper + Piper TTS) để tránh chi phí/API key ngay từ đầu không (xem plan §4).
+
 ## Roadmap
 
 | Phase | Mục tiêu                            | Trạng thái                               |
 | ----- | ------------------------------------- | ------------------------------------------ |
 | 0     | Foundation & Voice-First Architecture | ✅ Completed |
 | 1     | Desktop Assistant Shell               | ✅ Completed |
-| 2     | Speech Pipeline                       | Not Started                                |
+| 2     | Speech Pipeline                       | 🟡 Kế hoạch đã soạn, chờ phê duyệt |
 | 3     | Voice AI Conversation                 | Not Started                                |
 | 4     | Agent + Tool Calling                  | Not Started                                |
 | 5     | Permission & Security Layer           | Not Started                                |
@@ -118,7 +122,7 @@ Chi tiết phạm vi và tiêu chí kết thúc từng phase: [roadmap](docs/roa
 ## Bắt đầu đọc
 
 - [Yêu cầu sản phẩm](docs/requirements.md) và [kiến trúc](docs/architecture.md).
-- [Kế hoạch Phase 1 đã duyệt](docs/phase-1-implementation-plan.md).
+- [Kế hoạch Phase 1 đã duyệt](docs/phase-1-implementation-plan.md) (Completed) và [kế hoạch Phase 2](docs/phase-2-implementation-plan.md) (Proposed, chờ duyệt).
 - [Hướng dẫn phát triển](docs/development-guide.md) và [bằng chứng kiểm tra](docs/phase-0-verification.md).
 
 Lệnh build/chạy cùng manifests và lockfiles có trong [minimal spike](spikes/tauri-minimal/README.md) và [Desktop Shell](apps/desktop/README.md). Chưa có backend hoặc cấu hình Compose thực thi; các phần này được triển khai ở phase tương ứng sau khi được duyệt.

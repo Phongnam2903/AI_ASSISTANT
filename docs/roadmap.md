@@ -1,6 +1,6 @@
 # Roadmap Voice-First
 
-Cập nhật: 2026-09-21. Phase 0: ✅ Completed — được chủ dự án phê duyệt ngày 2026-09-07; Phase 1: ✅ Completed — Desktop Assistant Shell, chủ dự án phê duyệt nghiệm thu ngày 2026-09-21 (xem [kết quả P1-00→P1-10](phase-1-implementation-plan.md#8-tiêu-chí-kiểm-thử-và-nghiệm-thu)); Phase 2 — Speech Pipeline: chưa bắt đầu, chưa có kế hoạch implementation; Phase 3–12: Not Started. Mỗi phase cần bằng chứng kiểm tra và chủ dự án phê duyệt trước khi đánh hoàn thành.
+Cập nhật: 2026-09-21. Phase 0: ✅ Completed — được chủ dự án phê duyệt ngày 2026-09-07; Phase 1: ✅ Completed — Desktop Assistant Shell, chủ dự án phê duyệt nghiệm thu ngày 2026-09-21 (xem [kết quả P1-00→P1-10](phase-1-implementation-plan.md#8-tiêu-chí-kiểm-thử-và-nghiệm-thu)); Phase 2 — Speech Pipeline: kế hoạch implementation đã soạn — [phase-2-implementation-plan.md](phase-2-implementation-plan.md) — **Proposed, chờ chủ dự án phê duyệt**, chưa chạy prerequisite gate hay code; Phase 3–12: Not Started. Mỗi phase cần bằng chứng kiểm tra và chủ dự án phê duyệt trước khi đánh hoàn thành.
 
 ## Version 1 — Từ presence đến trợ lý làm việc
 
@@ -33,7 +33,7 @@ Security được triển khai dần: native permissions ở Phase 1, auth/audio
 
 Phase 1 có greeting chữ và trạng thái voice mô phỏng có nhãn. Phase 2 bổ sung greeting bằng giọng nói và speech thật. Phase 3 mới gọi LLM. Wake word luôn thuộc Phase 9; click/shortcut đủ cho giai đoạn đầu.
 
-Trước khi triển khai mỗi phase, xác định dependency versions/provider cần dùng, kế hoạch kiểm tra và thay đổi phạm vi. Không đặt ngày hoàn thành chưa có cơ sở. Kế hoạch gần nhất: [Phase 1](phase-1-implementation-plan.md).
+Trước khi triển khai mỗi phase, xác định dependency versions/provider cần dùng, kế hoạch kiểm tra và thay đổi phạm vi. Không đặt ngày hoàn thành chưa có cơ sở. Kế hoạch gần nhất: [Phase 2](phase-2-implementation-plan.md) (Proposed, chờ duyệt); kế hoạch đã hoàn thành: [Phase 1](phase-1-implementation-plan.md).
 
 - [x] Phase 0 approved by project owner.
 - Phase 0 approval date: **2026-09-07**.
@@ -56,4 +56,7 @@ Sau remediation native tiếp theo ngày 2026-09-09: **G1–G4 PASS**. Minimal s
 
 Desktop Shell (`apps/desktop/`) đã build/chạy native thành công trên Windows x64; toàn bộ kiểm tra P1-00 → P1-10 PASS, bao gồm xác nhận thủ công (tray icon, shortcut, DPI) ngày 2026-09-21. Chi tiết: [phase-1-implementation-plan.md §8](phase-1-implementation-plan.md#8-tiêu-chí-kiểm-thử-và-nghiệm-thu), [apps/desktop/README.md](../apps/desktop/README.md). **Phase 1 — Desktop Assistant Shell: Completed.**
 
-**Current Phase: Phase 2 — Speech Pipeline.** Chưa có kế hoạch implementation; cần soạn và chủ dự án duyệt trước khi bắt đầu, theo đúng quy trình đã áp dụng cho Phase 1.
+- [x] Phase 2 implementation plan drafted — **2026-09-21**.
+- [ ] Phase 2 implementation plan approved by project owner.
+
+**Current Phase: Phase 2 — Speech Pipeline (Proposed).** Kế hoạch đã soạn tại [phase-2-implementation-plan.md](phase-2-implementation-plan.md); chờ chủ dự án phê duyệt trước khi chạy prerequisite gate hoặc code, theo đúng quy trình đã áp dụng cho Phase 1.
