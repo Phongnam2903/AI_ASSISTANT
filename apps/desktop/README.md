@@ -1,6 +1,6 @@
 # Desktop Assistant Shell
 
-Status: Implementation in progress — Phase 1 baseline built and verified on Windows x64. Chủ dự án duyệt Desktop Shell implementation ngày 2026-09-16.
+Status: Implementation baseline verified — toàn bộ kiểm tra P1-00 → P1-10 đã có kết quả PASS trên Windows x64, bao gồm xác nhận thủ công của chủ dự án ngày 2026-09-21. Chờ chủ dự án phê duyệt nghiệm thu chính thức để coi Phase 1 hoàn thành.
 
 Tauri 2 quản lý window/tray/shortcut/lifecycle; React + TypeScript hiển thị compact assistant overlay, greeting, trạng thái và cấu hình cơ bản. Windows x64 là target đầu tiên.
 
@@ -80,7 +80,7 @@ npm run native:build   # verify:toolchain + test + tauri build --no-bundle --loc
 
 `scripts/build-native.ps1` kích hoạt đúng MSVC 14.29.30133 / Windows SDK 10.0.22621.0 qua VsDevCmd rồi chạy `native:build`. `scripts/verify-native-runtime.ps1` mở executable đã build, xác minh cửa sổ visible/đúng tiêu đề, và kiểm tra close-to-tray (đóng không thoát) — evidence tại `verification/`.
 
-## Kết quả kiểm tra thực tế (2026-09-16)
+## Kết quả kiểm tra thực tế (2026-09-21)
 
 | Hạng mục | Kết quả |
 | --- | --- |
@@ -95,17 +95,20 @@ npm run native:build   # verify:toolchain + test + tauri build --no-bundle --loc
 | Settings round-trip (load → hiển thị UI → lưu qua UI thật → load lại) | PASS — xác nhận qua `displayName`/`windowPosition` phản ánh đúng trên titlebar/greeting sau khi seed và sau khi lưu qua click "Ẩn" thật |
 | Greeting đúng mốc giờ + hiển thị `displayName` | PASS (quan sát qua screenshot thật, ví dụ "Chào buổi chiều, Nam Test") |
 | Shortcut — trường hợp bị trùng (conflict) | PASS — `CommandOrControl+Shift+Space` bị máy dev hiện tại chiếm dụng; UI hiển thị đúng "Không khả dụng", tray vẫn dùng bình thường |
-| Shortcut — trường hợp đăng ký thành công + trigger | **Chưa kết luận được bằng automation** — click chuột tự động vào UI không ổn định trong phiên này do Windows chặn `SetForegroundWindow` từ process không tương tác (xác nhận qua `ForegroundMatches=False`); đây là giới hạn của kịch bản automation, không phải lỗi code (code path giống hệt case đăng ký thất bại, chỉ khác nhánh try/catch dựa trên kết quả OS). Cần người dùng thật bấm thử một lần trên máy Windows để xác nhận đầy đủ theo đúng yêu cầu dự án ("Tray/focus/show/hide/Exit cần kiểm tra trên Windows thật"). |
-| Tray menu Show/Hide/Exit — click chuột thật vào tray icon | **Chưa tự động hóa được** trong phiên này (icon tray khó click chính xác qua tọa độ màn hình một cách đáng tin cậy). Logic xử lý dùng chung code path đã verify (cùng gọi `window.show()/hide()`/`app.exit(0)` như các đường đã PASS ở trên). Đề nghị người dùng thử tray icon một lần thủ công. |
-| DPI 100%/150% | Chưa kiểm tra tường minh ở cả hai mốc; máy dev hiện chạy ở DPI scale khác 100% (cửa sổ 400×560 logical hiển thị 518×710 physical, khớp tỉ lệ DPI hệ thống) — chưa đổi DPI hệ thống để test riêng từng mốc. |
-| Accessibility (bàn phím/focus/nhãn) | Nút có `aria-label`; chưa kiểm tra đầy đủ bằng screen reader thật. |
+| Shortcut — trường hợp đăng ký thành công + trigger | **PASS** — chủ dự án xác nhận thủ công ngày 2026-09-21: đổi sang tổ hợp khác, trạng thái chuyển "Đã đăng ký", bấm phím tắt mở lại đúng cửa sổ. Phát hiện và sửa 1 bug thật trong quá trình này (xem "Bug đã sửa" bên dưới). |
+| Tray menu Show/Hide/Exit — click chuột thật vào tray icon | **PASS** — chủ dự án xác nhận thủ công ngày 2026-09-21: Hide/Show đúng hành vi, Exit thoát sạch (không còn process trong Task Manager). |
+| DPI 100%/150% | **PASS** — chủ dự án xác nhận thủ công ngày 2026-09-21 ở cả hai mốc scale, UI không vỡ layout. |
+| Accessibility (bàn phím/focus/nhãn) | Nút có `aria-label`; chưa kiểm tra đầy đủ bằng screen reader thật (không chặn nghiệm thu). |
+
+## Bug đã sửa (2026-09-21)
+
+Khi xác nhận thủ công shortcut, mọi tổ hợp phím — kể cả tổ hợp hiếm dùng như `Alt+Shift+A`, `Ctrl+Alt+Shift+K` — đều báo "Không khả dụng". Nguyên nhân: `src-tauri/capabilities/default.json` cấp `global-shortcut:default`, nhưng permission set `default` của plugin này **rỗng theo thiết kế bảo mật của Tauri** (không tự cấp quyền `register`/`unregister`/`is_registered`), nên mọi lệnh `register()` bị ACL từ chối và code bắt lỗi đó, báo nhầm giống hệt trường hợp OS conflict thật. Đã sửa bằng cách khai rõ `global-shortcut:allow-register`, `global-shortcut:allow-unregister`, `global-shortcut:allow-is-registered`; rebuild và xác nhận lại thành công.
 
 ## Giới hạn còn lại / cần làm tiếp
 
-- Xác nhận thủ công (một lần, trên Windows thật): click tray icon Show/Hide/Exit; đổi shortcut sang tổ hợp không xung đột và bấm thử để xác nhận trigger mở lại cửa sổ.
-- Kiểm tra DPI 100% và 150% tường minh (P1-07).
 - Full Workspace, transcript area: không làm trong đợt này (tùy chọn theo phạm vi Phase 1).
-- Chưa có automation UI test (Playwright/WebDriver) cho các luồng tương tác chuột — hiện chỉ có unit test logic thuần + kiểm tra native lifecycle qua Win32 API script.
+- Chưa có automation UI test (Playwright/WebDriver) cho các luồng tương tác chuột — hiện chỉ có unit test logic thuần + kiểm tra native lifecycle qua Win32 API script; các luồng tương tác đã được xác nhận thủ công thay thế.
+- Chưa kiểm tra bằng screen reader thật (P1-07 phần accessibility, không chặn nghiệm thu baseline).
 
 ## Không nằm trong phạm vi
 

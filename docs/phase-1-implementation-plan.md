@@ -136,21 +136,25 @@ Tham chiếu native features: [system tray](https://v2.tauri.app/learn/system-tr
 
 ## 8. Tiêu chí kiểm thử và nghiệm thu
 
-| ID | Kiểm tra | Kết quả yêu cầu | Trạng thái thực tế (2026-09-16) |
+| ID | Kiểm tra | Kết quả yêu cầu | Trạng thái thực tế (2026-09-21) |
 | --- | --- | --- | --- |
 | P1-00 | Prerequisite gate | G1–G4 PASS với bằng chứng trước khi bắt đầu UI sản phẩm. | PASS (xem verification report) |
 | P1-01 | Launch và single instance | Một instance; executable desktop mở được trên Windows; lần mở tiếp theo focus đúng. | PASS — instance thứ hai thoát exit 0 ngay, instance đầu focus lại |
 | P1-02 | Greeting | Đúng các mốc giờ; bật/tắt có hiệu lực; focus lại không chào trùng. | PASS — quan sát qua screenshot thật; logic focus-lại-không-chào-lặp theo thiết kế (onShow chỉ emit khi hidden→visible) |
-| P1-03 | Overlay lifecycle | Open/show/hide và close-to-tray hoạt động; Exit không để lại process/listener của app. | PASS phần open/show/hide/close-to-tray (verify-native-runtime.ps1). Exit qua tray menu **chưa tự động hóa được** trong phiên này — cần xác nhận thủ công |
-| P1-04 | Shortcut nếu bật | Đăng ký/đổi/tắt và cleanup đúng; conflict có thông báo, tray vẫn dùng được. Nếu không hỗ trợ, ghi lý do và fallback. | PASS nhánh conflict (mặc định Ctrl+Shift+Space bị máy dev chiếm dụng, UI báo "Không khả dụng", tray vẫn dùng được). Nhánh đăng ký-thành-công **chưa kết luận được bằng automation** (xem apps/desktop/README.md) |
+| P1-03 | Overlay lifecycle | Open/show/hide và close-to-tray hoạt động; Exit không để lại process/listener của app. | PASS — open/show/hide/close-to-tray xác nhận qua automation; **tray icon Show/Hide/Exit đã xác nhận thủ công bởi chủ dự án ngày 2026-09-21**, đúng hành vi (Exit thoát sạch, không còn process). |
+| P1-04 | Shortcut nếu bật | Đăng ký/đổi/tắt và cleanup đúng; conflict có thông báo, tray vẫn dùng được. Nếu không hỗ trợ, ghi lý do và fallback. | PASS đầy đủ — nhánh conflict (mặc định `Ctrl+Shift+Space` bị máy dev chiếm dụng, UI báo "Không khả dụng", tray vẫn dùng được) **và** nhánh đăng ký-thành-công đã xác nhận thủ công ngày 2026-09-21 (đổi shortcut, trạng thái "Đã đăng ký", bấm phím mở lại cửa sổ đúng). Phát hiện và sửa 1 bug thật trong lúc xác nhận: xem "Bug đã sửa" bên dưới. |
 | P1-05 | Visual states | Đủ 5 trạng thái, transition/reset hợp lệ; preview có nhãn; không gọi audio/AI; production UX mặc định không có simulator trừ explicit developer/debug mode. | PASS — transition logic có 17 unit test; simulator chỉ bật khi `import.meta.env.DEV` (không có trong release build) |
 | P1-06 | Desktop configuration | Preferences giữ sau restart; cấu hình thiếu/hỏng có default và không làm app không mở được. | PASS — round-trip load→UI→save qua UI thật→load lại đã xác nhận qua displayName/windowPosition; fallback default có unit test (settings.test.ts) |
-| P1-07 | Accessibility và DPI | Bàn phím/focus/nhãn chữ/giảm chuyển động; kiểm tra 100% và 150% DPI. | Chưa kiểm tra tường minh ở cả hai mốc DPI; nút có aria-label nhưng chưa test screen reader thật |
+| P1-07 | Accessibility và DPI | Bàn phím/focus/nhãn chữ/giảm chuyển động; kiểm tra 100% và 150% DPI. | PASS phần DPI — chủ dự án xác nhận thủ công ngày 2026-09-21 ở cả 100% và 150%, UI không vỡ layout. Chưa test screen reader thật (còn lại, không chặn nghiệm thu). |
 | P1-08 | Transcript/workspace nếu làm | Layout và fixture rõ ràng; không kết nối hoặc lưu hội thoại thật. | Không làm trong đợt này (tùy chọn, ngoài baseline) |
 | P1-09 | Phạm vi và quyền | App chạy không cần backend, key hoặc database; không xin mic, cấp shell tùy ý hay đọc ổ đĩa rộng. | PASS — không có provider key, mic permission, hay backend call nào trong code |
-| P1-10 | Static checks và build | Typecheck, frontend build, Rust checks và Tauri native build đạt trên bộ version đã ghi nhận. | PASS — typecheck/vitest/vite build/cargo check/tauri build --locked đều exit 0 |
+| P1-10 | Static checks và build | Typecheck, frontend build, Rust checks và Tauri native build đạt trên bộ version đã ghi nhận. | PASS — typecheck/vitest/vite build/cargo check/tauri build --locked đều exit 0 (bao gồm rebuild sau khi sửa bug quyền shortcut) |
 
-Tự động kiểm tra logic greeting, state transitions, settings fallback và shortcut lifecycle khi triển khai (17 test vitest). Tray/focus/show/hide/Exit đã kiểm tra trên desktop Windows thật cho open/show/hide/close-to-tray/single-instance; riêng tray-icon-click và shortcut-trigger-thành-công chưa tự động hóa được do Windows chặn `SetForegroundWindow` từ process không tương tác trong phiên automation này — cần người dùng xác nhận thủ công một lần. Chi tiết đầy đủ: [apps/desktop/README.md](../apps/desktop/README.md#kết-quả-kiểm-tra-thực-tế-2026-09-16).
+Tự động kiểm tra logic greeting, state transitions, settings fallback và shortcut lifecycle khi triển khai (17 test vitest). Toàn bộ hạng mục cần kiểm tra trên Windows thật (tray, shortcut, DPI) đã được chủ dự án xác nhận thủ công ngày 2026-09-21. Chi tiết đầy đủ: [apps/desktop/README.md](../apps/desktop/README.md#kết-quả-kiểm-tra-thực-tế-2026-09-21).
+
+### Bug đã sửa trong lúc xác nhận thủ công (2026-09-21)
+
+Khi chủ dự án test P1-04 (đổi global shortcut), mọi tổ hợp phím kể cả tổ hợp hiếm/không xung đột (`Alt+Shift+A`, `Ctrl+Alt+Shift+K`) đều báo "Không khả dụng". Nguyên nhân thật: `src-tauri/capabilities/default.json` cấp quyền `global-shortcut:default` — nhưng permission set `default` của plugin `global-shortcut` **rỗng theo thiết kế bảo mật của Tauri** ("No features are enabled by default... it is application specific if specific shortcuts should be registered"), nên mọi lệnh `register()` từ JS đều bị ACL từ chối, và code bắt lỗi đó rồi báo nhầm thành "bị trùng/hệ thống từ chối" giống hệt trường hợp OS conflict thật — hai nguyên nhân không phân biệt được qua UI. Đã sửa bằng cách khai rõ `global-shortcut:allow-register`, `global-shortcut:allow-unregister`, `global-shortcut:allow-is-registered` trong capabilities, rebuild, và chủ dự án xác nhận lại thành công.
 
 ## 9. Rủi ro và xử lý
 
@@ -174,9 +178,13 @@ Tự động kiểm tra logic greeting, state transitions, settings fallback và
 - [x] Prerequisite gate G1–G4 passed.
 - [x] Phase 1 implementation started.
 - Phase 1 implementation start date: **2026-09-16**.
+- [x] Tất cả hạng mục kiểm tra P1-00 → P1-10 đã có kết quả (PASS hoặc ghi rõ ngoài phạm vi); các mục cần xác nhận trên Windows thật (tray, shortcut, DPI) do chủ dự án tự xác nhận ngày 2026-09-21.
+- [ ] Phase 1 completed / accepted by project owner.
 
-**Current Phase: Phase 1 — Desktop Assistant Shell (Implementation in progress).**
+**Current Phase: Phase 1 — Desktop Assistant Shell (Implementation baseline verified; chờ chủ dự án nghiệm thu chính thức).**
 
 **STOP sau G1–G4:** nếu gate FAIL/BLOCKED, báo nguyên nhân; nếu tất cả PASS, cập nhật README và vẫn chờ implementation approval. Không tự đánh dấu Phase 1 implementation started.
 
 PHASE 1 PREREQUISITE GATE PASSED — WAITING FOR IMPLEMENTATION APPROVAL
+
+**Cập nhật 2026-09-21:** toàn bộ bảng kiểm thử §8 đã có kết quả PASS, bao gồm các mục trước đó cần xác nhận thủ công (tray icon, shortcut trigger, DPI 100%/150%) — chủ dự án đã tự kiểm tra trực tiếp trên Windows. Một bug thật (thiếu quyền ACL cho `global-shortcut` khiến mọi shortcut bị báo nhầm "không khả dụng") đã được phát hiện trong lúc xác nhận và sửa. Phase 1 **chưa được tự đánh dấu completed** — chờ chủ dự án phê duyệt nghiệm thu chính thức.
