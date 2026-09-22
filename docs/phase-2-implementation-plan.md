@@ -1,8 +1,8 @@
 # Phase 2 — Speech Pipeline Implementation Plan
 
-Status: **Proposed — chờ chủ dự án phê duyệt.** Chưa có prerequisite gate, spike hay code nào được thực hiện.
+Status: **Superseded by `.aide/` framework (2026-09-21).** Chủ dự án quyết định chuyển toàn bộ quy trình dự án sang khung `.aide/` mô tả trong [EXECUTION_GUIDE.md](../EXECUTION_GUIDE.md). Nội dung kỹ thuật trong file này (contract WebSocket, giới hạn tài nguyên, constraints, đề xuất provider...) **vẫn đúng và được giữ làm tài liệu tham chiếu** — không xóa. Đơn vị quản lý/phê duyệt chính thức từ nay là **`.aide/lifecycle/change-sets/CHG-JARVIS-2026-001/`**, với các Task tương ứng tại `.aide/lifecycle/tasks/TASK-JARVIS-001` đến `TASK-JARVIS-011`. Xem đó để biết trạng thái phê duyệt thật hiện tại, không dựa vào trạng thái cũ ghi dưới đây.
 
-Ngày soạn: 2026-09-21. Soạn dựa trên các quyết định đã có ở Phase 0: [architecture](architecture.md), [agent flow](agent-flow.md), [security](security.md), [requirements](requirements.md), [ADR 0004](adr/0004-voice-first-interaction.md).
+Ngày soạn: 2026-09-21 (trước khi chuyển sang `.aide/`). Soạn dựa trên các quyết định đã có ở Phase 0: [architecture](architecture.md), [agent flow](agent-flow.md), [security](security.md), [requirements](requirements.md), [ADR 0004](adr/0004-voice-first-interaction.md).
 
 Phase 1 — Desktop Assistant Shell đã ✅ Completed (2026-09-21). Phase 2 chưa được phép triển khai bất kỳ phần nào — kế hoạch này cần chủ dự án phê duyệt riêng trước, đúng quy trình đã áp dụng cho Phase 1.
 

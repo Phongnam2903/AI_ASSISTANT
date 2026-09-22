@@ -1,6 +1,6 @@
 # Roadmap Voice-First
 
-Cập nhật: 2026-09-21. Phase 0: ✅ Completed — được chủ dự án phê duyệt ngày 2026-09-07; Phase 1: ✅ Completed — Desktop Assistant Shell, chủ dự án phê duyệt nghiệm thu ngày 2026-09-21 (xem [kết quả P1-00→P1-10](phase-1-implementation-plan.md#8-tiêu-chí-kiểm-thử-và-nghiệm-thu)); Phase 2 — Speech Pipeline: kế hoạch implementation đã soạn — [phase-2-implementation-plan.md](phase-2-implementation-plan.md) — **Proposed, chờ chủ dự án phê duyệt**, chưa chạy prerequisite gate hay code; Phase 3–12: Not Started. Mỗi phase cần bằng chứng kiểm tra và chủ dự án phê duyệt trước khi đánh hoàn thành.
+Cập nhật: 2026-09-21. Phase 0: ✅ Completed — được chủ dự án phê duyệt ngày 2026-09-07; Phase 1: ✅ Completed — Desktop Assistant Shell, chủ dự án phê duyệt nghiệm thu ngày 2026-09-21 (xem [kết quả P1-00→P1-10](phase-1-implementation-plan.md#8-tiêu-chí-kiểm-thử-và-nghiệm-thu)); Phase 2 — Speech Pipeline: từ 2026-09-21 quản lý qua khung `.aide/` (xem [EXECUTION_GUIDE.md](../EXECUTION_GUIDE.md)) — [CHG-JARVIS-2026-001](../.aide/lifecycle/change-sets/CHG-JARVIS-2026-001/change-set.yaml) — **Proposed, chờ chủ dự án phê duyệt Scope Gate**, chưa chạy prerequisite gate hay code; `phase-2-implementation-plan.md` cũ giờ superseded, nội dung kỹ thuật vẫn giữ tham chiếu; Phase 3–12: Not Started. Mỗi phase cần bằng chứng kiểm tra và chủ dự án phê duyệt trước khi đánh hoàn thành.
 
 ## Version 1 — Từ presence đến trợ lý làm việc
 
@@ -33,7 +33,7 @@ Security được triển khai dần: native permissions ở Phase 1, auth/audio
 
 Phase 1 có greeting chữ và trạng thái voice mô phỏng có nhãn. Phase 2 bổ sung greeting bằng giọng nói và speech thật. Phase 3 mới gọi LLM. Wake word luôn thuộc Phase 9; click/shortcut đủ cho giai đoạn đầu.
 
-Trước khi triển khai mỗi phase, xác định dependency versions/provider cần dùng, kế hoạch kiểm tra và thay đổi phạm vi. Không đặt ngày hoàn thành chưa có cơ sở. Kế hoạch gần nhất: [Phase 2](phase-2-implementation-plan.md) (Proposed, chờ duyệt); kế hoạch đã hoàn thành: [Phase 1](phase-1-implementation-plan.md).
+Trước khi triển khai mỗi phase, xác định dependency versions/provider cần dùng, kế hoạch kiểm tra và thay đổi phạm vi. Không đặt ngày hoàn thành chưa có cơ sở. Từ Phase 2 trở đi, đơn vị kế hoạch/phê duyệt chính thức là Change Set trong `.aide/lifecycle/change-sets/` (xem [EXECUTION_GUIDE.md](../EXECUTION_GUIDE.md)), không còn `phase-N-implementation-plan.md`. Change Set gần nhất: [CHG-JARVIS-2026-001](../.aide/lifecycle/change-sets/CHG-JARVIS-2026-001/change-set.yaml) (Proposed, chờ duyệt); kế hoạch đã hoàn thành theo quy trình cũ: [Phase 1](phase-1-implementation-plan.md).
 
 - [x] Phase 0 approved by project owner.
 - Phase 0 approval date: **2026-09-07**.
@@ -59,4 +59,4 @@ Desktop Shell (`apps/desktop/`) đã build/chạy native thành công trên Wind
 - [x] Phase 2 implementation plan drafted — **2026-09-21**.
 - [ ] Phase 2 implementation plan approved by project owner.
 
-**Current Phase: Phase 2 — Speech Pipeline (Proposed).** Kế hoạch đã soạn tại [phase-2-implementation-plan.md](phase-2-implementation-plan.md); chờ chủ dự án phê duyệt trước khi chạy prerequisite gate hoặc code, theo đúng quy trình đã áp dụng cho Phase 1.
+**Current Phase: Phase 2 — Speech Pipeline (Proposed).** Từ 2026-09-21 quản lý qua [CHG-JARVIS-2026-001](../.aide/lifecycle/change-sets/CHG-JARVIS-2026-001/change-set.yaml) trong khung `.aide/` (xem [EXECUTION_GUIDE.md](../EXECUTION_GUIDE.md)); chờ chủ dự án phê duyệt Scope Gate trước khi chạy prerequisite gate (Task G1–G5) hoặc code.

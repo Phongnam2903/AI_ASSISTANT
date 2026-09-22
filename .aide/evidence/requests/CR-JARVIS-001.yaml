@@ -1,0 +1,23 @@
+key: CR-JARVIS-001
+date: 2026-09-21
+raw_request: >
+  Chủ dự án yêu cầu soạn kế hoạch triển khai Phase 2 — Speech Pipeline
+  (sau khi Phase 1 — Desktop Assistant Shell đã Completed), theo đúng
+  quy trình plan → approval → prerequisite gate → implementation approval
+  đã áp dụng cho Phase 1. Sau đó chủ dự án quyết định chuyển toàn bộ quy
+  trình dự án sang khung `.aide/` mô tả trong EXECUTION_GUIDE.md, thay vì
+  tiếp tục dùng `docs/phase-N-implementation-plan.md`.
+change_type: new-capability
+affected_modules:
+  - voice
+  - backend (new)
+affected_fr: []
+affected_nfr: []
+security_impact: "Có — mở local WebSocket API lần đầu, cần auth thật (NFR-JARVIS-SEC-002)."
+privacy_impact: "Có — capture audio thật lần đầu (NFR-JARVIS-PRIV-001)."
+architecture_impact: "Có — thêm CMP-JARVIS-VOICE và tiến trình backend Python lần đầu."
+user_facing_impact: "Có — assistant chuyển từ chỉ-chữ sang có thể nghe/nói thật."
+external_integration_impact: "Không (Phase 2 chưa tích hợp dịch vụ ngoài; có thể dùng cloud STT/TTS nếu G3 chọn vậy)."
+tier: T1
+status: triaged
+result: "→ CHG-JARVIS-2026-001"

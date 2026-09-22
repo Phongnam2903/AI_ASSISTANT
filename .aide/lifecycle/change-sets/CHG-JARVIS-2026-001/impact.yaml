@@ -1,0 +1,39 @@
+key: CHG-JARVIS-2026-001-impact
+
+architecture:
+  new_components:
+    - CMP-JARVIS-VOICE (status chuyển từ proposed → active khi implementation bắt đầu)
+  new_processes:
+    - "apps/backend/ — tiến trình Python/FastAPI đầu tiên của hệ thống"
+  new_contracts:
+    - "packages/contracts/ — JSON Schema control envelope + audio framing, protocol_version=1"
+
+security:
+  new_attack_surface:
+    - "Local WebSocket API (loopback) — cần NFR-JARVIS-SEC-002"
+    - "Microphone capture thật lần đầu — cần NFR-JARVIS-PRIV-001"
+  mitigations_required:
+    - "Session token qua kênh riêng + Origin allowlist"
+    - "Raw audio chỉ RAM, dọn khi end/cancel/error"
+
+privacy:
+  data_flow_change: >
+    Nếu G3 chọn provider cloud cho STT/TTS, audio/transcript sẽ rời máy tới
+    provider đó. Nếu chọn local (đề xuất mặc định), không có data rời máy
+    ở Phase 2. Quyết định cần chủ dự án xác nhận trước khi khóa (xem OQ).
+
+cost:
+  budget_impact: >
+    $0 nếu dùng bộ provider local đề xuất (Silero VAD + faster-whisper + Piper TTS).
+    Có chi phí API nếu chủ dự án chọn cloud — cần xác nhận trước G3.
+
+user_facing:
+  new_behavior:
+    - "Greeting phát giọng nói (không chỉ chữ)"
+    - "Assistant có thể nghe và trả lời bằng giọng nói (phản hồi cố định, chưa AI thật)"
+  removed_behavior: []
+
+rollback_strategy: >
+  Phase 2 code nằm trong module riêng (apps/backend/, thay đổi trong apps/desktop/
+  chỉ ở phần audio capture adapter mới). Có thể tắt hoàn toàn bằng cách không khởi
+  chạy backend — desktop vẫn hoạt động như Phase 1 (đã có text fallback theo thiết kế).

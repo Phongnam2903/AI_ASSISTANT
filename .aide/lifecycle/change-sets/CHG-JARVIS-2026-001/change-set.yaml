@@ -1,0 +1,51 @@
+key: CHG-JARVIS-2026-001
+
+label: "Speech Pipeline (Phase 2)"
+
+status: draft
+
+date: 2026-09-21
+
+source_request: CR-JARVIS-001
+
+objective:
+  satisfies:
+    - GOAL-JARVIS-001
+
+affected_systems:
+  - SYS-JARVIS
+
+affected_modules:
+  - voice
+  - backend
+
+covers_fr:
+  - FR-JARVIS-005   # phần TTS của greeting (AC-005-02)
+  - FR-JARVIS-006
+  - FR-JARVIS-007
+  - FR-JARVIS-008
+  - FR-JARVIS-009
+  - FR-JARVIS-010
+
+covers_nfr:
+  - NFR-JARVIS-SEC-002
+  - NFR-JARVIS-PRIV-001
+  - NFR-JARVIS-VOICE-001
+
+owner_component: CMP-JARVIS-VOICE
+
+tier: T1
+
+flow: change
+
+# Ranh giới phê duyệt — mirror đúng quy trình đã dùng cho Phase 1:
+# 1. Change Set này cần chủ dự án phê duyệt riêng (Scope Gate).
+# 2. Sau đó chạy prerequisite gate G1–G5 (xem tasks TASK-JARVIS-001..005).
+# 3. G3 cần chủ dự án xác nhận provider (xem open-questions/OQ-JARVIS-2026-001-001.md).
+# 4. Sau gate PASS, cần phê duyệt implementation riêng (TASK-JARVIS-006 trở đi).
+approval_gates:
+  - scope_gate: pending
+  - prerequisite_gate: not_started
+  - implementation_approval: not_started
+
+supersedes_doc: "docs/phase-2-implementation-plan.md (giữ làm tài liệu tham chiếu kỹ thuật, status: superseded-by-aide)"

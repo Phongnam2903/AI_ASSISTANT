@@ -6,7 +6,7 @@ Thứ tự ưu tiên tương tác: **Voice → Text / Transcript → Vision (tư
 
 ## Trạng thái thực tế
 
-- **Current Phase:** Phase 2 — Speech Pipeline. Kế hoạch implementation đã soạn ([xem](docs/phase-2-implementation-plan.md)), **chờ chủ dự án phê duyệt**; chưa chạy prerequisite gate, chưa có code.
+- **Current Phase:** Phase 2 — Speech Pipeline. Quản lý qua [`.aide/`](EXECUTION_GUIDE.md): [CHG-JARVIS-2026-001](.aide/lifecycle/change-sets/CHG-JARVIS-2026-001/change-set.yaml) đang ở Scope Gate, **chờ chủ dự án phê duyệt**; chưa chạy prerequisite gate, chưa có code.
 - **Phase 0:** ✅ Completed — Foundation & Voice-First Architecture.
 - **Ngày duyệt Phase 0:** 2026-09-07.
 - **Phase 1:** ✅ Completed — Desktop Assistant Shell. Chủ dự án phê duyệt nghiệm thu ngày 2026-09-21.
@@ -95,9 +95,15 @@ Chủ dự án duyệt Desktop Shell implementation ngày 2026-09-16. Đã build
 - Ngày 2026-09-21, chủ dự án tự xác nhận thủ công trên Windows thật 3 mục còn lại — **cả 3 đều PASS**: tray icon click Show/Hide/Exit, shortcut trigger ở trường hợp đăng ký thành công, DPI 100%/150%. Trong lúc xác nhận shortcut, phát hiện và sửa 1 bug thật: `capabilities/default.json` cấp `global-shortcut:default` — permission set này **rỗng theo thiết kế bảo mật của Tauri**, khiến mọi `register()` bị ACL từ chối và báo nhầm thành "trùng shortcut". Đã sửa bằng cách khai rõ `allow-register`/`allow-unregister`/`allow-is-registered`, rebuild, và chủ dự án xác nhận lại thành công.
 - Phase 1 baseline có kết quả PASS đầy đủ cho toàn bộ P1-00 → P1-10. **Chủ dự án đã phê duyệt nghiệm thu Phase 1 ngày 2026-09-21.** Phase 1 — Desktop Assistant Shell: ✅ **Completed**.
 
+## Quy trình dự án chuyển sang khung `.aide/` (2026-09-21)
+
+Từ 2026-09-21, chủ dự án quyết định chuyển toàn bộ quy trình lập kế hoạch/phê duyệt/thực thi sang khung mô tả trong **[EXECUTION_GUIDE.md](EXECUTION_GUIDE.md)** (bản dịch tiếng Việt, giữ thuật ngữ kỹ thuật tiếng Anh). Cấu trúc `.aide/` đã được dựng: `product/` (Vision, PRD), `requirements/` (FR/NFR), `domain/` (glossary), `architecture/` (L1 Capability, L2 Component, ADR, threat model), `lifecycle/` (Change Set, Epic, Story, Task), `evidence/`, `policies/`, `registry/`. Các file trong `docs/` (architecture.md, requirements.md, security.md, agent-flow.md, roadmap.md, adr/) **được giữ nguyên làm tài liệu kỹ thuật tham chiếu**, không xóa — nội dung của chúng đã được migrate/tham chiếu vào `.aide/` chứ không viết lại từ đầu.
+
 ## Phase 2 — Speech Pipeline (Proposed, chờ phê duyệt)
 
-Kế hoạch implementation đã soạn: [docs/phase-2-implementation-plan.md](docs/phase-2-implementation-plan.md). Phạm vi: audio spike, microphone, VAD, STT, phản hồi cố định (chưa LLM), TTS, backend FastAPI/WebSocket có auth, `packages/contracts` khóa schema. **Chưa có gì được triển khai** — chưa chạy prerequisite gate, chưa tạo spike, chưa có file nào trong `apps/backend/`. Kế hoạch có một câu hỏi cần chủ dự án trả lời trước khi chạy gate: có đồng ý bắt đầu bằng bộ provider local (Silero VAD + faster-whisper + Piper TTS) để tránh chi phí/API key ngay từ đầu không (xem plan §4).
+Đơn vị quản lý chính thức: **[.aide/lifecycle/change-sets/CHG-JARVIS-2026-001/](.aide/lifecycle/change-sets/CHG-JARVIS-2026-001/change-set.yaml)** (thay cho `docs/phase-2-implementation-plan.md`, file này giờ ở trạng thái *superseded*, nội dung kỹ thuật vẫn giữ làm tham chiếu). Phạm vi: audio spike, microphone, VAD, STT, phản hồi cố định (chưa LLM), TTS, backend FastAPI/WebSocket có auth, `packages/contracts` khóa schema — chi tiết qua 11 Task (`TASK-JARVIS-001`→`011`) thuộc 2 Story (`STORY-JARVIS-005` gate, `STORY-JARVIS-006` implementation).
+
+**Chưa có gì được triển khai** — Change Set đang ở Scope Gate, chờ chủ dự án phê duyệt trước khi bất kỳ Task nào được phép chạy. Có một Open Question đang chặn G3: [OQ-JARVIS-2026-001-001](.aide/lifecycle/change-sets/CHG-JARVIS-2026-001/open-questions/OQ-JARVIS-2026-001-001.md) — dùng bộ provider local miễn phí (Silero VAD + faster-whisper + Piper TTS) hay cloud trả phí ngay từ đầu?
 
 ## Roadmap
 
@@ -122,7 +128,7 @@ Chi tiết phạm vi và tiêu chí kết thúc từng phase: [roadmap](docs/roa
 ## Bắt đầu đọc
 
 - [Yêu cầu sản phẩm](docs/requirements.md) và [kiến trúc](docs/architecture.md).
-- [Kế hoạch Phase 1 đã duyệt](docs/phase-1-implementation-plan.md) (Completed) và [kế hoạch Phase 2](docs/phase-2-implementation-plan.md) (Proposed, chờ duyệt).
+- [Kế hoạch Phase 1 đã duyệt](docs/phase-1-implementation-plan.md) (Completed, quy trình cũ) và [Change Set Phase 2](.aide/lifecycle/change-sets/CHG-JARVIS-2026-001/change-set.yaml) (Proposed, quy trình `.aide/` — xem [Execution Guide](EXECUTION_GUIDE.md)).
 - [Hướng dẫn phát triển](docs/development-guide.md) và [bằng chứng kiểm tra](docs/phase-0-verification.md).
 
 Lệnh build/chạy cùng manifests và lockfiles có trong [minimal spike](spikes/tauri-minimal/README.md) và [Desktop Shell](apps/desktop/README.md). Chưa có backend hoặc cấu hình Compose thực thi; các phần này được triển khai ở phase tương ứng sau khi được duyệt.

@@ -2,12 +2,25 @@
 
 File này cung cấp ngữ cảnh và quy tắc làm việc cho Claude trong repository. Trao đổi với chủ dự án bằng tiếng Việt; giữ tên công nghệ, API và identifier bằng tiếng Anh khi phù hợp.
 
+## Quy trình hiện hành: khung `.aide/` (từ 2026-09-21)
+
+Từ 2026-09-21, chủ dự án chuyển toàn bộ quy trình lập kế hoạch/phê duyệt/thực thi sang khung mô tả trong **[EXECUTION_GUIDE.md](EXECUTION_GUIDE.md)** (root repo, bản dịch tiếng Việt). **Đọc file này trước khi làm bất kỳ việc gì liên quan Phase 2 trở đi.** Tóm tắt các điểm bắt buộc:
+
+- Đơn vị quản lý là `.aide/lifecycle/change-sets/CHG-<SYS>-YYYY-NNN/`, phân rã thành Epic → Story → Task. Mỗi Task cần Context Package + Implementation Plan (`evidence/context/`, `evidence/plans/`) trước khi được phép sửa code — xem Definition of Ready (Execution Guide §H).
+- FR/NFR sống trong `.aide/requirements/`; kiến trúc trong `.aide/architecture/` (L1 Capability, L2 Component, ADR, threat model); thuật ngữ chung trong `.aide/domain/`.
+- Không tự phê duyệt Change Set, Scope Gate, Architecture Gate, Release Gate hay sensitive action — những việc này thuộc Human (chủ dự án), xem Execution Guide §K.
+- Không bịa FR/kiến trúc/quyền hạn; khi spec thiếu hoặc mâu thuẫn, STOP và tạo Open Question (`open-questions/`) thay vì đoán — xem Execution Guide §T, §Y.
+- `docs/` (architecture.md, requirements.md, security.md, agent-flow.md, roadmap.md, adr/, phase-1-implementation-plan.md...) **vẫn được giữ nguyên làm tài liệu kỹ thuật tham chiếu** — nội dung của chúng đã migrate/tham chiếu vào `.aide/`, không bị xóa hay mất giá trị. `docs/phase-2-implementation-plan.md` ở trạng thái *superseded*, thay bằng `CHG-JARVIS-2026-001`.
+- Phase 0 và Phase 1 đã hoàn thành theo quy trình cũ (`docs/phase-N-implementation-plan.md`) trước khi khung `.aide/` được áp dụng — các mục dưới đây về Phase 1 vẫn đúng như lịch sử, không cần làm lại theo `.aide/`.
+
 ## Đọc tài liệu trước khi hành động
 
-1. [README](README.md): trạng thái tổng thể và phê duyệt đã ghi nhận.
-2. [Phase 1 implementation plan](docs/phase-1-implementation-plan.md): phạm vi, architectural constraints và ranh giới phê duyệt.
-3. [Prerequisite verification report](docs/phase-1-prerequisite-verification.md): kết quả thực tế, version matrix, lệnh và bằng chứng.
-4. Khi cần thiết, đọc [architecture](docs/architecture.md), [requirements](docs/requirements.md), [security](docs/security.md), [agent flow](docs/agent-flow.md) và [development guide](docs/development-guide.md).
+1. [EXECUTION_GUIDE.md](EXECUTION_GUIDE.md): quy trình hiện hành cho mọi việc từ Phase 2 trở đi (xem mục trên).
+2. [.aide/lifecycle/change-sets/](/.aide/lifecycle/change-sets/): Change Set đang mở, trạng thái gate/approval thật.
+3. [README](README.md): trạng thái tổng thể và phê duyệt đã ghi nhận.
+4. [Phase 1 implementation plan](docs/phase-1-implementation-plan.md): lịch sử phạm vi/constraints/ranh giới phê duyệt của Phase 1 (đã Completed, quy trình cũ).
+5. [Prerequisite verification report](docs/phase-1-prerequisite-verification.md): kết quả thực tế, version matrix, lệnh và bằng chứng của Phase 1.
+6. Khi cần thiết, đọc [architecture](docs/architecture.md), [requirements](docs/requirements.md), [security](docs/security.md), [agent flow](docs/agent-flow.md) và [development guide](docs/development-guide.md) — nội dung kỹ thuật vẫn là nguồn tham chiếu chính, được trỏ tới từ các artifact `.aide/`.
 
 Yêu cầu và phê duyệt mới nhất của chủ dự án trong hội thoại là căn cứ cập nhật phạm vi. Không xin duyệt lại công việc đã được duyệt rõ ràng. Nếu snapshot trong file này cũ, đối chiếu tài liệu và artifact hiện có; không suy ra phê duyệt từ việc một file hoặc checkbox kỹ thuật tồn tại.
 
